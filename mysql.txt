@@ -21,3 +21,7 @@ python manage.py migrate
 
 
 //crear un usuario desde 127.0.0.1:8000/
+
+ejecutar script en mysql
+mysql -u root -p  SunChoi < 1.sql
+//contrasena 				detodo

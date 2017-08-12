@@ -39,9 +39,9 @@ class Producto(models.Model):
 	nombre = models.CharField(max_length=200)
 	descripcion = models.CharField(max_length=200)
 	precio_unitario = models.FloatField()
-	unidad = models.CharField(max_length=200)
-	stock = models.FloatField()
-	fecha_vencimiento = models.DateTimeField()
+	medida = models.CharField(max_length=200)
+	stock = models.IntegerField()
+	fecha_vencimiento = models.DateTimeField(null=True)
 
 	def __str__(self):
 		return self.nombre
@@ -59,7 +59,7 @@ class Producto(models.Model):
 		self.precio_unitario=precioUnitario
 
 	def setUnidad(self,unidad):
-		self.unidad=unidad
+		self.medida=medida
 
 	def setStock(self,stock):
 		self.stock=stock
