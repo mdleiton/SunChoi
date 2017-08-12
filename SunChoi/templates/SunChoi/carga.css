@@ -1,0 +1,111 @@
+#contenedor {
+    width: 800px;
+    height: 20px;
+    margin: 0 auto;
+    border: 2px solid #145a32 ;
+	border-radius: 10px;
+}
+
+#barra {
+    width: 0;
+    height: 100%;
+    background: #1e8449;
+	border-radius: 7px;
+	
+}
+
+#texto1,#texto2,#inicio,#final {
+    font-size: 2em;
+    font-weight: bold;
+    line-height: 2.3em;
+    height: 100%;
+    text-align: left;
+    color: #f1c40f;
+    mix-blend-mode: multiply;
+}
+
+#texto {
+    text-align: right;
+}
+
+#inicio {
+    margin-top: -20px;
+	color: #f1720f;
+}
+
+#final {
+    margin-top: -20px;
+	text-align:right;
+	color: #e80801;
+}
+
+/*#texto:after {
+    content: '0%';
+}*/
+
+@keyframes progreso1 {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 0%;
+    }
+}
+@keyframes progreso2 {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 30%;
+    }
+}
+@keyframes progreso3 {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 70%;
+    }
+}
+@keyframes progreso4 {
+    0% {
+        width: 70%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+/*@keyframes porcentaje {
+    0% {
+        content: '0%';
+    }
+    25% {
+        content: '25%';
+    }
+    50% {
+        content: '50%';
+    }
+    75% {
+        content: '75%';
+    }
+    100% {
+        content: '100%';
+    }
+}*/
+
+button {
+	position: absolute;
+}
+
+#barra {
+    animation: progreso1 3s;
+	animation-fill-mode: forwards;
+	animation-timing-function: ease;
+}
+
+#texto:after {
+    animation: porcentaje 3s;
+	animation-fill-mode: forwards;
+	animation-timing-function: ease;
+}

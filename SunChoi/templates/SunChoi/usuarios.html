@@ -1,0 +1,18 @@
+{# La plantilla #}
+<html><head><title>usuarios</title></head>
+<body>
+<h1>usuarios</h1>
+<ul>
+	Bienvenido
+	{% if user.is_authenticated %}
+        Bienvenido {{user.username|capfirst}}
+        <a href="/logout/">login out</a>
+    {% endif %}
+{% for usuario in lista_usuarios %}
+<li>{{ usuario.nombre }}</li>
+<li>{{ usuario.apellido }}</li>
+<li>{{ usuario.direccion }}</li>
+<li>{{ usuario.telefono }}</li>
+{% endfor %}
+</ul>
+</body></html>

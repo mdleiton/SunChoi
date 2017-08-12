@@ -1,0 +1,110 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>RegiCount</title>
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'img/logo.jpg'  %}"/>
+
+        <link href="{% static 'css/bootstrap.min.css'  %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap-theme.min.css'  %}" rel="stylesheet">
+
+  
+        <link href="{% static 'css/business-casual.css' %}" rel="stylesheet">
+
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body >   
+        {% if user.is_authenticated %}
+            Bienvenidooo {{user.username|capfirst}}
+            <a href="/logout/">login out</a>
+             <div class="row">
+            <div class="box">
+                <div class="col-lg-12 text-center">
+                    <div id="carousel-example-generic" class="carousel slide">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators hidden-xs">
+                            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img class="img-responsive img-full" src="{% static 'img/fondo.jpg' %}" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive img-full" src="{% static 'img/logo.jpg' %}" alt="">
+                            </div>
+                            <div class="item">
+                                <img class="img-responsive img-full" src="{% static 'img/seis.jpg' %}" alt="">
+                            </div>
+                        </div>
+
+                        <!-- Controls -->
+                        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                            <span class="icon-prev"></span>
+                        </a>
+                        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                            <span class="icon-next"></span>
+                        </a>
+                    </div>
+                    <h2 class="brand-before">
+                        <small>Welcome to</small>
+                    </h2>
+                    <h1 class="brand-name">Business Casual</h1>
+                    <hr class="tagline-divider">
+                    <h2>
+                        <small>By
+                            <strong>Start Bootstrap</strong>
+                        </small>
+                    </h2>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <link href="{% static 'css/style.css'  %}" rel="stylesheet">
+            <div class="container" style="position: absolute;">
+                <form class="form-signin" method="POST" >
+                    {% csrf_token %}
+                    <h1 class="form-signin-heading">Iniciar Sesión</h1>
+                    <label for="inputEmail" class="sr-only">Usuario</label>
+                    <input type="text" name="username"   id="inputEmail" class="form-control" placeholder="Usuario" >
+                    <br />
+                    <label for="inputPassword" class="sr-only">Contraseña</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="contrasena" required>
+                    <label class="checkbox">
+                    <input type="checkbox">Recordar</label>
+                    <br/>
+                    <button id="entrar" class="btn btn-primary btn-block" type="submit">Entrar</button>
+                    <br/>
+                    <br/>
+                    <br/>
+                     <a class="btn btn-primary btn-block" href="/registrarusuario/" >Registrar</a>  
+                </form>
+               
+        {% endif %}  
+        {% if error %}
+            <h2>nombre de usuario o contrasena incorrectas</h2>
+        {% endif %}   
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Script to Activate the Carousel -->
+    <script>
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    })
+    </script>
+
+
+    </body>
+</html>        

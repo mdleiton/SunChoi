@@ -1,0 +1,17 @@
+{% extends "SunChoi/base.html" %}
+{% block content %}
+
+	{% if user.is_authenticated %}
+        Bienvenido {{user.username|capfirst}}
+        <a href="/logout/">login out</a>
+    {% endif %}
+    <br/><br/>
+    {% if mjs %}
+        {{mjs|capfirst}}
+    {% endif %}
+  <form action="{% url 'SunChoi:clienteadd' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Añadir Cliente" />
+</form>
+{% endblock %}

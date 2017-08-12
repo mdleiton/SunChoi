@@ -1,0 +1,21 @@
+sudo apt-get install mysql-server
+//contrasena 'detodo'
+sudo apt-get install python-dev
+sudo apt-get install libmysqlclient-dev
+pip install mysql-python
+
+//crear la base de datos 
+mysql -u root -p
+//ingresar la contrasena 'detodo'
+ create database SunChoi;
+ o
+ CREATE DATABASE SunChoi CHARACTER SET UTF8;
+
+ //verificar la creacion de la base de datos
+ show databases;
+
+//en otra terminal en la carpeta del proyecto
+python manage.py migrate
+python manage.py makemigrations SunChoi
+python manage.py migrate
+python manage.py createsuperuser
