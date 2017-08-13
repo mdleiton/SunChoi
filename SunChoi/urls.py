@@ -18,7 +18,7 @@ urlpatterns = [
 
     #productos
     url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),
-    
+     url(r'^listaproductos/$', views.ProductoListView.as_view(), name='producto-list'),
     #proveedores
     url(r'^proveedores/$',views.Proveedores,name="prov"),
     
@@ -33,6 +33,6 @@ urlpatterns = [
     #clientes
     url(r'^registrarcliente/$', views.RegistrarCliente, name="clienteadd"),
 
-    url(r'^p/$', views.p),
+    url(r'^bajostock/$', views.p),
     
 ]

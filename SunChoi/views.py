@@ -150,5 +150,14 @@ def RegistrarCliente(request):
 
 
 def p(request):
-	return render_to_response('SunChoi/pruebass.html')
+    if request.GET.get('minimo'):
+        minimo = request.GET['minimo']
+        results = Producto.bajostock(minimo)
+        return render(request,'SunChoi/pruebass.html',{'lista':results,"minimo": minimo})
+    else:
+        return render(request,'SunChoi/pruebass.html')
 
+
+
+class ProductoListView(ListView):
+    model = Producto

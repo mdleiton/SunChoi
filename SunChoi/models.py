@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import models,connection
 from django.utils import timezone
 
 class Proveedores(models.Model):
@@ -46,6 +45,15 @@ class Producto(models.Model):
 	def __str__(self):
 		return self.nombre
 
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def bajostock(minimo):  
+		cur = connection.cursor()  
+		cur.callproc('bajostock', [minimo,])  
+		results = cur.fetchall() 
+		cur.close() 
+		return [Producto (*row) for row in results]  
+		
 	def setId_producto(self,idProducto):
 		self.id_producto=idProducto
 

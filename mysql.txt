@@ -7,9 +7,7 @@ pip install mysql-python
 //crear la base de datos 
 mysql -u root -p
 //ingresar la contrasena 'detodo'
- create database SunChoi;
- o
- CREATE DATABASE SunChoi CHARACTER SET UTF8;
+ CREATE DATABASE SunChoi CHARACTER SET utf8mb4;
 
  //verificar la creacion de la base de datos
  show databases;

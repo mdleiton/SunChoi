@@ -1,0 +1,21 @@
+{% extends "SunChoi/base.html" %}
+  {% block content %}
+<h1>Productos</h1>
+
+{% for producto in object_list %}
+<ul> Producto N  {{ forloop.counter  }}
+	
+	<br/>
+    <li>{{ producto.nombre }}</li>
+    <li>{{ producto.descripcion}}</li>
+    <li>{{ producto.precio_unitario }}</li>
+    <li>{{ producto.medida }}</li>
+    <li>{{ producto.stock }}</li>
+    <li>{{ producto.fecha_vencimiento }}</li>
+</ul>
+<br/>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+
+  {% endblock %}
