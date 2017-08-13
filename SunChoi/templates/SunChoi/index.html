@@ -80,14 +80,13 @@
                     <br />
                     <label for="inputPassword" class="sr-only">Contraseña</label>
                     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="contrasena" required>
-                    <label class="checkbox">
-                    <input type="checkbox">Recordar</label>
+                    <input type="checkbox" name="checkbox" id="checkboxAdmin">
+                    <label for="checkboxAdmin">Administrador</label>
                     <br/>
-                    <button id="entrar" class="btn btn-primary btn-block" type="submit">Entrar</button>
+                    <button id="entrar" class="btn btn-primary btn-block" type="submit" style="position:right;">Ingresar</button>
+                    <!--<a class="btn btn-primary btn-block" href="/registrarusuario/" style="position:bottom;">Registrar</a> -->
                     <br/>
                     <br/>
-                    <br/>
-                     <a class="btn btn-primary btn-block" href="/registrarusuario/" >Registrar</a>  
                 </form>
                
         {% endif %}  

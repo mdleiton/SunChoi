@@ -1,5 +1,5 @@
 {% extends "SunChoi/base.html" %}
-  {% block content %}
+  {% block content %} 
 <h1>Productos<br/> consultar lista de producto con stock menor a {{ minimo }}</h1>
 {% if not lista %}
     <form class="form-signin" method="GET" >
@@ -12,12 +12,14 @@
                     <br/>
                 </form>
 {% else %}
+    <br/>
     {% for producto in lista %}
-    <ul> Producto N  {{ forloop.counter  }}    
-        <br/>
-        <li>    nombre :  {{ producto.nombre }}</li>
-        <li>descripcion: {{ producto.descripcion}}</li>
-        <li>  stock  : {{ producto.stock }}   </li>
+    <ul> <!-- Producto N  {{ forloop.counter  }} -->
+        <div>
+        <li >Item: <b>{{producto.descripcion}}</b></li>
+        <li>Stock: <b>{{producto.stock}} {{producto.medida}}</b></li>
+        <li>Precio unitario: <b>${{producto.precio_unitario}}</b></li>
+        </div>
     </ul>
     <br/>
     {% empty %}

@@ -51,8 +51,13 @@ class Producto(models.Model):
 		cur = connection.cursor()  
 		cur.callproc('bajostock', [minimo,])  
 		results = cur.fetchall() 
-		cur.close() 
+		#result_list = []
+		#from row in results:
+		#	p = self.model(descripcion=row[0], precio_unitario=row[1],stock=row[3])
+		#	result_list.append(p)
+		cur.close()
 		return [Producto (*row) for row in results]  
+		#return result_list
 		
 	def setId_producto(self,idProducto):
 		self.id_producto=idProducto
