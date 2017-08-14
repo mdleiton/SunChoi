@@ -1,28 +1,33 @@
 {% extends "SunChoi/base.html" %}
 {% load static %}
 {% block title %} Menu Empleado{% endblock %} 
-
-{%block subtitulo %} Menu empleado {% endblock %}
+{% block extra-style %}
+<link href="{% static 'css/menuGlobal.css'  %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %} 
 <div class="row">
     <div class="col-lg-3 col-sm-6 text-center">
-        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/uno.jpg'  %}" alt="" width="130" height="100">
+        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/9menuglobal.jpg'  %}" alt="" width="135" height="99">
+        <h3><a href="/bajostock">Consulta rápida stock</a></h3>
+    </div>
+    <div class="col-lg-3 col-sm-6 text-center">
+        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/uno.jpg'  %}" alt="" width="135" height="100">
         <h3><a href="/registrarventa">Registrar Ventas
         </a></h3>
     </div>
     <div class="col-lg-3 col-sm-6 text-center">
-        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/cinco.jpg'  %}" alt="" width="200" height="150">
+        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/cinco.jpg'  %}" alt="" width="135" height="99">
         <h3><a href="/cotizaciones">Cotizaciones</a>
         </h3>
     </div>
     <div class="col-lg-3 col-sm-6 text-center">
-        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/tres.jpg'  %}" alt="" width="150" height="100" >
+        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/tres.jpg'  %}" alt="" width="135" height="99" >
         <h3><a href="/compras">Compras
         </a></h3>
     </div>
     <div class="col-lg-3 col-sm-6 text-center">
-        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/cuatro.png'  %}" alt="" width="150" height="100" >
+        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/cuatro.png'  %}" alt="" width="135" height="100" >
         <h3><a href="/inventarios">Inventarios
         </a></h3>
     </div>

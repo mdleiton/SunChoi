@@ -5,17 +5,27 @@
 {%block subtitulo %} Registro Usuario{% endblock %}
 
 {% block content %} 
+ <div class="container">
+        <form class="form-signin" method="POST" action="{% url 'SunChoi:useradd' %}">
+            <H1 class="text-center">Registro Usuario</H1>
 
-
-    <br/><br/><br/><br/>
-    <form method="POST" action="{% url 'SunChoi:useradd' %}">{% csrf_token %}
+        {% csrf_token %}
         {{form.as_p}}
-        <input type="submit" value="Registrarse">
+        <br/>
+        <div>
+            <label class="radio-inline">
+                <input name="tipologin" type="radio" value="admin" checked="checked" >Administrador
+            </label>
+            <label class="radio-inline">
+                <input name="tipologin" type="radio" value="empleado" >Empleado</label>
+        </div>
+        <br/><br/>
+        <input class="btn btn-primary btn-block" type="submit" value="Registrarse">
         {% if error %}
             <h2>Nombre de usuario ya existe porfavor ingrese nuevo usuario</h2>
         {% endif %} 
     </form>
-          
+</div>          
 
     <br />
     <br />

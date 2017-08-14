@@ -114,9 +114,12 @@ def RegistrarVenta(request):
         if request.method == 'POST': 
             form = FacturaForm(request.POST) 
             form1 = FacturalineaForm(request.POST) 
+            form2 = FacturalineaForm(request.POST) 
             #valid
-            if form.is_valid() :
+            if form.is_valid() and form1.is_valid() and form2.is_valid():
                 nueva_factura = form.save() 
+                detalle_factura1 = form1.save() 
+                detalle_factura2 = form2.save() 
                 return render(request,'SunChoi/menuGlobal.html')
         form = FacturaForm()
         form1=FacturalineaForm() 

@@ -7,9 +7,9 @@
         <form  class="form-signin" action="{% url 'SunChoi:padd' %}" method="post">
             {% csrf_token %}
             {{ form.as_p }}
-             {{ form1.as_p }}
+              {{ form1.as_p }}
              {{ form2.as_p }}
-            <input class="btn btn-primary btn-block"type="submit" value="Añadir Factura" />
+            <input class="btn btn-primary btn-block" type="submit" value="Añadir Factura" />
         </form>
         </div>
 
