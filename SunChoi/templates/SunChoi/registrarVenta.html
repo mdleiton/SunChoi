@@ -60,6 +60,8 @@
         <form action="{% url 'SunChoi:padd' %}" method="post">
             {% csrf_token %}
             {{ form.as_p }}
+             {{ form1.as_p }}
+             {{ form2.as_p }}
             <input type="submit" value="Añadir Factura" />
         </form>
         <!-- Footer -->
