@@ -104,11 +104,10 @@ h1{
 
 #entrar{
 	width: 40%;
-	float: left;
 	color: white;
 	font-weight: bold;
-	margin-right: 10%;
-	margin-left: 5%;
+	margin-right: auto;
+	margin-left: auto;
 }
 
 #salir{
