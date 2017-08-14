@@ -5,33 +5,33 @@ from django.utils import timezone
 
 class Proveedores(models.Model):
 	id_proveedor = models.AutoField(primary_key=True)
-	nombre = models.CharField(max_length=200)
 	razon_social = models.CharField(max_length=200)
 	direccion = models.CharField(max_length=200)
 	telefono = models.IntegerField()
+	email = models.EmailField(max_length=200)
 
 	def __str__(self):
 		return self.nombre
 	def setId_proveedor(self,id_proveedor):
 		self.id_proveedor=id_proveedor
-	def setNombre(self,nombre):
-		self.nombre=nombre
 	def setRazon_social(self,razon_social):
 		self.razon_social=razon_social
 	def setDireccion(self,direccion):
 		self.direccion=direccion
 	def setTelefono(self,telefono):
 		self.telefono=telefono
+	def setEmail(self,nombre):
+		self.email=email
 	def getId_proveedor(self):
 		return self.id_proveedor
-	def getNombre(self):
-		return self.nombre
 	def getRazon_social(self):
 		return self.razon_social
 	def getDireccion(self):
 		return self.direccion
 	def getTelefono(self):
 		return self.telefono
+	def getEmail(self):
+		return self.email
 
 class Producto(models.Model):
 	id_producto = models.AutoField(primary_key=True)
@@ -40,7 +40,6 @@ class Producto(models.Model):
 	precio_unitario = models.FloatField()
 	medida = models.CharField(max_length=200)
 	stock = models.IntegerField()
-	fecha_vencimiento = models.DateTimeField(null=True)
 
 	def __str__(self):
 		return self.nombre
@@ -51,13 +50,8 @@ class Producto(models.Model):
 		cur = connection.cursor()  
 		cur.callproc('bajostock', [minimo,])  
 		results = cur.fetchall() 
-		#result_list = []
-		#from row in results:
-		#	p = self.model(descripcion=row[0], precio_unitario=row[1],stock=row[3])
-		#	result_list.append(p)
 		cur.close()
 		return [Producto (*row) for row in results]  
-		#return result_list
 		
 	def setId_producto(self,idProducto):
 		self.id_producto=idProducto
@@ -77,9 +71,6 @@ class Producto(models.Model):
 	def setStock(self,stock):
 		self.stock=stock
 
-	def setFecha_vencimiento(self,fechaVencimiento):
-		self.fecha_vencimiento=fechaVencimiento
-
 	def getId_producto(self):
 		return self.id_producto
 
@@ -98,8 +89,6 @@ class Producto(models.Model):
 	def getStock(self):
 		return self.stock
 
-	def getFecha_vencimiento(self):
-		return self.fecha_vencimiento
 
 class Cliente(models.Model):
 	id_cliente = models.AutoField(primary_key=True)	
