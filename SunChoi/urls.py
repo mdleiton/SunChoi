@@ -20,7 +20,7 @@ urlpatterns = [
     #productos
     url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),
     url(r'^listaproductos/$', views.ProductoListView.as_view(), name='producto-list'),
-    url(r'^bajostock/$', views.p),
+    
     #proveedores
     url(r'^proveedores/$',views.Proveedores,name="prov"),
     
@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^cotizaciones/$', views.Cotizaciones,name="cot"),
     url(r'^compras/$', views.Compras,name="compras"),
     url(r'^registrarventa/$', views.RegistrarVenta,name="padd"),
+    url(r'^bajostock/$', views.ConsultaRapida, name='consulta_rapida'),
 
     #reportes
     url(r'^inventarios/$', views.Inventarios,name="inv"),
