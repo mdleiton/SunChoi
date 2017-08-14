@@ -160,6 +160,7 @@ def RegistrarCliente(request):
             form = ClienteForm(request.POST) 
             if form.is_valid():
                 nuevo_cliente = form.save() 
+                form=ClienteForm()
                 return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
         else:
             form = ClienteForm()

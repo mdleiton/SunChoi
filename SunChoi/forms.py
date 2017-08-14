@@ -27,6 +27,10 @@ class FacturalineaForm(forms.ModelForm):
     class Meta:
         model =  Facturalineas
         fields = "__all__" 
+        exclude = [
+            'id_factura',
+         
+        ]
 
 class UsuarioForm(forms.ModelForm):
     username=forms.CharField(max_length=200)
