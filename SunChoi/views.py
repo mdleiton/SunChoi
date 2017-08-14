@@ -37,8 +37,14 @@ def nopermitido(request):
     return render_to_response('SunChoi/nopermitido.html')
 
 def MenuGlobal(request):
-    if (request.user.is_authenticated):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         return render(request,'SunChoi/menuGlobal.html')
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
+
+def MenuEmpleado(request):
+    if (request.user.is_authenticated and (not request.user.is_superuser or  not request.user.is_staff)):
+        return render(request,'SunChoi/menuempleado.html')
     else:
         return render_to_response('SunChoi/nopermitido.html')
 

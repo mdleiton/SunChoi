@@ -1,31 +1,31 @@
 {% extends "SunChoi/base.html" %}
 {% load static %}
-{% block title %} Menu Global {% endblock %} 
+{% block title %} Menu Empleado{% endblock %} 
 
-{%block subtitulo %} Opciones {% endblock %}
+{%block subtitulo %} Menu empleado {% endblock %}
 
 {% block content %} 
-    <div class="row">
-        <div class="col-lg-4 col-sm-6 text-center">
-            <img class="img-circle img-responsive img-center" src="{% static 'img/uno.jpg'  %}" alt="" width="250">
-            <h3><a href="/registrarventa">Registrar Ventas
-            </a></h3>
-        </div>
-        <div class="col-lg-4 col-sm-6 text-center">
-            <img class="img-circle img-responsive img-center" src="{% static 'img/tres.jpg'  %}" alt="" width="300">
-            <h3><a href="/compras">Compras
-            </a></h3>
-        </div>
-        <div class="col-lg-4 col-sm-6 text-center">
-            <img class="img-circle img-responsive img-center" src="{% static 'img/cinco.jpg'  %}" alt="">
-            <h3><a href="/cotizaciones">Cotizaciones
-            </a></h3>
-        </div>
-        <div class="col-lg-4 col-sm-6 text-center">
-            <img class="img-circle img-responsive img-center" src="{% static 'img/seis.jpg'  %}" alt="">
-            <h3><a href="/registrarcliente">Registrar Clientes
-            </a></h3>
-        </div>
-
+<div class="row">
+    <div class="col-lg-3 col-sm-6 text-center">
+        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/uno.jpg'  %}" alt="" width="130" height="100">
+        <h3><a href="/registrarventa">Registrar Ventas
+        </a></h3>
     </div>
+    <div class="col-lg-3 col-sm-6 text-center">
+        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/cinco.jpg'  %}" alt="" width="200" height="150">
+        <h3><a href="/cotizaciones">Cotizaciones</a>
+        </h3>
+    </div>
+    <div class="col-lg-3 col-sm-6 text-center">
+        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/tres.jpg'  %}" alt="" width="150" height="100" >
+        <h3><a href="/compras">Compras
+        </a></h3>
+    </div>
+    <div class="col-lg-3 col-sm-6 text-center">
+        <img class="img-circle img-responsive img-center center-block" src="{% static 'img/cuatro.png'  %}" alt="" width="150" height="100" >
+        <h3><a href="/inventarios">Inventarios
+        </a></h3>
+    </div>
+</div>
+    
 {% endblock %}

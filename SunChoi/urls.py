@@ -10,7 +10,8 @@ urlpatterns = [
     url(r'^$', views.login, name="login"),url(r'^login/$', views.login),
     url(r'^logout/$', views.logout, name="logout"),
     url(r'^nopermitido/$', views.nopermitido, name="nopermitido"),
-    url(r'^menuglobal/$', views.MenuGlobal, name="iniciousuario"),
+    url(r'^menuglobal/$', views.MenuGlobal, name="inicioadmin"),
+     url(r'^menuempleado/$', views.MenuEmpleado, name="inicioempleado"),
 
     #usuarios
     url(r'^usuarios/$', views.Usuarios,name="usuariolista"),
