@@ -1,0 +1,45 @@
+{% extends "SunChoi/base.html" %}
+{% load static %}
+
+{% block title %} Consulta rapida{% endblock %} 
+
+{% block subtitulo %}Consultar lista de producto con stock menor a {{ minimo }}{% endblock %}
+
+{% block content %} 
+
+{% if not lista %}
+    <div class="container">
+        <form class="form-signin" method="GET" >
+            <H1 class="text-center">Consultar lista de producto con stock menor a {{ minimo }}: </H1>
+            {% csrf_token %}
+            <label for="text" class=" text-center sr-only">Ingrese minimo de stock</label>
+            <input type="text" name="minimo"   id="inputEmail" class="form-control text-center" placeholder="minimo stock" >
+            <br/>
+            <button id="consultar" class="btn btn-primary btn-block" type="submit">Consultar</button>
+            <br/>
+            <br/>
+        </form>
+    </div>
+                    
+            
+       
+    </div>
+{% else %}
+    <br/>
+        <div class="container">
+        {% for producto in lista %}
+        <ul> <!-- Producto N  {{ forloop.counter  }} -->
+            <div>
+            <li >Item: <b>{{producto.descripcion}}</b></li>
+            <li>Stock: <b>{{producto.stock}} {{producto.medida}}</b></li>
+            <li>Precio unitario: <b>${{producto.precio_unitario}}</b></li>
+            </div>
+        </ul>
+        <br/>
+        {% empty %}
+            <li>todo los articulos tienen mas de esas cantidad.</li>
+        {% endfor %}
+    </div>
+{% endif %}
+</div>
+{% endblock %}

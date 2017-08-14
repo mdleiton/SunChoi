@@ -18,7 +18,7 @@ def login(request):
                 auth_login(request, user)
                 datosUsuario = Usuario.objects.get(usuario=user)
                 return render(request,'SunChoi/menuGlobal.html',{'usuario': datosUsuario})
-            elif((not user.is_superuser or  not is_staff) and tipologin=="empleado" ):
+            elif((not user.is_superuser or  not user.is_staff) and tipologin=="empleado" ):
                 auth_login(request, user)
                 datosUsuario = Usuario.objects.get(usuario=user)
                 return render(request,'SunChoi/menuempleado.html',{'usuario': datosUsuario})
@@ -137,6 +137,14 @@ def Cotizaciones(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
+def ConsultaRapida(request):
+    if request.GET.get('minimo'):
+        minimo = request.GET['minimo']
+        results = Producto.bajostock(minimo)
+        return render(request,'SunChoi/consultaRapida.html',{'lista':results,"minimo": minimo})
+    else:
+        return render(request,'SunChoi/consultaRapida.html')
+
 #reportes
 def Inventarios(request):
     if (request.user.is_authenticated):
@@ -166,13 +174,7 @@ def RegistrarCliente(request):
 
 
 
-def p(request):
-    if request.GET.get('minimo'):
-        minimo = request.GET['minimo']
-        results = Producto.bajostock(minimo)
-        return render(request,'SunChoi/pruebass.html',{'lista':results,"minimo": minimo})
-    else:
-        return render(request,'SunChoi/pruebass.html')
+
 
 
 
