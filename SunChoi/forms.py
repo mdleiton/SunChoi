@@ -22,6 +22,11 @@ class FacturaForm(forms.ModelForm):
     class Meta:
         model = Factura
         fields = "__all__" 
+    
+class FacturalineaForm(forms.ModelForm):
+    class Meta:
+        model =  Facturalineas
+        fields = "__all__" 
 
 class UsuarioForm(forms.ModelForm):
     username=forms.CharField(max_length=200)
