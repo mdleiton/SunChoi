@@ -1,6 +1,7 @@
 {% extends "SunChoi/base.html" %}
-  {% block content %} 
-<h1>Productos<br/> consultar lista de producto con stock menor a {{ minimo }}</h1>
+
+{% block content %} 
+{% block subtitulo %}consultar lista de producto con stock menor a {{ minimo }}{% endblock %}
 {% if not lista %}
     <form class="form-signin" method="GET" >
                     {% csrf_token %}
@@ -26,4 +27,5 @@
         <li>todo los articulos tienen mas de esas cantidad.</li>
     {% endfor %}
 {% endif %}
+</div>
 {% endblock %}
