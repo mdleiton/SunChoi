@@ -1,0 +1,16 @@
+#search {
+	text-align: right;
+	margin-right: 76px;
+	margin-bottom: 28px;
+}
+
+#inputEmail{
+	width: 20%;
+}
+#consultar, #atras {
+	width: 15%;
+}
+
+#botonesConsulta{
+	text-align: center;
+}
