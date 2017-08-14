@@ -11,11 +11,19 @@ from .models import *
 #vistas generales
 def login(request):
     if (request.method == 'POST'):
+        tipologin=request.POST['tipologin']
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
-            auth_login(request, user)
-            datosUsuario = Usuario.objects.get(usuario=user)
-            return render(request,'SunChoi/menuGlobal.html',{'usuario': datosUsuario})
+            if(user.is_superuser and user.is_staff and tipologin=="admin"):
+                auth_login(request, user)
+                datosUsuario = Usuario.objects.get(usuario=user)
+                return render(request,'SunChoi/menuGlobal.html',{'usuario': datosUsuario})
+            elif((not user.is_superuser or  not is_staff) and tipologin=="empleado" ):
+                auth_login(request, user)
+                datosUsuario = Usuario.objects.get(usuario=user)
+                return render(request,'SunChoi/menuempleado.html',{'usuario': datosUsuario})
+            else:
+                return render_to_response('SunChoi/index.html',{'error':True})
         else:
             return render_to_response('SunChoi/index.html',{'error':True})
     else:

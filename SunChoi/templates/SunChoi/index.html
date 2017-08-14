@@ -80,19 +80,24 @@
                     <br />
                     <label for="inputPassword" class="sr-only">Contraseña</label>
                     <input type="password" name="password" id="inputPassword" class="form-control" placeholder="contrasena" required>
-                    <input type="checkbox" name="checkbox" id="checkboxAdmin">
-                    <label for="checkboxAdmin">Administrador</label>
+                    <div>
+                    <label class="radio-inline">
+                        <input name="tipologin" type="radio" value="admin" checked="checked" >Administrador
+                    </label>
+                    <label class="radio-inline"><input name="tipologin" type="radio" value="empleado" >Empleado</label>
+                    </div>
                     <br/>
-                    <button id="entrar" class="btn btn-primary btn-block" type="submit" style="position:right;">Ingresar</button>
+                    <button id="entrar" class="btn btn-primary btn-block" type="submit" style="position:bottom;">Ingresar</button>
                     <!--<a class="btn btn-primary btn-block" href="/registrarusuario/" style="position:bottom;">Registrar</a> -->
                     <br/>
                     <br/>
+                     {% if error %}
+                        <h2>nombre de usuario o contrasena o tipo usuario incorrectas</h2>
+                    {% endif %}   
                 </form>
                
         {% endif %}  
-        {% if error %}
-            <h2>nombre de usuario o contrasena incorrectas</h2>
-        {% endif %}   
+       
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
