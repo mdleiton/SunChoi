@@ -1,0 +1,4 @@
+INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('COMSUCRE S.A.','JUAN PIO MONTUFAR 109 Y AGUIRRE','2516315','ventas@comsucre.com');
+INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('Dilipa CIA LTDA','Av. 10 de Agosto N52-15 y Cap. Ramon Borja','2418640','información@dilipa.com.ec');
+INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES('0921234567','Allan','Brito Delgado','Debajo de un puente','2691060');
+INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES('0917628304','Isela','Creyo','En la esquina de un parque','2948573');
