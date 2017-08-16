@@ -73,48 +73,67 @@
             </div>
         </div>
         {% else %}
-            <div class="container">
-                <form id="login" class="form-signin" method="POST" >
-                    {% csrf_token %}
-                    <h1 class="form-signin-heading">Iniciar Sesión</h1>
-                    <label for="inputEmail" class="sr-only">Usuario</label>
-                    <input type="text" name="username"   id="inputEmail" class="form-control" placeholder="Usuario" >
-                    <br />
-                    <label for="inputPassword" class="sr-only">Contraseña</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control" placeholder="contrasena" required>
-                    <div>
-                    <label class="radio-inline">
-                        <input name="tipologin" type="radio" value="admin" checked="checked" >Administrador
-                    </label>
-                    <label class="radio-inline"><input name="tipologin" type="radio" value="empleado" >Empleado</label>
-                    </div>
-                    <br/>
-					<button id="entrar" class="btn btn-primary btn-block" type="submit">Ingresar</button>
-					
-                    <!--<a class="btn btn-primary btn-block" href="/registrarusuario/" style="position:bottom;">Registrar</a> -->
-                    <br/>
-                    <br/>
-                </form>
-        </div>       
+            <!--div class="container"-->
+			<form id="login" class="form-signin" method="POST" >
+				{% csrf_token %}
+				<h1 class="form-signin-heading">Iniciar Sesión</h1>
+				<label for="inputEmail" class="sr-only">Usuario</label>
+				<input type="text" name="username"   id="inputEmail" class="form-control" placeholder="Usuario" >
+				<br />
+				<label for="inputPassword" class="sr-only">Contraseña</label>
+				<input type="password" name="password" id="inputPassword" class="form-control" placeholder="contrasena" required>
+				<div>
+				<label class="radio-inline">
+					<input name="tipologin" type="radio" value="admin" checked="checked" >Administrador
+				</label>
+				<label class="radio-inline"><input name="tipologin" type="radio" value="empleado" >Empleado</label>
+				</div>
+				<br/>
+				<button id="entrar" class="btn btn-primary btn-block" type="submit">Ingresar</button>
+
+				<!--<a class="btn btn-primary btn-block" href="/registrarusuario/" style="position:bottom;">Registrar</a> -->
+				<br/>
+				<br/>
+			</form>
+       		<!--/div-->       
         {% endif %} 
         {% if error %}
-            <div class="modal fade" id="mostrarmodal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-               <div class="modal-dialog">
+			<!-- Modal>
+			<div id="mostrarmodal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+				<!-- Modal content>
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Inicio Sesión</h4>
+				  </div>
+				  <div class="modal-body">
+					<p>nombre de usuario o contrasena o tipo usuario incorrectas.</p>
+				  </div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				  </div>
+				</div>
+
+			  </div>
+			</div>
+			<-->
+            <div class="modal fade" id="mostrarmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                      <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h3>Inicio Sesión</h3>
+                    	<button type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
+                        <h3 class="modal-title" id="myModalLabel">Inicio Sesión</h3>
+                	</div>
+                 	<div class="modal-body">
+                      	<h4>nombre de usuario o contrasena o tipo usuario incorrectas</h4>   
+                 	</div>
+                 	<div class="modal-footer">
+                    	<a href="/" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
+                 	</div>
                  </div>
-                     <div class="modal-body">
-                        <h4>nombre de usuario o contrasena o tipo usuario incorrectas</h4>   
-                 </div>
-                     <div class="modal-footer">
-                    <a href="/" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
-                 </div>
-                  </div>
                </div>
             </div>
-            <h2></h2>
         {% endif %}    
        
     
@@ -125,13 +144,14 @@
     <script>
     $('.carousel').carousel({
         interval: 5000 //changes the speed
-    })
+    });
     </script>
     <script>
     $(document).ready(function(){
         $("#mostrarmodal").modal("show");
-            });
+		$(".modal-dialog").attr("style","height: 378px; z-index: 2;")
+		$(".modal-backdrop").attr("style","height: 378px; z-index: 1;")
+    });
     </script>
-
     </body>
 </html>        

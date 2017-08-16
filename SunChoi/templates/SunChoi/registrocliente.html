@@ -2,10 +2,11 @@
 {% load static %}
 
 {% block title %} Registrar Cliente{% endblock %} 
+{% block extra-style %}
+<link href="{% static 'css/formulario.css'  %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %} 
-<br/><br/>
-
 <div class="container">
     <form class="form-signin" action="{% url 'SunChoi:clienteadd' %}" method="post">
         <H1 class="text-center">Registrar Cliente </H1>
@@ -14,9 +15,11 @@
                 {{mjs|capfirst}}
             {% endif %}
         </div>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input class="btn btn-primary btn-block" type="submit" value="Añadir Cliente" />
-`</form>
+		<div id="formulario">
+			{% csrf_token %}
+			{{ form.as_p }}
+		</div>
+        <center><input class="btn btn-primary" type="submit" value="Añadir Cliente" /></center>
+	</form>
 </div>
 {% endblock %}

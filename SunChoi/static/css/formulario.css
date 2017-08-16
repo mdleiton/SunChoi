@@ -1,0 +1,15 @@
+#formulario {
+	text-align: center;
+}
+
+#formulario p label{
+	position: absolute;
+	left: 40%;
+	margin-top: 8px;
+}
+
+#formulario p input{
+	position: sticky;
+	left: 46%;
+
+}
