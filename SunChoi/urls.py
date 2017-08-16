@@ -36,6 +36,8 @@ urlpatterns = [
     #clientes
     url(r'^registrarcliente/$', views.RegistrarCliente, name="clienteadd"),
 
+    url(r'^F/$', views.F, name="f"),
+
     
     
 ]

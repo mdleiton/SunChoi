@@ -1,0 +1,122 @@
+{% extends "SunChoi/base.html" %}
+{% load static %}
+
+{% block title %} Compras{% endblock %} 
+
+{% block subtitulo %}Consultar lista de producto con stock menor a {{ minimo }}{% endblock %}
+
+{% block content %} 
+	<div class="col-xs-6">
+		<h1><a href=" "><img class="img-circle img-responsive img-right right-block" alt="" src="{% static 'img/logo.jpg'  %}" width="120" height="70" /></a></h1>
+	</div>
+	<div class="col-xs-6 text-right">
+		<h1>FACTURA</h1>
+		<h1><small>Factura #001</small></h1>
+	</div>
+	<div class="row">
+		<div class="col-xs-5">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4>De: <input name="idCliente" placeholder="ingrese id Cliente"/></h4>
+				</div>
+				<div class="panel-body">Dirección cliente falta</div>
+			</div>
+		</div>
+		<div class="col-xs-5 col-xs-offset-2 text-right">
+			<div class="panel panel-default">
+			<div class="panel-heading">
+				<h4>vendedor: <input name="idVendedor" placeholder="vendedor"/></h4>
+			</div>
+			<div class="panel-body">detalles vendedor falta</div>
+			</div>
+		</div>
+	</div>
+	<table class="table table-bordered">
+		<thead>
+			<tr>
+				<th><h4>Artículo</h4></th>
+				<th><h4>Descripción</h4></th>
+				<th><h4>Cantidad</h4></th>
+				<th><h4>Precio Unitario</h4></th>
+				<th><h4>Sub-Total</h4></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input name="" placeholder="productonn"/></td>
+				<td><label name="" >cantidadn </label></td>
+				<td class=" text-right "><label name="" >cantidadn </label></td>
+				<td class=" text-right "><label name="" >precio un </label></td>
+				<td class=" text-right "><label name="" >subtotaln </label></td>
+			</tr>
+			<tr>
+				<td><input name="" placeholder="productonn"/></td>
+				<td><label name="" >cantidadn </label></td>
+				<td class=" text-right "><label name="" >cantidadn </label></td>
+				<td class=" text-right "><label name="" >precio un </label></td>
+				<td class=" text-right "><label name="" >subtotaln </label></td>
+			</tr>
+			<tr>
+				<td><input name="" placeholder="productonn"/></td>
+				<td><label name="" >cantidadn </label></td>
+				<td class=" text-right "><label name="" >cantidadn </label></td>
+				<td class=" text-right "><label name="" >precio un </label></td>
+				<td class=" text-right "><label name="" >subtotaln </label></td>
+			</tr>
+		</tbody>
+	</table>
+	Sección Totales
+	<div class="row text-right">
+		<div class="col-xs-3 col-xs-offset-7">
+			<strong>
+				Sub Total:<BR/>
+				Impuestos (IVA 21%):<BR/>
+				Total:<BR/>
+			</strong>
+		</div>
+		<div class="col-xs-2">
+			<strong>
+				1,200.00 $<BR/>
+				252.00 $<BR/>
+				1,452.00 $<BR/>
+			</strong>
+		</div>
+	</div>
+	Sección detalles de pago
+	Sección siguiente
+	<div class="row">
+		<div class = "col-xs-5">datos bancarios</div>
+		<div class="col-xs-7">datos de contacto</div>
+	</div>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4>Datos bancarios</h4>
+		</div>
+		<div class="panel-body">
+		 Su nombre
+		 Nombre del banco
+		 SWIFT: -------
+		 Número de cuenta: 12345678
+		 IBAN: ------
+		</div>
+	</div>
+	<div class="span7">
+		<div class="panel panel-info">
+		<div class="panel-heading">
+			<h4> Datos de contacto </h4>
+			<div class=" panel-body ">
+				 Email: usted@ejemplo.com
+				 Móvil: +92123456789
+				 Twitter: <a href="https://twitter.com/suTwitter">@suTwitter</a> |Suweb: <a href="http://www.suweb.com/author/usted"> http: //www. suweb.com/author/usted / </a>
+				<h4><small> El pago debe ser por transferencia bancaria </small></h4>
+			</div>
+			</div>
+		</div>
+	</div>
+	<style>@import url(http://fonts.googleapis.com/css?family=Bree+Serif);
+  body, h1, h2, h3, h4, h5, h6{
+    font-family: 'Bree Serif', serif;
+  }
+  </style>
+          
+{% endblock %}

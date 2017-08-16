@@ -177,7 +177,8 @@ def RegistrarCliente(request):
 
 
 
-
+def F(request):
+    return render_to_response('SunChoi/Factura.html')
 
 
 

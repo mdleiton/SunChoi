@@ -94,14 +94,30 @@
                     <!--<a class="btn btn-primary btn-block" href="/registrarusuario/" style="position:bottom;">Registrar</a> -->
                     <br/>
                     <br/>
-                     {% if error %}
-                        <h2>nombre de usuario o contrasena o tipo usuario incorrectas</h2>
-                    {% endif %}   
                 </form>
-               
-        {% endif %}  
+        </div>       
+        {% endif %} 
+        {% if error %}
+            <div class="modal fade" id="mostrarmodal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+               <div class="modal-dialog">
+                  <div class="modal-content">
+                     <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h3>Inicio Sesión</h3>
+                 </div>
+                     <div class="modal-body">
+                        <h4>nombre de usuario o contrasena o tipo usuario incorrectas</h4>   
+                 </div>
+                     <div class="modal-footer">
+                    <a href="/" data-dismiss="modal" class="btn btn-danger">Cerrar</a>
+                 </div>
+                  </div>
+               </div>
+            </div>
+            <h2></h2>
+        {% endif %}    
        
-    </div>
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
@@ -111,7 +127,11 @@
         interval: 5000 //changes the speed
     })
     </script>
-
+    <script>
+    $(document).ready(function(){
+        $("#mostrarmodal").modal("show");
+            });
+    </script>
 
     </body>
 </html>        
