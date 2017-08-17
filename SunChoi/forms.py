@@ -41,11 +41,16 @@ class UsuarioForm(forms.ModelForm):
             'telefono',
             'correo',
         ]
+     
 
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente
-        fields = "__all__" 
+        fields = "__all__"
+        labels = {
+            'dni' : 'CI/RUC',
+            'nombre' : 'Nombre'
+        } 
 
 class ProductoForm(forms.ModelForm):
     class Meta:

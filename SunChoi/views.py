@@ -159,6 +159,10 @@ def Inventarios(request):
 def RegistrarCliente(request):
     if (request.user.is_authenticated):
         if request.method == 'POST': 
+            ruc=int(request.method['dni'])
+            nombre=request.method['nombre']
+            print(ruc)
+            print(nombre)
             #validar que dni sea unico
             form = ClienteForm(request.POST) 
             if form.is_valid():
