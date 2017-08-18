@@ -23,11 +23,11 @@ def login(request):
                 datosUsuario = Usuario.objects.get(usuario=user)
                 return render(request,'SunChoi/menuempleado.html',{'usuario': datosUsuario})
             else:
-                return render_to_response('SunChoi/index.html',{'error':True})
+                return render(request,'SunChoi/index.html',{'error':True})
         else:
-            return render_to_response('SunChoi/index.html',{'error':True})
+            return render(request,'SunChoi/index.html',{'error':True})
     else:
-        return render(request,'SunChoi/index.html')
+        return render(request,'SunChoi/index.html',{'error':False})
 
 def logout(request):
     auth_logout(request)
@@ -104,7 +104,7 @@ def RegistrarProducto(request):
     #proveedores
 def Proveedores(request):     
     if (request.user.is_authenticated):
-        return render(request,'SunChoi/proveedores.html')
+        return render(request,'SunChoi/proveedores.html',{'mjsexitoso': "puede ingresar mas proveedores"})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
@@ -143,8 +143,11 @@ def Cotizaciones(request):
 def ConsultaRapida(request):
     if request.GET.get('minimo'):
         minimo = request.GET['minimo']
-        results = Producto.bajostock(minimo)
-        return render(request,'SunChoi/consultaRapida.html',{'lista':results,"minimo": minimo})
+        if minimo.isdigit():
+            results = Producto.bajostock(minimo)
+            return render(request,'SunChoi/consultaRapida.html',{'lista':results,"minimo": minimo})
+        else:
+            return render(request,'SunChoi/consultaRapida.html',{"minimo": minimo,"error": "debe ingresar un numero valido por favor"})
     else:
         return render(request,'SunChoi/consultaRapida.html')
 

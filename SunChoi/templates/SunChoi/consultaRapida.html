@@ -10,20 +10,26 @@
 {% if not lista %}
     <div class="container">
         <form  class="form-signin" method="GET" >
-            <H1 class="text-center">Consultar lista de producto con stock menor a {{ minimo }}: </H1>
-            {% csrf_token %}
-            <label for="text" class=" text-center sr-only">Ingrese maximo de stock</label>
-            <input type="text" name="minimo"   id="inputEmail" class="form-control text-center center-block" placeholder="minimo stock" >
-            <br/>
-			<button id="consultar" class="btn btn-primary btn-block center-block" type="submit">Consultar</button>
-			<!--div id="botonesConsulta" class="row">
-				<a id="atras" type="button" href="/menuglobal" class="col-md-6 btn btn-primary center-block" >Menu Global</a>
-				<div class="col-md-1"></div>
-				<button id="consultar" class="btn btn-primary btn-block col-md-6 center-block" type="submit">Consultar</button>
-			</div-->
-            <br/>
-            <br/>
-        </form>
+        	{% if error %} 
+        		<H1 class="text-center">Consultar lista de producto con stock menor a : </H1>
+        		<H1 class="text-center"> {{error}}</H1>
+        	{% else %}
+            	<H1 class="text-center">Consultar lista de producto con stock menor a {{ minimo }}: </H1>
+            	{% csrf_token %}
+	        	<label for="text" class=" text-center sr-only">Ingrese maximo de stock</label>
+	            <input type="text" name="minimo"   id="inputEmail" class="form-control text-center center-block" placeholder="minimo stock" >
+	            <br/>
+				<button id="consultar" class="btn btn-primary btn-block center-block" type="submit">Consultar</button>
+				<!--div id="botonesConsulta" class="row">
+					<a id="atras" type="button" href="/menuglobal" class="col-md-6 btn btn-primary center-block" >Menu Global</a>
+					<div class="col-md-1"></div>
+					<button id="consultar" class="btn btn-primary btn-block col-md-6 center-block" type="submit">Consultar</button>
+				</div-->
+	            <br/>
+	            <br/>
+	        </form>
+        	{% endif %}
+            
     </div>
     <div class="row">
       <img class=" img-responsive img-center center-block" src="{% static 'img/REPORTE.png'  %}" alt="" width="500" height="300">              

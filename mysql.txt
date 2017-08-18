@@ -26,5 +26,5 @@ python manage.py migrate
 python manage.py createsuperuser
 
 ejecutar script en mysql 
-mysql -u root -p  SunChoi < ejecutable1.sql
+mysql -u root -p  SunChoi < sqlf/ejecutable1.sql
 //contrasena 				detodo
