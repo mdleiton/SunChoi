@@ -98,6 +98,13 @@ class Cliente(models.Model):
 	direccion = models.CharField(max_length=200)
 	telefono = models.CharField(max_length=100)
 
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertcliente(dni,nombre,apellidos,direccion,telefono):  
+		cur = connection.cursor()  
+		cur.callproc('insertcliente', [dni,nombre,apellidos,direccion,telefono])  
+		cur.close()
+
 	def __str__(self):
 		return self.nombre
 	def getNombre(self):
@@ -357,7 +364,7 @@ class Comprobantepago(models.Model):
 		return self.saldo_pendiente
 
 class Usuario(models.Model):
-	id_usuario=models.AutoField(primary_key=True)
+	dni=models.IntegerField(primary_key=True)
 	usuario = models.OneToOneField(User)
 	nombre=models.CharField(max_length=200)
 	apellido=models.CharField(max_length=200)
@@ -368,8 +375,8 @@ class Usuario(models.Model):
 	def __str__(self): 
 		return self.usuario.username
 
-	def setId_usuario(self, idUsuario):
-		self.id_usuario=idUsuario
+	def setDni(self, idUsuario):
+		self.dni=idUsuario
 
 	def setNombre(self,nombre):
 		self.nombre=nombre
@@ -383,8 +390,8 @@ class Usuario(models.Model):
 	def setTelefono(self,telefono):
 		self.telefono=telefono
 
-	def getId_usuario(self):
-		return self.id_usuario
+	def getDni(self):
+		return self.dni
 
 	def getNombre(self):
 		return self.nombre

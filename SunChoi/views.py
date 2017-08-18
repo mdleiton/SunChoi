@@ -159,27 +159,22 @@ def Inventarios(request):
 def RegistrarCliente(request):
     if (request.user.is_authenticated):
         if request.method == 'POST': 
-            ruc=int(request.method['dni'])
-            nombre=request.method['nombre']
-            print(ruc)
-            print(nombre)
-            #validar que dni sea unico
             form = ClienteForm(request.POST) 
             if form.is_valid():
-                nuevo_cliente = form.save() 
-                form=ClienteForm()
-                return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
+                #aun no lo guarda entonces se puede validar
+                nc=form.save(commit=False)
+                try:
+                    Cliente.insertcliente(nc.dni,nc.nombre,nc.apellidos,nc.direccion,nc.telefono)
+                    form=ClienteForm()
+                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
+                except ValueError:
+                    form=ClienteForm()
+                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "xcdv"})
         else:
             form = ClienteForm()
         return render(request, 'SunChoi/registrocliente.html', {'form': form})
     else:
         return render_to_response('SunChoi/nopermitido.html')
-
-
-
-
-
-
 
 def F(request):
     return render_to_response('SunChoi/Factura.html')
