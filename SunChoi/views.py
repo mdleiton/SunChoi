@@ -179,6 +179,15 @@ def RegistrarCliente(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
+def VistaCliente(request):
+    if request.user.is_authenticated:
+            form = ClienteForm() 
+            return render(request, 'SunChoi/vistacliente.html', {'form': form})
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
+
+
+
 def F(request):
     return render_to_response('SunChoi/Factura.html')
 
