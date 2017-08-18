@@ -67,6 +67,7 @@ def RegistrarUsuario(request):
             telefono=request.POST['telefono']
             contrasena=request.POST['contrasena']
             correo=request.POST['correo']
+            tipologin=request.POST['tipouser']
             userrepetido=User.objects.filter(username=usuario)
             if userrepetido:
                 return render(request,'SunChoi/registrarEmpleados.html',{'error':True})
@@ -147,7 +148,7 @@ def ConsultaRapida(request):
             results = Producto.bajostock(minimo)
             return render(request,'SunChoi/consultaRapida.html',{'lista':results,"minimo": minimo})
         else:
-            return render(request,'SunChoi/consultaRapida.html',{"minimo": minimo,"error": "debe ingresar un numero valido por favor"})
+            return render(request,'SunChoi/consultaRapida.html',{"minimo": minimo,"error": "debe ingresar un número válido por favor. Intente de nuevo"})
     else:
         return render(request,'SunChoi/consultaRapida.html')
 

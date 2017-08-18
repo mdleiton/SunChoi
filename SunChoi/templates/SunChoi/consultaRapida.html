@@ -13,6 +13,8 @@
         	{% if error %} 
         		<H1 class="text-center">Consultar lista de producto con stock menor a : </H1>
         		<H1 class="text-center"> {{error}}</H1>
+        		<button id="consultar" href="/bajostock/" class="btn btn-primary btn-block center-block" type="submit">Nuevo Consulta</button>
+        		<br/><br/>
         	{% else %}
             	<H1 class="text-center">Consultar lista de producto con stock menor a {{ minimo }}: </H1>
             	{% csrf_token %}

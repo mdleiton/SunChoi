@@ -2,33 +2,34 @@
 {% load static %}
 {% block title %} Registro Usuario {% endblock %} 
 
-{%block subtitulo %} Registro Usuario{% endblock %}
-
+{% block extra-style %}
+<link href="{% static 'css/formulario.css'  %}" rel="stylesheet">
+{% endblock %}
 {% block content %} 
- <div class="container">
-        <form class="form-signin" method="POST" action="{% url 'SunChoi:useradd' %}">
-            <H1 class="text-center">Registro Usuario</H1>
-
-        {% csrf_token %}
-        {{form.as_p}}
-        <br/>
-        <div>
+<div class="container">
+    <form class="form-signin" action="{% url 'SunChoi:useradd' %}" method="post">
+        <H1 class="text-center">Registro de Usuario </H1>
+        <div class="text-center" >
+            {% if mjs %}
+                {{mjs|capfirst}}
+            {% endif %}
+        </div>
+        <div id="formulario">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <div class="center-block text-center">
             <label class="radio-inline">
-                <input name="tipologin" type="radio" value="admin" checked="checked" >Administrador
+                <input name="tipouser" type="radio" value="admin" checked="checked" >Administrador
             </label>
             <label class="radio-inline">
-                <input name="tipologin" type="radio" value="empleado" >Empleado</label>
+                <input name="tipouser" type="radio" value="empleado" >Empleado</label>
         </div>
         <br/><br/>
-        <input class="btn btn-primary btn-block" type="submit" value="Registrarse">
+        <center><input class="btn btn-primary" type="submit" value="Añadir Cliente" /></center>
         {% if error %}
             <h2>Nombre de usuario ya existe porfavor ingrese nuevo usuario</h2>
         {% endif %} 
     </form>
-</div>          
-
-    <br />
-    <br />
-
-
+</div>
 {% endblock %}

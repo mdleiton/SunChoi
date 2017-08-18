@@ -17,7 +17,6 @@ class UserForm(forms.ModelForm):
             'password' : 'Contraseña'
         }
 
-
 class FacturaForm(forms.ModelForm):
     class Meta:
         model = Factura
@@ -30,18 +29,10 @@ class FacturalineaForm(forms.ModelForm):
         #exclude = ['id_factura', ]
 
 class UsuarioForm(forms.ModelForm):
-    username=forms.CharField(max_length=200)
     contrasena=forms.CharField(max_length=200)
     class Meta:
         model = Usuario
-        fields = [
-            'nombre',
-            'apellido',
-            'direccion',
-            'telefono',
-            'correo',
-        ]
-     
+        fields = "__all__" 
 
 class ClienteForm(forms.ModelForm):
     class Meta:
