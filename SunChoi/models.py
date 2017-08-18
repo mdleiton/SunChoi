@@ -11,7 +11,7 @@ class Proveedores(models.Model):
 	email = models.EmailField(max_length=200, null=True)
 
 	def __str__(self):
-		return self.nombre
+		return self.razon_social
 	def setId_proveedor(self,id_proveedor):
 		self.id_proveedor=id_proveedor
 	def setRazon_social(self,razon_social):

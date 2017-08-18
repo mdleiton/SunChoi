@@ -10,6 +10,11 @@ class ClienteAdmin(admin.ModelAdmin):
 	list_filter=("apellidos",)
 	#search_fields=("name": "nametable_atributo")
 
+class ProductoAdmin(admin.ModelAdmin):
+	list_display=('id_producto','nombre','descripcion','precio_unitario','medida','stock','proveedor')
+	list_filter=("proveedor__razon_social","stock",)
+	search_fields=("nombre" ,"descripcion",)
+
 admin.site.register(Proveedores)
 admin.site.register(Usuariorol)
 admin.site.register(Roles)
@@ -19,7 +24,7 @@ admin.site.register(Usuario)
 admin.site.register(Factura)
 admin.site.register(Facturalineas)
 admin.site.register(Ordencompralineas)
-admin.site.register(Producto)
+admin.site.register(Producto,ProductoAdmin)
 admin.site.register(Cliente,ClienteAdmin)
 admin.site.register(Proforma)
 admin.site.register(ProformaLineas)
