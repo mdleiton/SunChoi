@@ -123,54 +123,58 @@
 		</div>
 	</div>
 	<div id="botonesFactura" >
-		<button >Guardar</button><button>Cancelar</button>
+		<form id="fomFactura">
+			<button type="submit" >Guardar</button><button>Cancelar</button>
+		</form>
 	</div>
 </div>
 <script>
-	//var nLinea = 0;
+	var nLinea = 0;
 	function agregarLinea(){
-		var nLinea = 0;
+		//var nLinea = 0;
 		
 		var tr = document.createElement("TR");
 		tr.setAttribute("id",nLinea);
 		
+		var idFormFactura = "fomFactura";
 		var div = document.createElement("DIV");
 		var idDiv = "divLinea"+nLinea;
 		div.setAttribute("id",idDiv);
 		var button = document.createElement("BUTTON");
 		
+		
 		var td = document.createElement("TD");
 		var input = document.createElement("INPUT");
-		//input.setAttribute("form",idDiv);
+		input.setAttribute("form",idFormFactura);
 		td.appendChild(input);
 		tr.appendChild(td);
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idDiv);
+		input.setAttribute("form",idFormFactura);
 		td = document.createElement("TD");
 		td.appendChild(input);
 		tr.appendChild(td);
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idDiv);
+		input.setAttribute("form",idFormFactura);
 		td = document.createElement("TD");
 		td.appendChild(input);
 		tr.appendChild(td);
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idDiv);
+		input.setAttribute("form",idFormFactura);
 		td = document.createElement("TD");
 		td.appendChild(input);
 		tr.appendChild(td);
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idDiv);
+		input.setAttribute("form",idFormFactura);
 		td = document.createElement("TD");
 		td.appendChild(input);
 		tr.appendChild(td);
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idDiv);
+		input.setAttribute("form",idFormFactura);
 		td = document.createElement("TD");
 		td.appendChild(input);
 		tr.appendChild(td);
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idDiv);
+		input.setAttribute("form",idFormFactura);
 		td = document.createElement("TD");
 		td.appendChild(input);
 		tr.appendChild(td);
