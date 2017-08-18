@@ -31,7 +31,7 @@ def login(request):
 
 def logout(request):
     auth_logout(request)
-    return render_to_response('SunChoi/logout.html')
+    return render(request,'SunChoi/logout.html')
 
 def nopermitido(request):
     return render_to_response('SunChoi/nopermitido.html')
@@ -57,36 +57,43 @@ def Usuarios(request):
         return render_to_response('SunChoi/nopermitido.html')
 
 def RegistrarUsuario(request):
-    if request.method == 'POST': 
-        form = UsuarioForm(request.POST) 
-        if form.is_valid():
-            nombre = request.POST['nombre']
-            usuario = request.POST['username']
-            apellido = request.POST['apellido']
-            direccion=request.POST['direccion']
-            telefono=request.POST['telefono']
-            contrasena=request.POST['contrasena']
-            correo=request.POST['correo']
-            tipologin=request.POST['tipouser']
-            userrepetido=User.objects.filter(username=usuario)
-            if userrepetido:
-                return render(request,'SunChoi/registrarEmpleados.html',{'error':True})
-            else:
-                is_superuser=1 #con atributo is_superuser=1 para acceder a admin web 
-                is_staff=1     # para poder acceder a menu global
-                if(is_superuser==1 or is_staff==1):
-                    user=User.objects.create_user(username=usuario, is_superuser=is_superuser,email=correo, password=contrasena,is_staff=is_staff)
-                    Usuario.objects.create(nombre=nombre,usuario=user,apellido=apellido,direccion=direccion,
-                        telefono=telefono,correo=correo) 
-                    datosUsuario = Usuario.objects.get(usuario=user)
-                    users = authenticate(username=usuario, password=contrasena)
-                    auth_login(request, users)
-                    return render(request,'SunChoi/menuGlobal.html',{'usuario': datosUsuario})
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        if request.method == 'POST':
+            tipouser=request.POST['tipouser'] 
+            form = UsuarioForm(request.POST) 
+            if form.is_valid():
+                nombre = request.POST['nombre']
+                usuario = request.POST['username']
+                apellido = request.POST['apellido']
+                direccion=request.POST['direccion']
+                telefono=request.POST['telefono']
+                contrasena=request.POST['contrasena']
+                correo=request.POST['correo']
+                tipologin=request.POST['tipouser']
+                if tipouser=="admin":
+                    is_superuser=1 #con atributo is_superuser=1 para acceder a admin web 
+                    is_staff=1     # para poder acceder a menu global
                 else:
-                    return render(request,'SunChoi/index.html')
+                    is_superuser=0 #con atributo is_superuser=1 para acceder a admin web 
+                    is_staff=0     # para poder acceder a menu global
+                user=User.objects.create_user(username=usuario, is_superuser=is_superuser,email=correo, password=contrasena,is_staff=is_staff)
+                Usuario.objects.create(nombre=nombre,usuario=user,apellido=apellido,direccion=direccion,
+                    telefono=telefono,correo=correo) 
+                datosUsuario = Usuario.objects.get(usuario=user)
+                users = authenticate(username=usuario, password=contrasena)
+                auth_login(request, users)
+                if tipouser=="admin":
+                    return render(request,'SunChoi/menuGlobal.html')
+                else:
+                    return render(request,'SunChoi/menuempleado.html')
+            else:
+                form=UsuarioForm()
+                return render(request,'SunChoi/registrarEmpleados.html',{'form': form, 'error':"no lleno correctamente la información"})
+        else:
+            form = UsuarioForm()    
+            return render(request,'SunChoi/registrarEmpleados.html',{'form': form})
     else:
-        form = UsuarioForm()    
-    return render(request,'SunChoi/registrarEmpleados.html',{'form': form})
+        return render(request,'SunChoi/nopermitido.html')
 
     #productos
 def RegistrarProducto(request):

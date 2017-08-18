@@ -26,13 +26,14 @@ class FacturalineaForm(forms.ModelForm):
     class Meta:
         model =  Facturalineas
         fields = "__all__" 
-        #exclude = ['id_factura', ]
+        
 
 class UsuarioForm(forms.ModelForm):
     contrasena=forms.CharField(max_length=200)
     class Meta:
         model = Usuario
         fields = "__all__" 
+        exclude = ['usuario',]
 
 class ClienteForm(forms.ModelForm):
     class Meta:

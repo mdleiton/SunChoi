@@ -9,8 +9,8 @@
     <form class="form-signin" action="{% url 'SunChoi:clienteadd' %}" method="post">
         <H1 class="text-center">Registrar Proveedores </H1>
         <div class="text-center" >
-            {% if mjs %}
-                {{mjs|capfirst}}
+            {% if mjsexitoso %}
+                {{mjsexitoso|capfirst}}
             {% endif %}
         </div>
         <div id="formulario">
