@@ -1,0 +1,71 @@
+#cabecera, #datosPrincipales, #datosSecundarios, #comentarios, #datosComprador{
+	margin: 10px; 
+	border: solid;
+	border-radius: 5px;
+	border-width: 1px;
+}
+
+#detalle {
+	max-width: 1140px;
+}
+
+#totalesTabla{
+	max-width: 360px;
+}
+
+td input{
+    width: 100%;
+
+}
+
+
+#datosComprador{	
+	padding-bottom: 10px;
+}
+#cabecera{
+	border-width: 2px;
+}
+#formaDePago, #totales{
+	margin: 0px;
+	border-color: #d5d5d5;
+	border-radius:0px;
+}
+#contenidoCabecera2{
+	margin-top:10px;
+}
+#contenidoComentariosTexto, #contenidoComentariosLeyenda, #contenidoCabecera, #contenidoFormaDePago, #contenidoDatosComprador, #contenidoDatosSecundarios{
+	margin:10px;
+}
+#comentarios{
+	margin-left:10px;
+	margin-right:-10px;
+	height: 172px;
+	margin-top: 0px;
+}
+#comentarioInput{
+	width: -webkit-fill-available;
+    height: -webkit-fill-available;
+    text-align: -webkit-center;
+	border: indianred;
+}
+
+#contenidoComentariosTexto{
+	margin-top:10px;
+	height: 123px;
+}
+#contenidoComentariosLeyenda{
+	text-align: center;
+}
+
+
+content{
+    font-size: 2vw;
+}
+
+#botonesFactura {
+	text-align: right;
+}
+
+#botonesFacturaLineas {
+	margin-bottom: 20px;
+}
