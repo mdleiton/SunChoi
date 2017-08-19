@@ -21,10 +21,13 @@ urlpatterns = [
     url(r'^verusuarios/$', views.VerUsuarios,name="usuariolista"),   #falta presentar y probar
     url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),  #falta probar
 
-    #productos
+    # CRUD productos
     url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),  # falta probar
-    url(r'^listaproductos/$', views.ProductoListView.as_view(), name='producto-list'),  # falta presentar
-    
+    url(r'^listaproductos/$', views.Producto_lista, name='producto_lista'),
+    url(r'^editarproducto/(?P<pk>\d+)$', views.Producto_editar, name='producto_editar'),
+    url(r'^eliminarproducto/(?P<pk>\d+)$', views.Producto_eliminar, name='producto_eliminar'),
+
+
     #proveedores
     url(r'^registrarproveedor/$',views.RegistrarProveedor,name="provadd"),
     

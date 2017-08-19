@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render,redirect,render_to_response
+from django.shortcuts import render,redirect,render_to_response,get_object_or_404
 from django.http import HttpResponse,HttpResponseRedirect
-from django.views.generic import TemplateView,FormView,ListView
+from django.views.generic import TemplateView,FormView,ListView,UpdateView
 from .forms import *
 from django.contrib.auth import login as auth_login,logout as auth_logout,authenticate
 from django.contrib.auth.models import User
@@ -99,21 +99,38 @@ def RegistrarProducto(request):
                 try:
                     Producto.insertproducto(np.id_producto,nc.nombre,nc.descripcion,nc.precio_unitario,nc.medida,nc.stock,np.proveedor.id_proveedor)
                     form=ProductoForm()
-                    return render(request, 'SunChoi/registrarProducto.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
+                    return render(request, 'SunChoi/producto_registrar.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
                 except ValueError:
                     form= ProductoForm()
-                    return render(request,'SunChoi/registrarProducto.html',{'form': form,'error': "ocurrio un problema al intentar registrar"})   
+                    return render(request,'SunChoi/producto_registrar.html',{'form': form,'error': "ocurrio un problema al intentar registrar"})   
             else:
                 form= ProductoForm()
-                return render(request,'SunChoi/registrarProducto.html',{'form': form,'error': "contenido del formulario incorrecto"})   
+                return render(request,'SunChoi/producto_registrar.html',{'form': form,'error': "contenido del formulario incorrecto"})   
         else:
             form = ProductoForm()
-            return render(request,'SunChoi/registrarProducto.html', {'form': form})
+            return render(request,'SunChoi/producto_registrar.html', {'form': form})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
-class ProductoListView(ListView):
-    model = Producto
+def Producto_lista(request):
+    productos = Producto.objects.all()
+    return render(request,'SunChoi/producto_lista.html',{'object_list': productos, 'eliminar': False})
+
+def Producto_editar(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    form = ProductoForm(request.POST or None, instance=producto)
+    if form.is_valid():
+        form.save()
+        return redirect('SunChoi:producto_lista')
+    return render(request, 'SunChoi/producto_form.html', {'form':form})
+
+def Producto_eliminar(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)    
+    productos = Producto.objects.all()
+    return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'object':producto, 'eliminar': True})
+
+
+
 #proveedores
 def RegistrarProveedor(request):     
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):

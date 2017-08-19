@@ -4,7 +4,6 @@ from django.contrib.auth.forms import User
 from django.db import models
 from SunChoi.models import *
 
-
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
@@ -27,7 +26,6 @@ class FacturalineaForm(forms.ModelForm):
         model =  Facturalineas
         fields = "__all__" 
         
-
 class UsuarioForm(forms.ModelForm):
     username=forms.CharField(max_length=200)
     contrasena=forms.CharField(max_length=200)

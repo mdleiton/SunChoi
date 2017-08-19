@@ -1,0 +1,27 @@
+{% extends "SunChoi/base.html" %}
+{% load static %}
+{% block title %} Editar Productos{% endblock %} 
+{% block extra-style %}
+<link href="{% static 'css/formulario.css'  %}" rel="stylesheet">
+{% endblock %}
+{% block content %} 
+<div class="container">
+    <form class="form-signin" method="post">
+        <H1 class="text-center">Registro de Producto </H1>
+        <div class="text-center" >
+            {% if mjs %}
+                {{mjs|capfirst}}
+            {% endif %}
+        </div>	
+        <div id="formulario">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <br/><br/>
+        <center><input class="btn btn-primary" type="submit" value="Actualizar datos" /></center>
+        {% if error %}
+            <h2>{{error }}</h2>
+        {% endif %} 
+    </form>
+</div>
+{% endblock %}
