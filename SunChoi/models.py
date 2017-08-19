@@ -12,14 +12,12 @@ class Proveedores(models.Model):
 
 	def __str__(self):
 		return self.razon_social
-	
 	#llamada a procedimiento almacenado
 	@staticmethod  
 	def insertproveedores(razon_social,direccion,telefono,email):  
 		cur = connection.cursor()  
 		cur.callproc('insertproveedores', [razon_social,direccion,telefono,email])  
 		cur.close()
-
 	def setId_proveedor(self,id_proveedor):
 		self.id_proveedor=id_proveedor
 	def setRazon_social(self,razon_social):
@@ -61,15 +59,12 @@ class Producto(models.Model):
 		results = cur.fetchall() 
 		cur.close()
 		return [Producto (*row) for row in results]  
-	
-
 	#llamada a procedimiento almacenado
 	@staticmethod  
 	def insertproducto(nombre,descripcion,precio_unitario,medida,stock,proveedor):  
 		cur = connection.cursor()  
 		cur.callproc('insertproducto', [nombre,descripcion,precio_unitario,medida,stock,proveedor])  
 		cur.close()
-
 
 	def setId_producto(self,idProducto):
 		self.id_producto=idProducto
@@ -123,6 +118,7 @@ class Cliente(models.Model):
 
 	def __str__(self):
 		return self.nombre
+
 	def getNombre(self):
 		return self.nombre
 	def setNombre(self,nombre):
@@ -186,7 +182,6 @@ class OrdenCompra(models.Model):
 	def setEstado(self,estado):
 		self.estado=estado
 	
-	
 class ProformaLineas(models.Model):
 	id_proforma_linea = models.AutoField(primary_key=True)	
 	id_proforma = models.ForeignKey('Proforma')
@@ -195,8 +190,15 @@ class ProformaLineas(models.Model):
 	unidad = models.CharField(max_length=200)
 	total_proforma_linea = models.FloatField()
 
+	@staticmethod  
+	def insertproformalineas(id_proforma,id_producto,cantidad,unidad,total_proforma_linea):  
+		cur = connection.cursor()  
+		cur.callproc('insertproformalineas', [id_proforma,id_producto,cantidad,unidad,total_proforma_linea])  
+		cur.close()
+
 	def __str__(self):
 		return self.id_proforma_linea
+
 	def getId_proforma_linea(self):
 		return self.id_proforma_linea
 	def setId_proforma_linea(self,id_proforma_linea):
@@ -228,8 +230,16 @@ class Proforma(models.Model):
 	id_usuario = models.ForeignKey('Usuario')
 	fecha_emision = models.DateTimeField(default=timezone.now)
 	fecha_caducidad = models.DateTimeField()
+	
 	def __str__(self):
 		return self.id_proforma
+
+	@staticmethod  
+	def insertproforma(id_cliente,id_usuario,fecha_emision,fecha_caducidad):  
+		cur = connection.cursor()  
+		cur.callproc('insertproforma', [id_cliente,id_usuario,fecha_emision,fecha_caducidad])  
+		cur.close()
+
 	def getId_proforma(self):
 		return self.id_proforma
 	def setId_proforma(self,id_proforma):
@@ -255,6 +265,9 @@ class Usuariorol(models.Model):
 	id_usuario_rol=models.AutoField(primary_key=True)
 	id_usuario=models.ForeignKey('Usuario')
 	id_rol=models.ForeignKey('Roles')
+
+	def __str__(self):
+		return self.id_usuario_rol
 
 	#llamada a procedimiento almacenado
 	@staticmethod  
@@ -285,6 +298,9 @@ class Roles(models.Model):
 	id_rol=models.AutoField(primary_key=True)
 	rol=models.CharField(max_length=200)
 	descripcion=models.CharField(max_length=200)
+	
+	def __str__(self):
+		return self.rol
 
 	def setId_rol(self, id_rol):
 		self.id_rol=id_rol
@@ -312,6 +328,16 @@ class Solicitudesdiferido(models.Model):
 	estado=models.CharField(max_length=200)
 	id_usuario_aprobacion=models.ForeignKey('Usuario')
 	
+	def __str__(self):
+		return self.id_solicitud_diferido
+
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertsolicitudesdiferido(id_factura,id_usuario_solicitante,fecha,estado,id_usuario_aprobacion):  
+		cur = connection.cursor()  
+		cur.callproc('insertsolicitudesdiferido', [id_factura,id_usuario_solicitante,fecha,estado,id_usuario_aprobacion])  
+		cur.close()
+
 	def setId_solicitud_diferido(self,id_solicitud_diferido):
 		self.id_solicitud_diferido=id_solicitud_diferido
 
@@ -355,6 +381,16 @@ class Comprobantepago(models.Model):
 	valor_adeudado=models.FloatField()
 	valor_pagado=models.FloatField()
 	saldo_pendiente=models.FloatField()
+
+	def __str__(self):
+		return self.id_comprobante_pago
+
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertcomprobantepago(fecha,id_factura,valor_adeudado,valor_pagado,saldo_pendiente):  
+		cur = connection.cursor()  
+		cur.callproc('insertcomprobantepago', [fecha,id_factura,valor_adeudado,valor_pagado,saldo_pendiente])  
+		cur.close()
 
 	def setId_comprobante_pago(self, idComprobantePago):
 		self.idComprobantePago=idComprobantePago
@@ -408,7 +444,6 @@ class Usuario(models.Model):
 		cur.callproc('insertusuario', [dni,usuario,nombre,apellido,direccion,telefono,correo])  
 		cur.close()
 
-
 	def __str__(self): 
 		return self.usuario.username
 
@@ -449,6 +484,16 @@ class Factura(models.Model):
 	fecha=models.DateTimeField(default=timezone.now)
 	id_cliente=models.ForeignKey('Cliente')
 	id_usuario=models.ForeignKey('Usuario')
+
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertfactura(numero,estado,fecha,id_cliente,id_usuario):  
+		cur = connection.cursor()  
+		cur.callproc('insertfactura', [numero,estado,fecha,id_cliente,id_usuario])  
+		cur.close()
+
+	def __str__(self): 
+		return self.id_factura
 
 	def setId_factura(self,idFactura):
 		self.id_factura=idFactura
@@ -493,6 +538,16 @@ class Facturalineas(models.Model):
 	cantidad = models.FloatField()
 	total_factura_linea = models.FloatField()
 
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertfacturalineas(id_factura,id_producto,cantidad,total_factura_linea):  
+		cur = connection.cursor()  
+		cur.callproc('insertfacturalineas', [id_factura.id_producto,cantidad,total_factura_linea])  
+		cur.close()
+
+	def __str__(self): 
+		return self.id_factura_linea
+
 	def setId_factura_linea(self,idFacturaLinea):
 		self.id_factura_linea=idFacturaLinea
 
@@ -530,6 +585,16 @@ class Ordencompralineas(models.Model):
 	cantidad = models.FloatField()
 	unidad = models.CharField(max_length=200)
 	total_orden_compra_linea = models.FloatField()
+
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertordencompralineas(id_orden_compra,id_producto,cantidad,unidad,total_orden_compra_linea):  
+		cur = connection.cursor()  
+		cur.callproc('insertordencompralineas', [id_orden_compra.id_producto,cantidad,unidad,total_orden_compra_linea])  
+		cur.close()
+
+	def __str__(self): 
+		return self.id_orden_compra_linea
 
 	def setId_orden_compra_linea(self,idOrdenCompraLinea):
 		self.id_orden_compra_linea=idOrdenCompraLinea
