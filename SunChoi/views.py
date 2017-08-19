@@ -112,6 +112,8 @@ def RegistrarProducto(request):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
+class ProductoListView(ListView):
+    model = Producto
 #proveedores
 def RegistrarProveedor(request):     
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
@@ -221,5 +223,3 @@ def VistaCliente(request):
         return render_to_response('SunChoi/nopermitido.html')
 
 
-class ProductoListView(ListView):
-    model = Producto

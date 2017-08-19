@@ -1,21 +1,78 @@
 {% extends "SunChoi/base.html" %}
-  {% block content %}
-<h1>Productos</h1>
+{% load static %}
 
-{% for producto in object_list %}
-<ul> Producto N  {{ forloop.counter  }}
-	
-	<br/>
-    <li>{{ producto.nombre }}</li>
-    <li>{{ producto.descripcion}}</li>
-    <li>{{ producto.precio_unitario }}</li>
-    <li>{{ producto.medida }}</li>
-    <li>{{ producto.stock }}</li>
-    <li>{{ producto.fecha_vencimiento }}</li>
-</ul>
-<br/>
-{% empty %}
-    <li>No articles yet.</li>
-{% endfor %}
+{% block title %} Lista de producto{% endblock %} 
+{% block extra-style %}
+<link href="{% static 'css/consultaRapida.css'  %}" rel="stylesheet">
+{% endblock %}
 
+{% block content %}
+<div class="row">
+  <div class="col-md-7 col-sm-7 ">
+        <h3 class="bock-center text-center">Productos</h3>    
+  </div>
+  <div id="search" class="col-md-4 col-sm-4 container-fluid">
+    <div class="bock-center text-center">
+      <a type="button" href="/listproductos" class="col-md-4 btn btn-primary block-center">Buscar</a>
+      <input class="col-md-8 block-center" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
+    </div>
+  </div>
+    </div>
+<div class="container">
+  <table id="productos" class="table table-striped">
+    <thead class="text-center">
+      <tr>
+        <th>N°</th>
+        <th>NOMBRE </th>
+        <th>DESCRIPCION</th>
+        <th>STOCK</th>
+        <th>P. UNITARIO</th>
+        <th>EDITAR</th>
+        <th>ELIMINAR</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for producto in object_list %}
+      <tr>
+        <td> {{ forloop.counter  }}</td>
+        <td>{{ producto.nombre }}</td>
+        <td>{{producto.descripcion}}</td>
+        <td>{{producto.stock}} {{producto.medida}}</td>
+        <td>${{producto.precio_unitario}}</td>
+        <td><a class="btn btn-primary" href="/editarproducto/?num={{forloop.counter}}" value="Editar Producto" class="btn btn-primary"  >editar</a></td>
+       <td><a class="btn btn-primary" href="/eliminarproducto/?num={{forloop.counter}}" value="Editar Producto" class="btn btn-primary"  >Eliminar</a></td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td>todo los articulos tienen mas de esas cantidad.</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+
+
+<script>
+function myFunction(){
+  var input, filter, table, tr, td1,td2,td3, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("productos");
+  tr = table.getElementsByTagName("tr");
+  
+  for (i=0;i<tr.length;i++){
+    td1 = tr[i].getElementsByTagName("td")[1];
+    td2 = tr[i].getElementsByTagName("td")[2];
+    td3 = tr[i].getElementsByTagName("td")[3];
+    if(td1 || td2 || td3){
+      if(td1.innerHTML.toUpperCase().indexOf(filter)>-1 || td2.innerHTML.toUpperCase().indexOf(filter)>-1 ||td3.innerHTML.toUpperCase().indexOf(filter)>-1){
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
   {% endblock %}
