@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^listaproductos/$', views.ProductoListView.as_view(), name='producto-list'),  # falta presentar
     
     #proveedores
-    url(r'^proveedores/$',views.Proveedores,name="prov"),
+    url(r'^registrarproveedor/$',views.RegistrarProveedor,name="provadd"),
     
     #operaciones
     url(r'^cotizaciones/$', views.Cotizaciones,name="cot"),
@@ -37,9 +37,4 @@ urlpatterns = [
     #reportes
     url(r'^inventarios/$', views.Inventarios,name="inv"),
 
-    
-    url(r'^F/$', views.F, name="f"),
-
-    
-    
 ]

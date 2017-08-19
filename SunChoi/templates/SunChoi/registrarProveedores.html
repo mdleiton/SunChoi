@@ -1,12 +1,15 @@
-{% load static %}
 {% extends "SunChoi/base.html" %}
 {% load static %}
 
 {% block title %} Proveedores{% endblock %} 
 
+{% block extra-style %}
+<link href="{% static 'css/formulario.css'  %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %} 
 <div class="container">
-    <form class="form-signin" action="{% url 'SunChoi:clienteadd' %}" method="post">
+    <form class="form-signin" action="{% url 'SunChoi:provadd' %}" method="post">
         <H1 class="text-center">Registrar Proveedores </H1>
         <div class="text-center" >
             {% if mjsexitoso %}
@@ -17,7 +20,10 @@
             {% csrf_token %}
             {{ form.as_p }}
         </div>
-        <center><input class="btn btn-primary" type="submit" value="Añadir Cliente" /></center>
+        <center><input class="btn btn-primary" type="submit" value="Añadir Proveedor" /></center>
+        {% if error %}
+            <h2>{{error }}</h2>
+        {% endif %} 
     </form>
 </div>
 {% endblock %}

@@ -20,6 +20,9 @@
 			{{ form.as_p }}
 		</div>
         <center><input class="btn btn-primary" type="submit" value="Añadir Cliente" /></center>
+        {% if error %}
+            <h2>{{error }}</h2>
+        {% endif %} 
 	</form>
 </div>
 {% endblock %}

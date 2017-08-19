@@ -91,33 +91,49 @@ def RegistrarUsuario(request):
 
     #productos
 def RegistrarProducto(request):
-    if (request.user.is_authenticated):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         if request.method == 'POST': 
             form = ProductoForm(request.POST) 
             if form.is_valid():
                 np=form.save(commit=False)
                 try:
                     Producto.insertproducto(np.id_producto,nc.nombre,nc.descripcion,nc.precio_unitario,nc.medida,nc.stock,np.proveedor.id_proveedor)
-                    form=ClienteForm()
-                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
+                    form=ProductoForm()
+                    return render(request, 'SunChoi/registrarProducto.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
                 except ValueError:
-                    nueva_producto= ProductoForm()
-                    return render(request,'SunChoi/registrarProducto.html',{'error': "ocurrio un problema al intentar registrar"})   
+                    form= ProductoForm()
+                    return render(request,'SunChoi/registrarProducto.html',{'form': form,'error': "ocurrio un problema al intentar registrar"})   
             else:
-                nueva_producto= ProductoForm()
-                return render(request,'SunChoi/registrarProducto.html',{'error': "contenido del formulario incorrecto"})   
+                form= ProductoForm()
+                return render(request,'SunChoi/registrarProducto.html',{'form': form,'error': "contenido del formulario incorrecto"})   
         else:
             form = ProductoForm()
             return render(request,'SunChoi/registrarProducto.html', {'form': form})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
-    #proveedores
-def Proveedores(request):     
-    if (request.user.is_authenticated):
-        return render(request,'SunChoi/proveedores.html',{'mjsexitoso': "puede ingresar mas proveedores"})
+#proveedores
+def RegistrarProveedor(request):     
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        if request.method == 'POST': 
+            form = ProveedorForm(request.POST) 
+            if form.is_valid():
+                np=form.save(commit=False)
+                try:
+                    Producto.insertproveedor(np.razon_social,np.direccion,np.telefono,np.email)
+                    form=ProveedorForm()
+                    return render(request, 'SunChoi/registrarProveedores.html', {'form': form, 'mjsexitoso': "puede ingresar mas proveedores"})
+                except ValueError:
+                    form= ProveedorForm()
+                    return render(request,'SunChoi/registrarProveedores.html',{'form': form,'error': "ocurrio un problema al intentar registrar"})   
+            else:
+                form= ProveedorForm()
+                return render(request,'SunChoi/registrarProveedores.html',{'form': form,'error': "contenido del formulario incorrecto"})   
+        else:
+            form = ProveedorForm()
+            return render(request,'SunChoi/registrarProveedores.html', {'form': form})
     else:
-        return render_to_response('SunChoi/nopermitido.html')
+        return render(request,'SunChoi/nopermitido.html')
 
 #operaciones
 def RegistrarVenta(request):
@@ -183,12 +199,19 @@ def RegistrarCliente(request):
                     return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
                 except ValueError:
                     form=ClienteForm()
-                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "xcdv"})
+                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'error': "xcdv"})
+            else:
+                form= ClienteForm()
+                return render(request,'SunChoi/registrocliente.html',{'form': form,'error': "contenido del formulario incorrecto"})   
+
         else:
             form = ClienteForm()
         return render(request, 'SunChoi/registrocliente.html', {'form': form})
     else:
         return render_to_response('SunChoi/nopermitido.html')
+
+
+
 
 def VistaCliente(request):
     if request.user.is_authenticated:
@@ -196,13 +219,6 @@ def VistaCliente(request):
             return render(request, 'SunChoi/vistacliente.html', {'form': form})
     else:
         return render_to_response('SunChoi/nopermitido.html')
-
-
-
-def F(request):
-    return render_to_response('SunChoi/Factura.html')
-
-
 
 
 class ProductoListView(ListView):

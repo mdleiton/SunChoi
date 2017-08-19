@@ -48,4 +48,9 @@ class ClienteForm(forms.ModelForm):
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
+        fields = "__all__"
+
+class ProveedorForm(forms.ModelForm):
+    class Meta:
+        model = Proveedores
         fields = "__all__" 
