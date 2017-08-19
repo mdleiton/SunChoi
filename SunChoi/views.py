@@ -10,7 +10,7 @@ from .models import *
 
 #vistas generales
 def login(request):
-    if (request.method == 'POST'):
+    if request.method == 'POST':
         tipologin=request.POST['tipologin']
         user = authenticate(username=request.POST['username'], password=request.POST['password'])
         if user is not None:
@@ -23,11 +23,11 @@ def login(request):
                 datosUsuario = Usuario.objects.get(usuario=user)
                 return render(request,'SunChoi/menuempleado.html',{'usuario': datosUsuario})
             else:
-                return render(request,'SunChoi/index.html',{'error':True})
+                return render(request,'SunChoi/index.html',{'error':"incorrecto : nombre de usuario , contraseña o tipo de usuario"})
         else:
-            return render(request,'SunChoi/index.html',{'error':True})
+            return render(request,'SunChoi/index.html',{'error':"formulario de inicio de sesión incorrecto"})
     else:
-        return render(request,'SunChoi/index.html',{'error':False})
+        return render(request,'SunChoi/index.html')
 
 def logout(request):
     auth_logout(request)
@@ -49,8 +49,8 @@ def MenuEmpleado(request):
         return render_to_response('SunChoi/nopermitido.html')
 
 #vistas usuario
-def Usuarios(request):
-    if (request.user.is_authenticated):
+def VerUsuarios(request):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         lista_usuarios = Usuario.objects.all()
         return render(request,'SunChoi/usuarios.html',{'lista_usuarios': lista_usuarios})
     else:

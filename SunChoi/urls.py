@@ -14,7 +14,7 @@ urlpatterns = [
      url(r'^menuempleado/$', views.MenuEmpleado, name="inicioempleado"),
 
     #usuarios
-    url(r'^usuarios/$', views.Usuarios,name="usuariolista"),
+    url(r'^verusuarios/$', views.VerUsuarios,name="usuariolista"),
     url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),
 
     #productos
