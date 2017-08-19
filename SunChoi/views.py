@@ -94,14 +94,23 @@ def RegistrarProducto(request):
     if (request.user.is_authenticated):
         if request.method == 'POST': 
             form = ProductoForm(request.POST) 
-            #valid
             if form.is_valid():
-                nueva_producto= form.save() 
-                return render(request,'SunChoi/menuGlobal.html')
-        form = ProductoForm()
-        return render(request,'SunChoi/registrarProducto.html', {'form': form})
+                np=form.save(commit=False)
+                try:
+                    Producto.insertproducto(np.id_producto,nc.nombre,nc.descripcion,nc.precio_unitario,nc.medida,nc.stock,np.proveedor.id_proveedor)
+                    form=ClienteForm()
+                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
+                except ValueError:
+                    nueva_producto= ProductoForm()
+                    return render(request,'SunChoi/registrarProducto.html',{'error': "ocurrio un problema al intentar registrar"})   
+            else:
+                nueva_producto= ProductoForm()
+                return render(request,'SunChoi/registrarProducto.html',{'error': "contenido del formulario incorrecto"})   
+        else:
+            form = ProductoForm()
+            return render(request,'SunChoi/registrarProducto.html', {'form': form})
     else:
-        return render_to_response('SunChoi/nopermitido.html')
+        return render(request,'SunChoi/nopermitido.html')
 
     #proveedores
 def Proveedores(request):     

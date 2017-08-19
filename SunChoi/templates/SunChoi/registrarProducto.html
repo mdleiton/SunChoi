@@ -1,17 +1,27 @@
 {% extends "SunChoi/base.html" %}
 {% load static %}
 {% block title %} Registrar Producto{% endblock %} 
-{% block content %} 
-    <div class="container">
-        <form class="form-signin" method="POST" action="{% url 'SunChoi:productadd' %}">
-            <H1 class="text-center"> Registrar Producto </H1>
-            {% csrf_token %}
-            {{form.as_p}}
-            <input class="btn btn-primary btn-block" type="submit" value="Registrar producto">
-            {% if error %}
-                <h2>Nombre de usuario ya existe porfavor ingrese nuevo usuario</h2>
-            {% endif %} 
-        </form>
-    </div>  
+{% block extra-style %}
+<link href="{% static 'css/formulario.css'  %}" rel="stylesheet">
 {% endblock %}
- 
+{% block content %} 
+<div class="container">
+    <form class="form-signin" action="{% url 'SunChoi:productadd' %}" method="post">
+        <H1 class="text-center">Registro de Producto </H1>
+        <div class="text-center" >
+            {% if mjs %}
+                {{mjs|capfirst}}
+            {% endif %}
+        </div>
+        <div id="formulario">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+        <br/><br/>
+        <center><input class="btn btn-primary" type="submit" value="Añadir producto" /></center>
+        {% if error %}
+            <h2>{{error }}</h2>
+        {% endif %} 
+    </form>
+</div>
+{% endblock %}
