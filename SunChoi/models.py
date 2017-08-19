@@ -12,6 +12,14 @@ class Proveedores(models.Model):
 
 	def __str__(self):
 		return self.razon_social
+	
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertproveedores(razon_social,direccion,telefono,email):  
+		cur = connection.cursor()  
+		cur.callproc('insertproveedores', [razon_social,direccion,telefono,email])  
+		cur.close()
+
 	def setId_proveedor(self,id_proveedor):
 		self.id_proveedor=id_proveedor
 	def setRazon_social(self,razon_social):
@@ -53,7 +61,16 @@ class Producto(models.Model):
 		results = cur.fetchall() 
 		cur.close()
 		return [Producto (*row) for row in results]  
-		
+	
+
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertproducto(nombre,descripcion,precio_unitario,medida,stock,proveedor):  
+		cur = connection.cursor()  
+		cur.callproc('insertproducto', [nombre,descripcion,precio_unitario,medida,stock,proveedor])  
+		cur.close()
+
+
 	def setId_producto(self,idProducto):
 		self.id_producto=idProducto
 
@@ -89,7 +106,6 @@ class Producto(models.Model):
 
 	def getStock(self):
 		return self.stock
-
 
 class Cliente(models.Model):
 	dni = models.IntegerField(primary_key=True)
@@ -138,6 +154,13 @@ class OrdenCompra(models.Model):
 
 	def __str__(self):
 		return self.id_orden_compra
+	
+	@staticmethod  
+	def insertordencompra(numero,fecha,id_usuario,id_proveedor,estado):  
+		cur = connection.cursor()  
+		cur.callproc('insertordencompra', [numero,fecha,id_usuario,id_proveedor,estado])  
+		cur.close()
+
 	def getId_orden_compra(self):
 		return self.id_orden_compra
 	def setId_orden_compra(self,id_orden_compra):
@@ -228,11 +251,17 @@ class Proforma(models.Model):
 	def setFecha_caducidad(self,fecha_caducidad):
 		self.fecha_caducidad=fecha_caducidad
 
-
 class Usuariorol(models.Model):
 	id_usuario_rol=models.AutoField(primary_key=True)
 	id_usuario=models.ForeignKey('Usuario')
 	id_rol=models.ForeignKey('Roles')
+
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertusuariorol(id_usuario_rol,id_usuario,id_rol):  
+		cur = connection.cursor()  
+		cur.callproc('insertusuariorol', [id_usuario_rol,id_usuario,id_rol])  
+		cur.close()
 
 	def setId_usuario_rol(self,id_usuario_rol):
 		self.id_usuario_rol=id_usuario_rol
@@ -371,6 +400,14 @@ class Usuario(models.Model):
 	direccion=models.CharField(max_length=200)
 	telefono=models.CharField(max_length=200)
 	correo=models.EmailField()
+
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertusuario(dni,usuario,nombre,apellido,direccion,telefono,correo):  
+		cur = connection.cursor()  
+		cur.callproc('insertusuario', [dni,usuario,nombre,apellido,direccion,telefono,correo])  
+		cur.close()
+
 
 	def __str__(self): 
 		return self.usuario.username
