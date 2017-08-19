@@ -23,7 +23,7 @@ delimiter ;
 
 DROP PROCEDURE IF EXISTS insertcliente;
 delimiter #
-CREATE PROCEDURE insertcliente(dni int,nombre nvarchar(100),apellidos nvarchar(100),direccion nvarchar(200),telefono nvarchar(100))   
+CREATE PROCEDURE insertcliente(dni nvarchar(13),nombre nvarchar(100),apellidos nvarchar(100),direccion nvarchar(200),telefono nvarchar(100))   
 proc_main: BEGIN  
     INSERT INTO SunChoi_cliente VALUES(dni,nombre,apellidos,direccion,telefono);
 END proc_main #

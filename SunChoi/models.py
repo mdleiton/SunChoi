@@ -103,7 +103,7 @@ class Producto(models.Model):
 		return self.stock
 
 class Cliente(models.Model):
-	dni = models.IntegerField(primary_key=True)
+	dni = models.CharField(primary_key=True,max_length=13)
 	nombre = models.CharField(max_length=100)
 	apellidos = models.CharField(max_length=100)
 	direccion = models.CharField(max_length=200)
@@ -429,7 +429,7 @@ class Comprobantepago(models.Model):
 		return self.saldo_pendiente
 
 class Usuario(models.Model):
-	dni=models.IntegerField(primary_key=True)
+	dni=models.CharField(primary_key=True,max_length=13)
 	usuario = models.OneToOneField(User)
 	nombre=models.CharField(max_length=200)
 	apellido=models.CharField(max_length=200)

@@ -29,6 +29,7 @@ class FacturalineaForm(forms.ModelForm):
         
 
 class UsuarioForm(forms.ModelForm):
+    username=forms.CharField(max_length=200)
     contrasena=forms.CharField(max_length=200)
     class Meta:
         model = Usuario

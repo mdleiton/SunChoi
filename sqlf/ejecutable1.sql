@@ -1,11 +1,11 @@
 -- Usuario
-INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values(13567,1,'mau','leiton','data de villamil' , '234567','mau_leiton@espol.edu.ec');
+INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13567',1,'mau','leiton','data de villamil' , '234567','mau_leiton@espol.edu.ec');
 -- PROVEEDORES
 INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('COMSUCRE S.A.','JUAN PIO MONTUFAR 109 Y AGUIRRE','2516315','ventas@comsucre.com');
 INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('Dilipa CIA LTDA','Av. 10 de Agosto N52-15 y Cap. Ramon Borja','2418640','información@dilipa.com.ec');
 -- cliente
-INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES(0921234567,'Allan','Brito Delgado','Debajo de un puente','2691060');
-INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES(0917628304,'Isela','Creyo','En la esquina de un parque','2948573');
+INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES('0921234567','Allan','Brito Delgado','Debajo de un puente','2691060');
+INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES('0917628304','Isela','Creyo','En la esquina de un parque','2948573');
 -- productos
 INSERT INTO SunChoi_producto(nombre,descripcion,precio_unitario,medida,stock,proveedor_id) VALUES('ACUARELA','ACUARELA LANCER 12 COLORES',2.5,'UND',5,1);
 INSERT INTO SunChoi_producto(nombre,descripcion,precio_unitario,medida,stock,proveedor_id) VALUES('BOLIGRAFO','BOLIGRAFO BIC CRISTAL NEGRO',0.3,'UND',90,1);

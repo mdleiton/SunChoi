@@ -11,15 +11,19 @@ urlpatterns = [
     url(r'^logout/$', views.logout, name="logout"),
     url(r'^nopermitido/$', views.nopermitido, name="nopermitido"),
     url(r'^menuglobal/$', views.MenuGlobal, name="inicioadmin"),
-     url(r'^menuempleado/$', views.MenuEmpleado, name="inicioempleado"),
+    url(r'^menuempleado/$', views.MenuEmpleado, name="inicioempleado"),
+
+    #clientes
+    url(r'^registrarcliente/$', views.RegistrarCliente, name="clienteadd"),
+    url(r'^vistacliente/$', views.VistaCliente, name="clienteview"),    # falta probar y presentar
 
     #usuarios
-    url(r'^verusuarios/$', views.VerUsuarios,name="usuariolista"),
-    url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),
+    url(r'^verusuarios/$', views.VerUsuarios,name="usuariolista"),   #falta presentar y probar
+    url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),  #falta probar
 
     #productos
-    url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),
-    url(r'^listaproductos/$', views.ProductoListView.as_view(), name='producto-list'),
+    url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),  # falta probar
+    url(r'^listaproductos/$', views.ProductoListView.as_view(), name='producto-list'),  # falta presentar
     
     #proveedores
     url(r'^proveedores/$',views.Proveedores,name="prov"),
@@ -33,10 +37,7 @@ urlpatterns = [
     #reportes
     url(r'^inventarios/$', views.Inventarios,name="inv"),
 
-    #clientes
-    url(r'^registrarcliente/$', views.RegistrarCliente, name="clienteadd"),
-    url(r'^vistacliente/$', views.VistaCliente, name="clienteview"),
-
+    
     url(r'^F/$', views.F, name="f"),
 
     

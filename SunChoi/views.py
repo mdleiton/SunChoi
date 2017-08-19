@@ -52,7 +52,7 @@ def MenuEmpleado(request):
 def VerUsuarios(request):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         lista_usuarios = Usuario.objects.all()
-        return render(request,'SunChoi/usuarios.html',{'lista_usuarios': lista_usuarios})
+        return render(request,'SunChoi/listarusuarios.html',{'lista_usuarios': lista_usuarios})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
@@ -62,26 +62,20 @@ def RegistrarUsuario(request):
             tipouser=request.POST['tipouser'] 
             form = UsuarioForm(request.POST) 
             if form.is_valid():
-                nombre = request.POST['nombre']
-                usuario = request.POST['username']
-                apellido = request.POST['apellido']
-                direccion=request.POST['direccion']
-                telefono=request.POST['telefono']
-                contrasena=request.POST['contrasena']
-                correo=request.POST['correo']
                 tipologin=request.POST['tipouser']
                 if tipouser=="admin":
                     is_superuser=1 #con atributo is_superuser=1 para acceder a admin web 
                     is_staff=1     # para poder acceder a menu global
                 else:
                     is_superuser=0 #con atributo is_superuser=1 para acceder a admin web 
-                    is_staff=0     # para poder acceder a menu global
-                user=User.objects.create_user(username=usuario, is_superuser=is_superuser,email=correo, password=contrasena,is_staff=is_staff)
-                Usuario.objects.create(nombre=nombre,usuario=user,apellido=apellido,direccion=direccion,
-                    telefono=telefono,correo=correo) 
+                    is_staff=0 
+                user=User.objects.create_user(username=request.POST['username'], is_active=1,is_superuser=is_superuser,email=request.POST['correo'], password=request.POST['contrasena'],is_staff=is_staff)
+                Usuario.insertusuario(request.POST['dni'],user.id,request.POST['nombre'],request.POST['apellido'],request.POST['direccion'],request.POST['telefono'],request.POST['correo'])
                 datosUsuario = Usuario.objects.get(usuario=user)
-                users = authenticate(username=usuario, password=contrasena)
+                users = authenticate(username=request.POST['username'], password=request.POST['contrasena'])
                 auth_login(request, users)
+                idroles=Roles.objects.filter(rol__contains=tipouser)[0].id
+                Usuariorol.insertusuariorol(request.POST['dni'],id_roles)
                 if tipouser=="admin":
                     return render(request,'SunChoi/menuGlobal.html')
                 else:
