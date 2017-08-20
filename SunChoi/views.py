@@ -82,6 +82,33 @@ def RegistrarUsuario(request):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
+def Usuario_lista(request):
+    usuarios = Usuario.objects.all()
+    return render(request,'SunChoi/usuario_lista.html',{'object_list': usuarios,'tipo_objeto':"usuario"})
+
+def Usuario_editar(request, item):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        usuario = get_object_or_404(Usuario, pk=item)
+        form = UsuariosListForm(request.POST or None, instance=usuario)
+        if form.is_valid():
+            form.save()
+            return redirect('SunChoi:usuario_lista')
+        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"usuario"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
+def Usuario_eliminar(request, item):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        usuario = get_object_or_404(Usuario, pk=item)    
+        usuarios = Usuario.objects.all()
+        if request.method=='POST':
+            usuario.delete()
+            return redirect('SunChoi:usuario_lista')
+        return render(request,'SunChoi/usuario_lista.html',{'object_list': usuarios,'object':usuario, 'eliminar': 'True','tipo_objeto':"usuario"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
+
 #CRUD productos
 def RegistrarProducto(request):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):

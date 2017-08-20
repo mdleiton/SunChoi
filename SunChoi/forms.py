@@ -34,6 +34,11 @@ class UsuarioForm(forms.ModelForm):
         fields = "__all__" 
         exclude = ['usuario',]
 
+class UsuariosListForm(forms.ModelForm):
+    class Meta:
+        model = Usuario
+        fields = "__all__"
+
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Cliente

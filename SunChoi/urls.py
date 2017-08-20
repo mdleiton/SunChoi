@@ -19,8 +19,11 @@ urlpatterns = [
     url(r'^editarcliente/(?P<item>\d+)$', views.Cliente_editar, name='cliente_editar'),
     url(r'^eliminarcliente/(?P<item>\d+)$', views.Cliente_eliminar, name='cliente_eliminar'),
 
-    #usuarios
+    #CRUD usuarios
     url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),  #falta probar
+    url(r'^listausuarios/$', views.Usuario_lista, name='usuario_lista'),
+    url(r'^editarusuario/(?P<item>\d+)$', views.Usuario_editar, name='usuario_editar'),
+    url(r'^eliminarusuario/(?P<item>\d+)$', views.Usuario_eliminar, name='usuario_eliminar'),
 
     # CRUD productos
     url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),  # falta probar
