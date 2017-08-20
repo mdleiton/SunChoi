@@ -5,16 +5,6 @@
 <link href="{% static 'css/registrarVenta.css'  %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
-    <!--div class="container">
-         <H1 class="text-center"> Registrar Venta </H1>
-        <form  class="form-signin" action="{% url 'SunChoi:padd' %}" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-              {{ form1.as_p }}
-             {{ form2.as_p }}
-            <input class="btn btn-primary btn-block" type="submit" value="Añadir Factura" />
-        </form>
-        </div-->
 <div class="container" id="factura">
     <div id="cabecera">
 		<div class="row" id="contenidoCabecera">
@@ -29,7 +19,7 @@
 			</div>
 			<div id="FacturaNumero"class="col-md-4">
 				<h2>Factura No.</h2>
-				<h3>026-022-000103973</h3>
+				<h3><input  placeholder="026-022-000103973" name="facturaN" form="formFactura" required></h3>
 			</div>
 		</div>			
 	</div>
@@ -51,12 +41,20 @@
 	<div id="datosComprador" class="row">
 		<div id = "contenidoDatosComprador">
 			<div id="RasonSocial" class="col-md-6">
-				<label>Razon social / Nombre: </label>
-				<input  placeholder="Razon social / Nombre" form="formFactura">
+				<label>Razon social / Nombre Cliente: </label>
+					<input type="text" list="items" name="nombrecliente" form="formFactura">
+						<datalist id="items">
+						  	{% for c in clientes %}
+						    <option value="{{c.nombre}}:{{c.apellido}}:{{c.dni}}">{{c.nombre}}:{{c.apellido}}</option>
+						    {% empty %}
+						    <option value="0">No hay clientes</option>
+						    {% endfor %}
+						</datalist>
+
 			</div>
 			<div id="DNI" class="col-md-6">
 				<label>Ruc / CI: </label>
-				<input  placeholder="Ruc/CI" form="formFactura">
+				<input  placeholder="Ruc/CI" name="dnicliente" form="formFactura">
 			</div>
 		</div>
 	</div>
@@ -91,6 +89,19 @@
 				</div>
 				<div id="contenidoComentariosLeyenda">					
 					Comentarios
+
+					  <input type="text" list="items">
+						  <!-- Lista de opciones de producto -->
+						  <datalist class='col-md-6' id="items">
+						  	{% for p in productos %}
+						    <option value="{{p.nombre}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.descripcion}}:{{p.stock}}</option>
+						    {% empty %}
+						    <option value="0">No hay productos</option>
+						    {% endfor %}
+						  </datalist>
+
+
+
 				</div>
 			</div>
 		</div>
@@ -124,7 +135,7 @@
 		</div>
 	</div>
 	<div id="botonesFactura" >
-		<form id="formFactura">
+		<form id="formFactura" action="{% url 'SunChoi:ventaadd' %}">
 			<button type="submit" >Guardar</button><button>Cancelar</button>
 		</form>
 	</div>
@@ -141,21 +152,26 @@
 		var div = document.createElement("DIV");
 		var idDiv = "divLinea"+nLinea;
 		div.setAttribute("id",idDiv);
+
+		div.setAttribute("form",idFormFactura);  
+		
 		var button = document.createElement("BUTTON");
 		
 		//cantidad
 		var td = document.createElement("TD");
 		var input = document.createElement("INPUT");
-		//input.setAttribute("form",idFormFactura);
+		input.setAttribute("form",idFormFactura);
 		input.setAttribute("id","cantidad"+nLinea);
+		input.setAttribute("name","cantidad"+nLinea);
 		input.setAttribute("style","width: 62px;");
 		input.setAttribute("onkeyup","totalLinea("+nLinea+")");
 		td.appendChild(input);
 		tr.appendChild(td);
 		//descripcion
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idFormFactura);
+		input.setAttribute("form",idFormFactura);
 		input.setAttribute("id","descripcion"+nLinea);
+		input.setAttribute("name","descripcion"+nLinea);
 		input.setAttribute("style","width: 500px;");
 		td = document.createElement("TD");
 		td.appendChild(input);
@@ -164,6 +180,7 @@
 		input = document.createElement("INPUT");
 		//input.setAttribute("form",idFormFactura);
 		input.setAttribute("id","unidades"+nLinea);
+		input.setAttribute("name","unidades"+nLinea);
 		input.setAttribute("style","width: 70px;");
 		input.value = 0;
 		//input.setAttribute("onkeyup","totalLinea("+nLinea+")");
@@ -264,9 +281,11 @@
 			if(indice<celdas.length-1){
 				valorInput = $(this.children).val();
 				valorId = $(this.children).attr("id");
+				valorname = $(this.children).attr("name");
 				$(this.children).remove();
 				$(this).text(valorInput);
 				$(this).attr("id",valorId);
+				$(this).attr("name",valorname);
 				$(this).attr("form","formFactura"+id);
 				if(indice == 7) this.setAttribute("class","totalLinea");
 			}

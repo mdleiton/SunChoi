@@ -130,7 +130,7 @@ def Producto_lista(request):
         return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'tipo_objeto':"producto"})
     else:
         return render(request,'SunChoi/nopermitido.html')
-        
+
 def Producto_editar(request, item):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         producto = get_object_or_404(Producto, pk=item)
@@ -282,25 +282,27 @@ def ConsultaRapida(request):
         return render_to_response('SunChoi/nopermitido.html')
 
 
-
-
-
 def RegistrarVenta(request):
-    if (request.user.is_authenticated):
-        if request.method == 'POST': 
-            form = FacturaForm(request.POST) 
-            form1 = FacturalineaForm(request.POST) 
-            form2 = FacturalineaForm(request.POST) 
-            #valid
-            if form.is_valid() and form1.is_valid() and form2.is_valid():
-                nueva_factura = form.save() 
-                detalle_factura1 = form1.save() 
-                detalle_factura2 = form2.save() 
-                return render(request,'SunChoi/menuGlobal.html')
-        form = FacturaForm()
-        form1=FacturalineaForm() 
-        form2=FacturalineaForm() 
-        return render(request,'SunChoi/registrarVenta.html', {'form': form, 'form1': form1,'form2': form2})
+    if request.user.is_authenticated:
+        if request.GET.get('nombrecliente'):
+            dnicliente=request.GET.get('dnicliente')
+            nombrecliente=request.GET.get('nombrecliente')  
+            idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
+            numero=request.GET.get('facturaN')
+            estado=""
+            print(request.GET.get('cantidad0')) 
+            #nose que es estado
+            #fecha no deberia ser enviado por defecto fecha actual
+            #idfactura=Factura.insertfactura(numero,estado,dnicliente,idusuario)
+            #Facturalineas.insertfacturalineas(id_factura,id_producto,cantidad,total_factura_linea)  
+        
+
+            return render(request,'SunChoi/registrarVenta.html')
+        else:
+            #enviarle la informacion de compania
+            clientes=Cliente.objects.all()
+            productos = Producto.objects.all()            
+            return render(request,'SunChoi/registrarVenta.html', {'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 

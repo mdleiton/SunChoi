@@ -42,8 +42,8 @@ urlpatterns = [
 
     #operaciones
     url(r'^bajostock/$', views.ConsultaRapida, name='consulta_rapida'),
-    
-    url(r'^registrarventa/$', views.RegistrarVenta,name="padd"),
+
+    url(r'^registrarventa/$', views.RegistrarVenta,name="ventaadd"),
     url(r'^cotizaciones/$', views.Cotizaciones,name="cot"),
     url(r'^compras/$', views.Compras,name="compras"),
     
