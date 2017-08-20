@@ -122,7 +122,7 @@ def Producto_editar(request, pk):
     if form.is_valid():
         form.save()
         return redirect('SunChoi:producto_lista')
-    return render(request, 'SunChoi/producto_form.html', {'form':form})
+    return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"producto"})
 
 def Producto_eliminar(request, pk):
     producto = get_object_or_404(Producto, pk=pk)    

@@ -26,6 +26,7 @@
       {% csrf_token %}
       Esta seguro que desea eliminar "{{ object }}" ?
       <input type="submit" value="Eliminar" />
+      <a class="btn btn-primary" href="/listaproductos/">cancelar</a>
     </form>
 </div>
 {% endif %}
