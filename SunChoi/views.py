@@ -114,7 +114,7 @@ def RegistrarProducto(request):
 
 def Producto_lista(request):
     productos = Producto.objects.all()
-    return render(request,'SunChoi/producto_lista.html',{'object_list': productos, 'eliminar': False})
+    return render(request,'SunChoi/producto_lista.html',{'object_list': productos})
 
 def Producto_editar(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
@@ -127,7 +127,10 @@ def Producto_editar(request, pk):
 def Producto_eliminar(request, pk):
     producto = get_object_or_404(Producto, pk=pk)    
     productos = Producto.objects.all()
-    return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'object':producto, 'eliminar': True})
+    if request.method=='POST':
+        producto.delete()
+        return redirect('SunChoi:producto_lista')
+    return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'object':producto, 'eliminar': 'True'})
 
 
 

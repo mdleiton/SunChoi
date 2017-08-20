@@ -7,27 +7,6 @@
 {% endblock %}
 
 {% block content %}
-{% if eliminar %}
-  <div class="modal fade" id="mostrarmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button href="/login/" type="button" class="close" data-dismiss="modal" aria-label="close"><span aria-hidden="true">&times;</span></button>
-          <h3 class="modal-title" id="myModalLabel">Inicio Sesión</h3>
-        </div>
-        <div class="modal-body">
-            <form method="post">{% csrf_token %}
-                Are you sure you want to delete "{{ object }}" ?
-              <input type="submit" value="Submit" />
-            </form>
-            </div>
-        <div class="modal-footer">
-          <a   data-dismiss="modal" class="btn btn-danger">Cerrar</a>
-        </div>
-      </div>
-    </div>
-  </div>
-{% else%}
 
 <div class="row">
   <div class="col-md-7 col-sm-7 ">
@@ -41,7 +20,15 @@
   </div>
     </div>
 <div class="container">
-
+{% if eliminar %}
+  <div class="alert alert-info">
+    <form method="post">
+      {% csrf_token %}
+      Esta seguro que desea eliminar "{{ object }}" ?
+      <input type="submit" value="Eliminar" />
+    </form>
+</div>
+{% endif %}
   <table id="productos" class="table table-striped">
     <thead class="text-center">
       <tr>
@@ -63,7 +50,7 @@
         <td>{{producto.stock}} {{producto.medida}}</td>
         <td>${{producto.precio_unitario}}</td>
         <td><a class="btn btn-primary" href="{% url 'SunChoi:producto_editar' producto.id_producto %}" value="Editar Producto" class="btn btn-primary"  >editar</a></td>
-       <td><a class="btn btn-primary" href="{% url 'SunChoi:producto_eliminar' producto.id_producto %}" value="Eliminar Producto" class="btn btn-primary"  >Eliminar</a></td>
+       <td><a class="btn btn-primary" href="{% url 'SunChoi:producto_eliminar' producto.id_producto  %}" value="Eliminar Producto" class="btn btn-primary"  >Eliminar</a></td>
       </tr>
     {% empty %}
       <tr>
@@ -73,9 +60,6 @@
     </tbody>
   </table>
 </div>
-
-
-
 <script>
 function myFunction(){
   var input, filter, table, tr, td1,td2,td3, i;
@@ -98,5 +82,5 @@ function myFunction(){
   }
 }
 </script>
-{% endif %}
+
   {% endblock %}
