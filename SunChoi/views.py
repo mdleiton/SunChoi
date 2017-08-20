@@ -48,14 +48,7 @@ def MenuEmpleado(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-#vistas usuario
-def VerUsuarios(request):
-    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
-        lista_usuarios = Usuario.objects.all()
-        return render(request,'SunChoi/listarusuarios.html',{'lista_usuarios': lista_usuarios})
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
+#CRUD usuario
 def RegistrarUsuario(request):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         if request.method == 'POST':
@@ -89,7 +82,7 @@ def RegistrarUsuario(request):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
-    #productos
+#CRUD productos
 def RegistrarProducto(request):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         if request.method == 'POST': 
@@ -116,23 +109,21 @@ def Producto_lista(request):
     productos = Producto.objects.all()
     return render(request,'SunChoi/producto_lista.html',{'object_list': productos})
 
-def Producto_editar(request, pk):
-    producto = get_object_or_404(Producto, pk=pk)
+def Producto_editar(request, item):
+    producto = get_object_or_404(Producto, pk=item)
     form = ProductoForm(request.POST or None, instance=producto)
     if form.is_valid():
         form.save()
         return redirect('SunChoi:producto_lista')
     return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"producto"})
 
-def Producto_eliminar(request, pk):
-    producto = get_object_or_404(Producto, pk=pk)    
+def Producto_eliminar(request, item):
+    producto = get_object_or_404(Producto, pk=item)    
     productos = Producto.objects.all()
     if request.method=='POST':
         producto.delete()
         return redirect('SunChoi:producto_lista')
     return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'object':producto, 'eliminar': 'True'})
-
-
 
 #proveedores
 def RegistrarProveedor(request):     
@@ -207,7 +198,7 @@ def Inventarios(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-#clientes
+# CRUD clientes
 def RegistrarCliente(request):
     if (request.user.is_authenticated):
         if request.method == 'POST': 
@@ -231,15 +222,4 @@ def RegistrarCliente(request):
         return render(request, 'SunChoi/registrocliente.html', {'form': form})
     else:
         return render_to_response('SunChoi/nopermitido.html')
-
-
-
-
-def VistaCliente(request):
-    if request.user.is_authenticated:
-            form = ClienteForm() 
-            return render(request, 'SunChoi/vistacliente.html', {'form': form})
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
 

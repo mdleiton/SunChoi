@@ -15,18 +15,15 @@ urlpatterns = [
 
     #clientes
     url(r'^registrarcliente/$', views.RegistrarCliente, name="clienteadd"),
-    url(r'^vistacliente/$', views.VistaCliente, name="clienteview"),    # falta probar y presentar
 
     #usuarios
-    url(r'^verusuarios/$', views.VerUsuarios,name="usuariolista"),   #falta presentar y probar
     url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),  #falta probar
 
     # CRUD productos
     url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),  # falta probar
     url(r'^listaproductos/$', views.Producto_lista, name='producto_lista'),
-    url(r'^editarproducto/(?P<pk>\d+)$', views.Producto_editar, name='producto_editar'),
-    url(r'^eliminarproducto/(?P<pk>\d+)$', views.Producto_eliminar, name='producto_eliminar'),
-
+    url(r'^editarproducto/(?P<item>\d+)$', views.Producto_editar, name='producto_editar'),
+    url(r'^eliminarproducto/(?P<item>\d+)$', views.Producto_eliminar, name='producto_eliminar'),
 
     #proveedores
     url(r'^registrarproveedor/$',views.RegistrarProveedor,name="provadd"),
