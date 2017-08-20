@@ -37,13 +37,16 @@ urlpatterns = [
     url(r'^editarproveedor/(?P<item>\d+)$', views.Proveedor_editar, name='proveedor_editar'),
     url(r'^eliminarproveedor/(?P<item>\d+)$', views.Proveedor_eliminar, name='proveedor_eliminar'),
     
+    #reportes
+    url(r'^inventario/$', views.Inventario,name="inventario"),
+
     #operaciones
+    url(r'^bajostock/$', views.ConsultaRapida, name='consulta_rapida'),
+    
+    url(r'^registrarventa/$', views.RegistrarVenta,name="padd"),
     url(r'^cotizaciones/$', views.Cotizaciones,name="cot"),
     url(r'^compras/$', views.Compras,name="compras"),
-    url(r'^registrarventa/$', views.RegistrarVenta,name="padd"),
-    url(r'^bajostock/$', views.ConsultaRapida, name='consulta_rapida'),
-
-    #reportes
-    url(r'^inventarios/$', views.Inventarios,name="inv"),
+    
+    
 
 ]

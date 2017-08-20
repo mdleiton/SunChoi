@@ -16,12 +16,10 @@ def login(request):
         if user is not None:
             if(user.is_superuser and user.is_staff and tipologin=="admin"):
                 auth_login(request, user)
-                datosUsuario = Usuario.objects.get(usuario=user)
-                return render(request,'SunChoi/menuGlobal.html',{'usuario': datosUsuario})
+                return render(request,'SunChoi/menuGlobal.html')
             elif((not user.is_superuser or  not user.is_staff) and tipologin=="empleado" ):
                 auth_login(request, user)
-                datosUsuario = Usuario.objects.get(usuario=user)
-                return render(request,'SunChoi/menuempleado.html',{'usuario': datosUsuario})
+                return render(request,'SunChoi/menuempleado.html')
             else:
                 return render(request,'SunChoi/index.html',{'error':"incorrecto : nombre de usuario , contraseña o tipo de usuario"})
         else:
@@ -51,40 +49,35 @@ def MenuEmpleado(request):
 #CRUD usuario
 def RegistrarUsuario(request):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
-        if request.method == 'POST':
-            tipouser=request.POST['tipouser'] 
+        if request.method == 'POST': 
             form = UsuarioForm(request.POST) 
             if form.is_valid():
-                tipologin=request.POST['tipouser']
+                tipouser=request.POST['tipouser']
                 if tipouser=="admin":
                     is_superuser=1 #con atributo is_superuser=1 para acceder a admin web 
-                    is_staff=1     # para poder acceder a menu global
                 else:
-                    is_superuser=0 #con atributo is_superuser=1 para acceder a admin web 
-                    is_staff=0 
-                user=User.objects.create_user(username=request.POST['username'], is_active=1,is_superuser=is_superuser,email=request.POST['correo'], password=request.POST['contrasena'],is_staff=is_staff)
+                    is_superuser=0 #con atributo is_superuser=1 para acceder a admin web
+                user=User.objects.create_user(username=request.POST['username'], is_active=1,is_superuser=is_superuser,email=request.POST['correo'], password=request.POST['contrasena'],is_staff=is_superuser)
                 Usuario.insertusuario(request.POST['dni'],user.id,request.POST['nombre'],request.POST['apellido'],request.POST['direccion'],request.POST['telefono'],request.POST['correo'])
-                datosUsuario = Usuario.objects.get(usuario=user)
-                users = authenticate(username=request.POST['username'], password=request.POST['contrasena'])
-                auth_login(request, users)
                 idroles=Roles.objects.filter(rol__contains=tipouser)[0].id
                 Usuariorol.insertusuariorol(request.POST['dni'],id_roles)
-                if tipouser=="admin":
-                    return render(request,'SunChoi/menuGlobal.html')
-                else:
-                    return render(request,'SunChoi/menuempleado.html')
+                form=UsuarioForm()
+                return render(request,'SunChoi/registrarUsuario.html',{'form': form, 'mjsexitoso':"Se registró correctamente el usuario . Puede ingresar otro usuario"})
             else:
                 form=UsuarioForm()
-                return render(request,'SunChoi/registrarEmpleados.html',{'form': form, 'error':"no lleno correctamente la información"})
+                return render(request,'SunChoi/registrarUsuario.html',{'form': form, 'error':"no lleno correctamente la información"})
         else:
             form = UsuarioForm()    
-            return render(request,'SunChoi/registrarEmpleados.html',{'form': form})
+            return render(request,'SunChoi/registrarUsuario.html',{'form': form})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
 def Usuario_lista(request):
-    usuarios = Usuario.objects.all()
-    return render(request,'SunChoi/usuario_lista.html',{'object_list': usuarios,'tipo_objeto':"usuario"})
+    if request.user.is_authenticated:
+        usuarios = Usuario.objects.all()
+        return render(request,'SunChoi/usuario_lista.html',{'object_list': usuarios,'tipo_objeto':"usuario"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
 
 def Usuario_editar(request, item):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
@@ -107,7 +100,6 @@ def Usuario_eliminar(request, item):
         return render(request,'SunChoi/usuario_lista.html',{'object_list': usuarios,'object':usuario, 'eliminar': 'True','tipo_objeto':"usuario"})
     else:
         return render(request,'SunChoi/nopermitido.html')
-
 
 #CRUD productos
 def RegistrarProducto(request):
@@ -133,9 +125,12 @@ def RegistrarProducto(request):
         return render(request,'SunChoi/nopermitido.html')
 
 def Producto_lista(request):
-    productos = Producto.objects.all()
-    return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'tipo_objeto':"producto"})
-
+    if request.user.is_authenticated:
+        productos = Producto.objects.all()
+        return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'tipo_objeto':"producto"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+        
 def Producto_editar(request, item):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         producto = get_object_or_404(Producto, pk=item)
@@ -176,7 +171,6 @@ def RegistrarCliente(request):
             else:
                 form= ClienteForm()
                 return render(request,'SunChoi/registrocliente.html',{'form': form,'error': "contenido del formulario incorrecto"})   
-
         else:
             form = ClienteForm()
         return render(request, 'SunChoi/registrocliente.html', {'form': form})
@@ -184,8 +178,11 @@ def RegistrarCliente(request):
         return render_to_response('SunChoi/nopermitido.html')
 
 def Cliente_lista(request):
-    clientes = Cliente.objects.all()
-    return render(request,'SunChoi/cliente_lista.html',{'object_list': clientes,'tipo_objeto':"cliente"})
+    if request.user.is_authenticated :
+        clientes = Cliente.objects.all()
+        return render(request,'SunChoi/cliente_lista.html',{'object_list': clientes,'tipo_objeto':"cliente"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
 
 def Cliente_editar(request, item):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
@@ -209,8 +206,7 @@ def Cliente_eliminar(request, item):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
-
-#proveedores
+# CRUD proveedores
 def RegistrarProveedor(request):     
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         if request.method == 'POST': 
@@ -234,8 +230,11 @@ def RegistrarProveedor(request):
         return render(request,'SunChoi/nopermitido.html')
 
 def Proveedor_lista(request):
-    proveedores = Proveedores.objects.all()
-    return render(request,'SunChoi/proveedor_lista.html',{'object_list': proveedores,'tipo_objeto':"proveedores"})
+    if request.user.is_authenticated:
+        proveedores = Proveedores.objects.all()
+        return render(request,'SunChoi/proveedor_lista.html',{'object_list': proveedores,'tipo_objeto':"proveedores"})
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
 
 def Proveedor_editar(request, item):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
@@ -259,7 +258,33 @@ def Proveedor_eliminar(request, item):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
+#reportes
+def Inventario(request):
+    if (request.user.is_authenticated):
+        productos = Producto.objects.all()
+        return render(request,'SunChoi/inventario.html',{'object_list': productos})
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
+
 #operaciones
+def ConsultaRapida(request):
+    if request.user.is_authenticated:
+        if request.GET.get('minimo'):
+            minimo = request.GET['minimo']
+            if minimo.isdigit():
+                results = Producto.bajostock(minimo)
+                return render(request,'SunChoi/consultaRapida.html',{'lista':results,"minimo": minimo})
+            else:
+                return render(request,'SunChoi/consultaRapida.html',{"minimo": minimo,"error": "debe ingresar un número válido por favor. Intente de nuevo"})
+        else:
+            return render(request,'SunChoi/consultaRapida.html')
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
+
+
+
+
+
 def RegistrarVenta(request):
     if (request.user.is_authenticated):
         if request.method == 'POST': 
@@ -288,24 +313,6 @@ def Compras(request):
 def Cotizaciones(request):
     if (request.user.is_authenticated):
         return render(request,'SunChoi/cotizaciones.html')
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
-def ConsultaRapida(request):
-    if request.GET.get('minimo'):
-        minimo = request.GET['minimo']
-        if minimo.isdigit():
-            results = Producto.bajostock(minimo)
-            return render(request,'SunChoi/consultaRapida.html',{'lista':results,"minimo": minimo})
-        else:
-            return render(request,'SunChoi/consultaRapida.html',{"minimo": minimo,"error": "debe ingresar un número válido por favor. Intente de nuevo"})
-    else:
-        return render(request,'SunChoi/consultaRapida.html')
-
-#reportes
-def Inventarios(request):
-    if (request.user.is_authenticated):
-        return render(request,'SunChoi/inventarios.html')
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
