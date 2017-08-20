@@ -295,9 +295,9 @@ def RegistrarVenta(request):
             #fecha no deberia ser enviado por defecto fecha actual
             #idfactura=Factura.insertfactura(numero,estado,dnicliente,idusuario)
             #Facturalineas.insertfacturalineas(id_factura,id_producto,cantidad,total_factura_linea)  
-        
-
-            return render(request,'SunChoi/registrarVenta.html')
+            clientes=Cliente.objects.all()
+            productos = Producto.objects.all()            
+            return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
         else:
             #enviarle la informacion de compania
             clientes=Cliente.objects.all()

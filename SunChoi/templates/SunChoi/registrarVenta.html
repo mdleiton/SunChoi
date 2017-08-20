@@ -5,6 +5,13 @@
 <link href="{% static 'css/registrarVenta.css'  %}" rel="stylesheet">
 {% endblock %}
 {% block content %}
+<datalist class='col-md-6' id="productos">
+  	{% for p in productos %}
+    <option value="{{p.nombre}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.descripcion}}:{{p.stock}}</option>
+    {% empty %}
+    <option value="0">No hay productos</option>
+	{% endfor %}
+</datalist>
 <div class="container" id="factura">
     <div id="cabecera">
 		<div class="row" id="contenidoCabecera">
@@ -58,7 +65,10 @@
 			</div>
 		</div>
 	</div>
-	<div >
+	{%if mjsexitoso %}
+		<div><h1>{{mjsexitoso}}</h1></div>
+	{% endif %}
+	<div>
 		<table id="detalle" class="table table-bordered">
 			<thead>
 			  <tr>
@@ -89,19 +99,6 @@
 				</div>
 				<div id="contenidoComentariosLeyenda">					
 					Comentarios
-
-					  <input type="text" list="productos">
-						  <!-- Lista de opciones de producto -->
-						  <datalist class='col-md-6' id="productos">
-						  	{% for p in productos %}
-						    <option value="{{p.nombre}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.descripcion}}:{{p.stock}}</option>
-						    {% empty %}
-						    <option value="0">No hay productos</option>
-						    {% endfor %}
-						  </datalist>
-
-
-
 				</div>
 			</div>
 		</div>
@@ -167,11 +164,12 @@
 		input.setAttribute("onkeyup","totalLinea("+nLinea+")");
 		td.appendChild(input);
 		tr.appendChild(td);
-		//descripcion
 		input = document.createElement("INPUT");
 		input.setAttribute("form",idFormFactura);
 		input.setAttribute("id","descripcion"+nLinea);
 		input.setAttribute("name","descripcion"+nLinea);
+		input.setAttribute("type","text");
+		input.setAttribute("list","productos");
 		input.setAttribute("style","width: 500px;");
 		td = document.createElement("TD");
 		td.appendChild(input);
