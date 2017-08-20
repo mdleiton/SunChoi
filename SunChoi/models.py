@@ -7,7 +7,7 @@ class Proveedores(models.Model):
 	id_proveedor = models.AutoField(primary_key=True)
 	razon_social = models.CharField(max_length=200)
 	direccion = models.CharField(max_length=200)
-	telefono = models.IntegerField()
+	telefono = models.CharField(max_length=100)
 	email = models.EmailField(max_length=200, null=True)
 
 	def __str__(self):
@@ -140,10 +140,10 @@ class Cliente(models.Model):
 		return self.telefono
 	def setTelefono(self,telefono):
 		self.telefono=telefono
-		
+	
 class OrdenCompra(models.Model):
 	id_orden_compra = models.AutoField(primary_key=True)
-	numero = models.CharField(max_length=200)
+	numero = models.IntegerField()
 	fecha = models.DateTimeField(default=timezone.now)
 	id_usuario = models.ForeignKey('Usuario')
 	id_proveedor = models.ForeignKey('Proveedores')
@@ -182,7 +182,54 @@ class OrdenCompra(models.Model):
 		return self.Estado
 	def setEstado(self,estado):
 		self.estado=estado
+
+class Ordencompralineas(models.Model):
+	id_orden_compra_linea = models.AutoField(primary_key=True)
+	id_orden_compra = models.ForeignKey('Ordencompra')
+	id_producto = models.ForeignKey('Producto')
+	cantidad = models.IntegerField()
+	total_orden_compra_linea = models.FloatField()
+
+	#llamada a procedimiento almacenado
+	@staticmethod  
+	def insertordencompralineas(id_orden_compra,id_producto,cantidad,unidad,total_orden_compra_linea):  
+		cur = connection.cursor()  
+		cur.callproc('insertordencompralineas', [id_orden_compra.id_producto,cantidad,unidad,total_orden_compra_linea])  
+		cur.close()
+
+	def __str__(self): 
+		return self.id_orden_compra_linea
+
+	def setId_orden_compra_linea(self,idOrdenCompraLinea):
+		self.id_orden_compra_linea=idOrdenCompraLinea
+
+	def setId_orden_compra(self,idOrdenCompra):
+		self.id_orden_compra=idOrdenCompra
+
+	def setId_producto(self,idProducto):
+		self.id_producto=idProducto
+
+	def setCantidad(self,cantidad):
+		self.cantidad=cantidad
+
+	def setTotal_orden_compra_linea(self,totalOrdenCompraLinea):
+		self.total_orden_compra_linea=totalOrdenCompraLinea
+
+	def getId_orden_compra_linea(self):
+		return self.id_orden_compra_linea
+
+	def getId_orden_compra(self):
+		return self.id_orden_compra
+
+	def getId_producto(self):
+		return self.id_producto 
 	
+	def getCantidad(self):
+		return self.cantidad
+
+	def getTotal_orden_compra_linea(self):
+		return self.total_orden_compra_linea
+
 class ProformaLineas(models.Model):
 	id_proforma_linea = models.AutoField(primary_key=True)	
 	id_proforma = models.ForeignKey('Proforma')
@@ -480,8 +527,8 @@ class Usuario(models.Model):
 
 class Factura(models.Model):
 	id_factura=models.AutoField(primary_key=True)
-	numero=models.CharField(max_length=200)
-	estado=models.CharField(max_length=200)
+	numero=models.IntegerField()
+	#estado=models.CharField(max_length=200)
 	fecha=models.DateTimeField(default=timezone.now)
 	id_cliente=models.ForeignKey('Cliente')
 	id_usuario=models.ForeignKey('Usuario')
@@ -490,7 +537,7 @@ class Factura(models.Model):
 	@staticmethod  
 	def insertfactura(numero,estado,fecha,id_cliente,id_usuario):  
 		cur = connection.cursor()  
-		cur.callproc('insertfactura', [numero,estado,fecha,id_cliente,id_usuario])  
+		cur.callproc('insertfactura', [numero,fecha,id_cliente,id_usuario])  
 		cur.close()
 
 	def __str__(self): 
@@ -536,7 +583,7 @@ class Facturalineas(models.Model):
 	id_factura_linea = models.AutoField(primary_key=True)
 	id_factura = models.ForeignKey('Factura')
 	id_producto = models.ForeignKey('Producto')
-	cantidad = models.FloatField()
+	cantidad = models.IntegerField()
 	total_factura_linea = models.FloatField()
 
 	#llamada a procedimiento almacenado
@@ -578,58 +625,4 @@ class Facturalineas(models.Model):
 
 	def getTotal_factura_linea(self):
 		return self.total_factura_linea
-
-class Ordencompralineas(models.Model):
-	id_orden_compra_linea = models.AutoField(primary_key=True)
-	id_orden_compra = models.ForeignKey('Ordencompra')
-	id_producto = models.ForeignKey('Producto')
-	cantidad = models.FloatField()
-	unidad = models.CharField(max_length=200)
-	total_orden_compra_linea = models.FloatField()
-
-	#llamada a procedimiento almacenado
-	@staticmethod  
-	def insertordencompralineas(id_orden_compra,id_producto,cantidad,unidad,total_orden_compra_linea):  
-		cur = connection.cursor()  
-		cur.callproc('insertordencompralineas', [id_orden_compra.id_producto,cantidad,unidad,total_orden_compra_linea])  
-		cur.close()
-
-	def __str__(self): 
-		return self.id_orden_compra_linea
-
-	def setId_orden_compra_linea(self,idOrdenCompraLinea):
-		self.id_orden_compra_linea=idOrdenCompraLinea
-
-	def setId_orden_compra(self,idOrdenCompra):
-		self.id_orden_compra=idOrdenCompra
-
-	def setId_producto(self,idProducto):
-		self.id_producto=idProducto
-
-	def setCantidad(self,cantidad):
-		self.cantidad=cantidad
-
-	def setUnidad(self,unidad):
-		self.unidad=unidad
-
-	def setTotal_orden_compra_linea(self,totalOrdenCompraLinea):
-		self.total_orden_compra_linea=totalOrdenCompraLinea
-
-	def getId_orden_compra_linea(self):
-		return self.id_orden_compra_linea
-
-	def getId_orden_compra(self):
-		return self.id_orden_compra
-
-	def getId_producto(self):
-		return self.id_producto 
-	
-	def getCantidad(self):
-		return self.cantidad
-
-	def getUnidad(self):
-		return self.unidad
-
-	def getTotal_orden_compra_linea(self):
-		return self.total_orden_compra_linea
 

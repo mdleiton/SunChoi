@@ -1,11 +1,16 @@
 -- Usuario
 INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13567',1,'mau','leiton','data de villamil' , '234567','mau_leiton@espol.edu.ec');
+-- Roles
+INSERT INTO SunChoi_roles(rol,descripcion) values('Administrador','Maneja la app en su totalidad, tiene acceso a todas las funcionalidades implementadas en la app.');
+INSERT INTO SunChoi_roles(rol,descripcion) values('Empleado','Acceso limitado, ventas, cotizaciones y poco mas.');
+-- UsuarioRol
+INSERT INTO SunChoi_usuarioRol(id_usuario,id_rol values(1,1);
 -- PROVEEDORES
 INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('COMSUCRE S.A.','JUAN PIO MONTUFAR 109 Y AGUIRRE','2516315','ventas@comsucre.com');
 INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('Dilipa CIA LTDA','Av. 10 de Agosto N52-15 y Cap. Ramon Borja','2418640','información@dilipa.com.ec');
 -- cliente
-INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES('0921234567','Allan','Brito Delgado','Debajo de un puente','2691060');
-INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES('0917628304','Isela','Creyo','En la esquina de un parque','2948573');
+INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES('0921234567','Julio','Vargas Mendoza','Samanes 6 Mz 200 Vlla 6','2691060');
+INSERT INTO SunChoi_cliente(dni,nombre,apellidos,direccion,telefono) VALUES('0917628304','Rosa','Barrios Cardozo','Samanes 6 Mz 198 Vll 14','2948573');
 -- productos
 INSERT INTO SunChoi_producto(nombre,descripcion,precio_unitario,medida,stock,proveedor_id) VALUES('ACUARELA','ACUARELA LANCER 12 COLORES',2.5,'UND',5,1);
 INSERT INTO SunChoi_producto(nombre,descripcion,precio_unitario,medida,stock,proveedor_id) VALUES('BOLIGRAFO','BOLIGRAFO BIC CRISTAL NEGRO',0.3,'UND',90,1);
