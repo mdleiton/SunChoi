@@ -194,7 +194,7 @@ def Cliente_editar(request, item):
         if form.is_valid():
             form.save()
             return redirect('SunChoi:cliente_lista')
-        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"cliente",'tipo_objeto':"cliente"})
+        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"cliente"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -230,6 +230,32 @@ def RegistrarProveedor(request):
         else:
             form = ProveedorForm()
             return render(request,'SunChoi/registrarProveedores.html', {'form': form})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
+def Proveedor_lista(request):
+    proveedores = Proveedores.objects.all()
+    return render(request,'SunChoi/proveedor_lista.html',{'object_list': proveedores,'tipo_objeto':"proveedores"})
+
+def Proveedor_editar(request, item):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        proveedor = get_object_or_404(Proveedores, pk=item)
+        form = ProveedorForm(request.POST or None, instance=proveedor)
+        if form.is_valid():
+            form.save()
+            return redirect('SunChoi:proveedor_lista')
+        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"proveedores"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
+def Proveedor_eliminar(request, item):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        proveedor = get_object_or_404(Proveedores, pk=item)    
+        proveedores = Proveedores.objects.all()
+        if request.method=='POST':
+            proveedor.delete()
+            return redirect('SunChoi:proveedor_lista')
+        return render(request,'SunChoi/proveedor_lista.html',{'object_list': proveedores,'object':proveedor, 'eliminar': 'True','tipo_objeto':"proveedores"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 

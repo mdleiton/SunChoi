@@ -272,9 +272,9 @@ class Usuariorol(models.Model):
 
 	#llamada a procedimiento almacenado
 	@staticmethod  
-	def insertusuariorol(id_usuario_rol,id_usuario,id_rol):  
+	def insertusuariorol(id_usuario,id_rol):  
 		cur = connection.cursor()  
-		cur.callproc('insertusuariorol', [id_usuario_rol,id_usuario,id_rol])  
+		cur.callproc('insertusuariorol', [id_usuario,id_rol])  
 		cur.close()
 
 	def setId_usuario_rol(self,id_usuario_rol):

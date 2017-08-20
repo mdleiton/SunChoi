@@ -13,26 +13,29 @@ urlpatterns = [
     url(r'^menuglobal/$', views.MenuGlobal, name="inicioadmin"),
     url(r'^menuempleado/$', views.MenuEmpleado, name="inicioempleado"),
 
-    #clientes
+    # CRUD clientes
     url(r'^registrarcliente/$', views.RegistrarCliente, name="clienteadd"),
-    url(r'^listaclientes/$', views.Cliente_lista, name='cliente_lista'),
+    url(r'^listacliente/$', views.Cliente_lista, name='cliente_lista'),
     url(r'^editarcliente/(?P<item>\d+)$', views.Cliente_editar, name='cliente_editar'),
     url(r'^eliminarcliente/(?P<item>\d+)$', views.Cliente_eliminar, name='cliente_eliminar'),
 
     #CRUD usuarios
     url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),  #falta probar
-    url(r'^listausuarios/$', views.Usuario_lista, name='usuario_lista'),
+    url(r'^listausuario/$', views.Usuario_lista, name='usuario_lista'),
     url(r'^editarusuario/(?P<item>\d+)$', views.Usuario_editar, name='usuario_editar'),
     url(r'^eliminarusuario/(?P<item>\d+)$', views.Usuario_eliminar, name='usuario_eliminar'),
 
     # CRUD productos
     url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),  # falta probar
-    url(r'^listaproductos/$', views.Producto_lista, name='producto_lista'),
+    url(r'^listaproducto/$', views.Producto_lista, name='producto_lista'),
     url(r'^editarproducto/(?P<item>\d+)$', views.Producto_editar, name='producto_editar'),
     url(r'^eliminarproducto/(?P<item>\d+)$', views.Producto_eliminar, name='producto_eliminar'),
 
     #proveedores
-    url(r'^registrarproveedor/$',views.RegistrarProveedor,name="provadd"),
+    url(r'^registrarproveedor/$',views.RegistrarProveedor,name="provadd"), #falta probar sp
+    url(r'^listaproveedores/$', views.Proveedor_lista, name='proveedor_lista'),
+    url(r'^editarproveedor/(?P<item>\d+)$', views.Proveedor_editar, name='proveedor_editar'),
+    url(r'^eliminarproveedor/(?P<item>\d+)$', views.Proveedor_eliminar, name='proveedor_eliminar'),
     
     #operaciones
     url(r'^cotizaciones/$', views.Cotizaciones,name="cot"),
