@@ -23,9 +23,9 @@ delimiter ;
 -- Insertar Producto,
 DROP PROCEDURE IF EXISTS insertproducto;
 delimiter #
-CREATE PROCEDURE insertproducto(nombre nvarchar(200),descripcion nvarchar(200),precio_unitario decimal(2,2),medida nvarchar(200),stock int,id_proveedor int)   
+CREATE PROCEDURE insertproducto(nombre nvarchar(200),descripcion nvarchar(200),precio_unitario float,medida nvarchar(200),stock integer(10),id_proveedor int)   
 proc_main: BEGIN  
-    INSERT INTO SunChoi_producto VALUES(nombre,descripcion,precio_unitario,medida,stock,id_proveedor);
+    INSERT INTO SunChoi_producto(nombre,descripcion,precio_unitario,medida,stock,proveedor_id) VALUES(nombre,descripcion,precio_unitario,medida,stock,id_proveedor);
 END proc_main #
 delimiter ;
 

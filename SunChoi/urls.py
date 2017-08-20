@@ -32,7 +32,7 @@ urlpatterns = [
     url(r'^eliminarproducto/(?P<item>\d+)$', views.Producto_eliminar, name='producto_eliminar'),
 
     #proveedores
-    url(r'^registrarproveedor/$',views.RegistrarProveedor,name="provadd"), #falta probar sp
+    url(r'^registrarproveedor/$',views.RegistrarProveedor,name="provadd"), 
     url(r'^listaproveedores/$', views.Proveedor_lista, name='proveedor_lista'),
     url(r'^editarproveedor/(?P<item>\d+)$', views.Proveedor_editar, name='proveedor_editar'),
     url(r'^eliminarproveedor/(?P<item>\d+)$', views.Proveedor_eliminar, name='proveedor_eliminar'),

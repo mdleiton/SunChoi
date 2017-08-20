@@ -109,9 +109,9 @@ def RegistrarProducto(request):
             if form.is_valid():
                 np=form.save(commit=False)
                 try:
-                    Producto.insertproducto(np.id_producto,nc.nombre,nc.descripcion,nc.precio_unitario,nc.medida,nc.stock,np.proveedor.id_proveedor)
+                    Producto.insertproducto(np.nombre,np.descripcion,np.precio_unitario,np.medida,np.stock,np.proveedor.id_proveedor)
                     form=ProductoForm()
-                    return render(request, 'SunChoi/producto_registrar.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
+                    return render(request, 'SunChoi/producto_registrar.html', {'form': form, 'mjs': "puede ingresar mas productos"})
                 except ValueError:
                     form= ProductoForm()
                     return render(request,'SunChoi/producto_registrar.html',{'form': form,'error': "ocurrio un problema al intentar registrar"})   
