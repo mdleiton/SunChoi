@@ -18,6 +18,7 @@ class Proveedores(models.Model):
 		cur = connection.cursor()  
 		cur.callproc('insertproveedores', [razon_social,direccion,telefono,email])  
 		cur.close()
+		
 	def setId_proveedor(self,id_proveedor):
 		self.id_proveedor=id_proveedor
 	def setRazon_social(self,razon_social):

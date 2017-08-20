@@ -15,6 +15,9 @@ urlpatterns = [
 
     #clientes
     url(r'^registrarcliente/$', views.RegistrarCliente, name="clienteadd"),
+    url(r'^listaclientes/$', views.Cliente_lista, name='cliente_lista'),
+    url(r'^editarcliente/(?P<item>\d+)$', views.Cliente_editar, name='cliente_editar'),
+    url(r'^eliminarcliente/(?P<item>\d+)$', views.Cliente_eliminar, name='cliente_eliminar'),
 
     #usuarios
     url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),  #falta probar

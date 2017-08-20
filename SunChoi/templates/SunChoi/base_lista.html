@@ -13,7 +13,7 @@
   </div>
   <div id="search" class="col-md-4 col-sm-4 container-fluid">
     <div class="bock-center text-center">
-      <a type="button" href="/listproductos" class="col-md-4 btn btn-primary block-center">Buscar</a>
+      <a type="button" href="/lista{{tipo_objeto}}s" class="col-md-4 btn btn-primary block-center">Buscar</a>
       <input class="col-md-8 block-center" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
     </div>
   </div>
@@ -26,7 +26,7 @@
       {% csrf_token %}
       Esta seguro que desea eliminar <strong >"{{ object }} " </strong> ?
       <input type="submit" class="btn btn-primary btn-sm" value="Eliminar" />
-      <a class="btn btn-primary btn-danger btn-sm" href="/listaproductos/">cancelar</a>
+      <a class="btn btn-primary btn-danger btn-sm" href="/lista{{tipo_objeto}}s/">cancelar</a>
     </form>    
   </div>
 {% endif %}
@@ -34,25 +34,20 @@
     <thead class="text-center">
       <tr>
         {% block encabezadotablas %}
-        <th>N°</th>
-        <th>NOMBRE </th>
-        <th>DESCRIPCION</th>
-        <th>STOCK</th>
-        <th>P. UNITARIO</th>
         {% endblock %}
         <th>EDITAR</th>
         <th>ELIMINAR</th>
-        
       </tr>
     </thead>
     <tbody>
-    {% for producto in object_list %}
+    {% for registro in object_list %}
       <tr>
         {%block elementostablas%}
         default elementos tablas
         {% endblock %}
-        <td><a class="btn btn-primary" href="{% url 'SunChoi:producto_editar' producto.id_producto %}" value="Editar Producto" class="btn btn-primary btn-sm"  >editar</a></td>
-       <td><a class="btn btn-primary btn-danger" href="{% url 'SunChoi:producto_eliminar' producto.id_producto  %}" value="Eliminar Producto" class="btn btn-primary btn-sm"  >Eliminar</a></td>
+        <td><a class="btn btn-primary" {% block hrefeditar %} {% endblock%} 
+          value="Editar" class="btn btn-primary btn-sm"  >editar</a></td>
+       <td><a class="btn btn-primary btn-danger" {% block hrefeliminar %} {% endblock%} value="Eliminar" class="btn btn-primary btn-sm"  >Eliminar</a></td>
       
       </tr>
     {% empty %}

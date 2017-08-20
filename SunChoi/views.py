@@ -107,23 +107,81 @@ def RegistrarProducto(request):
 
 def Producto_lista(request):
     productos = Producto.objects.all()
-    return render(request,'SunChoi/producto_lista.html',{'object_list': productos})
+    return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'tipo_objeto':"producto"})
 
 def Producto_editar(request, item):
-    producto = get_object_or_404(Producto, pk=item)
-    form = ProductoForm(request.POST or None, instance=producto)
-    if form.is_valid():
-        form.save()
-        return redirect('SunChoi:producto_lista')
-    return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"producto"})
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        producto = get_object_or_404(Producto, pk=item)
+        form = ProductoForm(request.POST or None, instance=producto)
+        if form.is_valid():
+            form.save()
+            return redirect('SunChoi:producto_lista')
+        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"producto"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
 
 def Producto_eliminar(request, item):
-    producto = get_object_or_404(Producto, pk=item)    
-    productos = Producto.objects.all()
-    if request.method=='POST':
-        producto.delete()
-        return redirect('SunChoi:producto_lista')
-    return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'object':producto, 'eliminar': 'True'})
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        producto = get_object_or_404(Producto, pk=item)    
+        productos = Producto.objects.all()
+        if request.method=='POST':
+            producto.delete()
+            return redirect('SunChoi:producto_lista')
+        return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'object':producto, 'eliminar': 'True','tipo_objeto':"producto"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
+# CRUD clientes
+def RegistrarCliente(request):
+    if (request.user.is_authenticated):
+        if request.method == 'POST': 
+            form = ClienteForm(request.POST) 
+            if form.is_valid():
+                #aun no lo guarda entonces se puede validar
+                nc=form.save(commit=False)
+                try:
+                    Cliente.insertcliente(nc.dni,nc.nombre,nc.apellidos,nc.direccion,nc.telefono)
+                    form=ClienteForm()
+                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
+                except ValueError:
+                    form=ClienteForm()
+                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'error': "xcdv"})
+            else:
+                form= ClienteForm()
+                return render(request,'SunChoi/registrocliente.html',{'form': form,'error': "contenido del formulario incorrecto"})   
+
+        else:
+            form = ClienteForm()
+        return render(request, 'SunChoi/registrocliente.html', {'form': form})
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
+
+def Cliente_lista(request):
+    clientes = Cliente.objects.all()
+    return render(request,'SunChoi/cliente_lista.html',{'object_list': clientes,'tipo_objeto':"cliente"})
+
+def Cliente_editar(request, item):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        cliente = get_object_or_404(Cliente, pk=item)
+        form = ClienteForm(request.POST or None, instance=cliente)
+        if form.is_valid():
+            form.save()
+            return redirect('SunChoi:cliente_lista')
+        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"cliente",'tipo_objeto':"cliente"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
+def Cliente_eliminar(request, item):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        cliente = get_object_or_404(Cliente, pk=item)    
+        clientes = Cliente.objects.all()
+        if request.method=='POST':
+            cliente.delete()
+            return redirect('SunChoi:cliente_lista')
+        return render(request,'SunChoi/cliente_lista.html',{'object_list': clientes,'object':cliente, 'eliminar': 'True','tipo_objeto':"cliente"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
 
 #proveedores
 def RegistrarProveedor(request):     
@@ -195,31 +253,6 @@ def ConsultaRapida(request):
 def Inventarios(request):
     if (request.user.is_authenticated):
         return render(request,'SunChoi/inventarios.html')
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
-# CRUD clientes
-def RegistrarCliente(request):
-    if (request.user.is_authenticated):
-        if request.method == 'POST': 
-            form = ClienteForm(request.POST) 
-            if form.is_valid():
-                #aun no lo guarda entonces se puede validar
-                nc=form.save(commit=False)
-                try:
-                    Cliente.insertcliente(nc.dni,nc.nombre,nc.apellidos,nc.direccion,nc.telefono)
-                    form=ClienteForm()
-                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
-                except ValueError:
-                    form=ClienteForm()
-                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'error': "xcdv"})
-            else:
-                form= ClienteForm()
-                return render(request,'SunChoi/registrocliente.html',{'form': form,'error': "contenido del formulario incorrecto"})   
-
-        else:
-            form = ClienteForm()
-        return render(request, 'SunChoi/registrocliente.html', {'form': form})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
