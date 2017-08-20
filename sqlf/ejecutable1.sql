@@ -4,7 +4,7 @@ INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,co
 INSERT INTO SunChoi_roles(rol,descripcion) values('Administrador','Maneja la app en su totalidad, tiene acceso a todas las funcionalidades implementadas en la app.');
 INSERT INTO SunChoi_roles(rol,descripcion) values('Empleado','Acceso limitado, ventas, cotizaciones y poco mas.');
 -- UsuarioRol
-INSERT INTO SunChoi_usuarioRol(id_usuario,id_rol values(1,1);
+INSERT INTO SunChoi_usuariorol(id_usuario_id,id_rol_id) values('13567',1);
 -- PROVEEDORES
 INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('COMSUCRE S.A.','JUAN PIO MONTUFAR 109 Y AGUIRRE','2516315','ventas@comsucre.com');
 INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('Dilipa CIA LTDA','Av. 10 de Agosto N52-15 y Cap. Ramon Borja','2418640','información@dilipa.com.ec');

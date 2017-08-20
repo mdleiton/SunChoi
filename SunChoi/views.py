@@ -214,7 +214,7 @@ def RegistrarProveedor(request):
             if form.is_valid():
                 np=form.save(commit=False)
                 try:
-                    Producto.insertproveedor(np.razon_social,np.direccion,np.telefono,np.email)
+                    Proveedores.insertproveedores(np.razon_social,np.direccion,np.telefono,np.email)
                     form=ProveedorForm()
                     return render(request, 'SunChoi/registrarProveedores.html', {'form': form, 'mjsexitoso': "puede ingresar mas proveedores"})
                 except ValueError:

@@ -2,9 +2,9 @@
 -- Inserta un nuevo proveedor
 DROP PROCEDURE IF EXISTS insertproveedores;
 delimiter #
-CREATE PROCEDURE insertproveedores(razon_social nvarchar(200),direccion nvarchar(200),telefono nvarchar(100),email nvarchar(254))   
+CREATE PROCEDURE insertproveedores(razon_social nvarchar(200),direccion nvarchar(200),telefono nvarchar(200),email nvarchar(200))   
 proc_main: BEGIN  
-    INSERT INTO SunChoi_proveedores VALUES(razon_social,direccion,telefono,email);
+    INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES(razon_social,direccion,telefono,email);
 END proc_main #
 delimiter ;
 
