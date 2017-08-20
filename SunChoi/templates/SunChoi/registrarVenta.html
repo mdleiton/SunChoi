@@ -42,8 +42,8 @@
 		<div id = "contenidoDatosComprador">
 			<div id="RasonSocial" class="col-md-6">
 				<label>Razon social / Nombre Cliente: </label>
-					<input type="text" list="items" name="nombrecliente" form="formFactura">
-						<datalist id="items">
+					<input type="text" list="clientes" name="nombrecliente" form="formFactura">
+						<datalist id="clientes">
 						  	{% for c in clientes %}
 						    <option value="{{c.nombre}}:{{c.apellido}}:{{c.dni}}">{{c.nombre}}:{{c.apellido}}</option>
 						    {% empty %}
@@ -90,9 +90,9 @@
 				<div id="contenidoComentariosLeyenda">					
 					Comentarios
 
-					  <input type="text" list="items">
+					  <input type="text" list="productos">
 						  <!-- Lista de opciones de producto -->
-						  <datalist class='col-md-6' id="items">
+						  <datalist class='col-md-6' id="productos">
 						  	{% for p in productos %}
 						    <option value="{{p.nombre}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.descripcion}}:{{p.stock}}</option>
 						    {% empty %}
