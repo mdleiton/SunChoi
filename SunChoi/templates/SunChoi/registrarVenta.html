@@ -7,18 +7,18 @@
 {% block content %}
 <datalist class='col-md-6' id="productos">
   	{% for p in productos %}
-    <option value="{{p.nombre}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.descripcion}}</option>
+    <option value="{{p.descripcion}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.nombre}}</option>
     {% empty %}
     <option value="0">No hay productos</option>
 	{% endfor %}
 </datalist>
 <datalist id="clientes">
-						  	{% for c in clientes %}
-						    <option value="{{c.nombre}}:{{c.apellido}}:{{c.dni}}">{{c.nombre}}:{{c.apellido}}</option>
-						    {% empty %}
-						    <option value="0">No hay clientes</option>
-						    {% endfor %}
-						</datalist>
+  	{% for c in clientes %}
+    <option value="{{c.nombre}}:{{c.apellido}}:{{c.dni}}">{{c.nombre}}:{{c.apellido}}</option>
+    {% empty %}
+    <option value="0">No hay clientes</option>
+    {% endfor %}
+</datalist>
 <div class="container" id="factura">
     <div id="cabecera">
 		<div class="row" id="contenidoCabecera">
@@ -237,6 +237,7 @@
 		input.setAttribute("type","text");
 		input.setAttribute("form","formFactura");
 		input.setAttribute("id","pretot"+nLinea);
+		input.setAttribute("name","pretot"+nLinea);
 		input.setAttribute("readonly",true);
 		input.setAttribute("style","width: 80px;");
 		input.setAttribute("class","totalLinea");
