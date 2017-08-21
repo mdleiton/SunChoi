@@ -7,11 +7,18 @@
 {% block content %}
 <datalist class='col-md-6' id="productos">
   	{% for p in productos %}
-    <option value="{{p.nombre}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.descripcion}}:{{p.stock}}</option>
+    <option value="{{p.nombre}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.descripcion}}</option>
     {% empty %}
     <option value="0">No hay productos</option>
 	{% endfor %}
 </datalist>
+<datalist id="clientes">
+						  	{% for c in clientes %}
+						    <option value="{{c.nombre}}:{{c.apellido}}:{{c.dni}}">{{c.nombre}}:{{c.apellido}}</option>
+						    {% empty %}
+						    <option value="0">No hay clientes</option>
+						    {% endfor %}
+						</datalist>
 <div class="container" id="factura">
     <div id="cabecera">
 		<div class="row" id="contenidoCabecera">
@@ -49,19 +56,11 @@
 		<div id = "contenidoDatosComprador">
 			<div id="RasonSocial" class="col-md-6">
 				<label>Razon social / Nombre Cliente: </label>
-					<input type="text" list="clientes" name="nombrecliente" form="formFactura">
-						<datalist id="clientes">
-						  	{% for c in clientes %}
-						    <option value="{{c.nombre}}:{{c.apellido}}:{{c.dni}}">{{c.nombre}}:{{c.apellido}}</option>
-						    {% empty %}
-						    <option value="0">No hay clientes</option>
-						    {% endfor %}
-						</datalist>
-
+					<input id="razonSocial" type="text" onchange="datosCliente(this.value)" list="clientes" name="nombrecliente" form="formFactura">
 			</div>
 			<div id="DNI" class="col-md-6">
 				<label>Ruc / CI: </label>
-				<input  placeholder="Ruc/CI" name="dnicliente" form="formFactura">
+				<input  id="dni" onchange="datosCliente(this.value)" list="clientes" placeholder="Ruc/CI" name="dnicliente" form="formFactura">
 			</div>
 		</div>
 	</div>
@@ -103,30 +102,22 @@
 			</div>
 		</div>
 		<div  class="col-md-4" id="totales">
-			<table id="totalesTabla" class="table table-bordered">
-				<tr>
-					<th>Subtotal 12%:</th>
-					<td id="subtotal12"></td>
-				</tr>
-				<tr>
-					<th>Subtotal 0%:</th>
-					<td id="subtotal0"></td>
-				</tr>
+			<table id="totalesTabla" class="table table-bordered">				
 				<tr>
 					<th>Subtotal sin Impuestos:</th>
-					<td id="subtotalSinImpuestos"></td>
-				</tr>
+					<td><input id="subtotalSinImpuestos" name="subtotalSinImpuestos" form="formFactura" type="text" readonly></td>
+				</tr>	
 				<tr>
 					<th>Total Descuento:</th>
-					<td id="totalDescuento"></td>
+					<td><input id="totalDescuento" name="totalDescuento" form="formFactura" type="text" readonly></td>
 				</tr>
 				<tr>
 					<th>IVA 12%:</th>
-					<td id="iva"></td>
+					<td><input id="iva" name="iva" form="formFactura" type="text" readonly></td>
 				</tr>
 				<tr>
 					<th>Valor Total:</th>
-					<td id="valorTotal"></td>
+					<td><input id="valorTotal" name="valorTotal" form="formFactura" type="text" readonly></td>
 				</tr>	
 			</table>
 		</div>
@@ -139,54 +130,56 @@
 </div>
 <script>
 	var nLinea = 0;
+	var maxStock = {default:0};
 	function agregarLinea(){
 		//var nLinea = 0;
-		
 		var tr = document.createElement("TR");
 		tr.setAttribute("id",nLinea);
 		
-		var idFormFactura = "formFactura";
 		var div = document.createElement("DIV");
 		var idDiv = "divLinea"+nLinea;
-		div.setAttribute("id",idDiv);
-
-		div.setAttribute("form",idFormFactura);  
+		div.setAttribute("id",idDiv); 
 		
 		var button = document.createElement("BUTTON");
 		
 		//cantidad
 		var td = document.createElement("TD");
 		var input = document.createElement("INPUT");
-		input.setAttribute("form",idFormFactura);
 		input.setAttribute("id","cantidad"+nLinea);
 		input.setAttribute("name","cantidad"+nLinea);
+		input.setAttribute("type","text");
+		input.setAttribute("form","formFactura");
 		input.setAttribute("style","width: 62px;");
 		input.setAttribute("onkeyup","totalLinea("+nLinea+")");
 		td.appendChild(input);
 		tr.appendChild(td);
+		//descripcion
 		input = document.createElement("INPUT");
-		input.setAttribute("form",idFormFactura);
 		input.setAttribute("id","descripcion"+nLinea);
 		input.setAttribute("name","descripcion"+nLinea);
-		input.setAttribute("type","text");
-		input.setAttribute("list","productos");
 		input.setAttribute("style","width: 500px;");
+		input.setAttribute("type","text");
+		input.setAttribute("form","formFactura");
+		input.setAttribute("onchange","llenarLinea(this.value,"+nLinea+")");
+		input.setAttribute("list","productos");
 		td = document.createElement("TD");
 		td.appendChild(input);
 		tr.appendChild(td);
 		//unidades
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idFormFactura);
+		input.setAttribute("type","text");
+		input.setAttribute("form","formFactura");
 		input.setAttribute("id","unidades"+nLinea);
 		input.setAttribute("name","unidades"+nLinea);
 		input.setAttribute("style","width: 70px;");
 		input.value = 0;
-		//input.setAttribute("onkeyup","totalLinea("+nLinea+")");
 		td = document.createElement("TD");
 		td.appendChild(input);
 		tr.appendChild(td);
 		//%IVA
 		var select = document.createElement("SELECT");
+		select.setAttribute("type","text");
+		select.setAttribute("form","formFactura");
 		var option = document.createElement("OPTION");
 		option.text = 12;
 		select.appendChild(option);
@@ -194,17 +187,14 @@
 		option.text = 0;
 		select.appendChild(option);
 		select.setAttribute("id","porciva"+nLinea);
-		select.setAttribute("form",idFormFactura);
 		select.setAttribute("onchange","totalLinea("+nLinea+")");
-		//input = document.createElement("INPUT");
-		////input.setAttribute("form",idFormFactura);
-		//input.setAttribute("id","iva"+nLinea);
 		td = document.createElement("TD");
 		td.appendChild(select);
 		tr.appendChild(td);
 		//Precio Unitario
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idFormFactura);
+		input.setAttribute("type","text");
+		input.setAttribute("form","formFactura");
 		input.setAttribute("id","preUni"+nLinea);
 		input.setAttribute("style","width: 70px;");
 		input.setAttribute("onkeyup","totalLinea("+nLinea+")");
@@ -214,33 +204,59 @@
 		tr.appendChild(td);
 		//descuento
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idFormFactura);
+		input.setAttribute("type","text");
+		input.setAttribute("form","formFactura");
 		input.setAttribute("id","desc"+nLinea);
 		input.setAttribute("style","width: 70px;");
 		input.setAttribute("onkeyup","totalLinea("+nLinea+")");
+		input.setAttribute("class","desc");
+		input.setAttribute("editando","si");
 		input.value = 0;
 		td = document.createElement("TD");
+			//td.setAttribute("class","desc");
 		td.appendChild(input);
 		tr.appendChild(td);
 		//iva
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idFormFactura);
+		input.setAttribute("type","text");
+		input.setAttribute("form","formFactura");
 		input.setAttribute("id","iva"+nLinea);
 		input.setAttribute("style","width: 70px;");
-		input.setAttribute("disabled",true);
+		input.setAttribute("readonly",true);
+		input.setAttribute("class","iva");
+		input.setAttribute("editando","si");
 		input.value = 0;
 		td = document.createElement("TD");
+			//td.setAttribute("class","iva");
 		td.appendChild(input);
 		tr.appendChild(td);
 		//Precio Total
 		input = document.createElement("INPUT");
-		//input.setAttribute("form",idFormFactura);
+		input.setAttribute("type","text");
+		input.setAttribute("form","formFactura");
 		input.setAttribute("id","pretot"+nLinea);
-		input.setAttribute("disabled",true);
+		input.setAttribute("readonly",true);
 		input.setAttribute("style","width: 80px;");
+		input.setAttribute("class","totalLinea");
+		input.setAttribute("editando","si");
 		input.value = 0;
 		td = document.createElement("TD");
-		td.setAttribute("class","totalLinea");
+			//td.setAttribute("class","totalLinea");
+		td.appendChild(input);
+		tr.appendChild(td);
+		//Precio Total sin IVA NI DESCUENTO
+		input = document.createElement("INPUT");
+		input.setAttribute("type","text");
+		input.setAttribute("form","formFactura");
+		input.setAttribute("id","sinImp"+nLinea);
+		input.setAttribute("readonly",true);
+		input.setAttribute("style","width: 80px;");
+		input.setAttribute("class","sinImpuesto");
+		input.setAttribute("editando","si");
+		input.value = 0;
+		td = document.createElement("TD");
+			//td.setAttribute("class","sinImpuesto");
+		td.setAttribute("style","display: none;");
 		td.appendChild(input);
 		tr.appendChild(td);
 		
@@ -254,7 +270,7 @@
 		
 		button = document.createElement("BUTTON");
 		span = document.createElement("SPAN");
-		span.setAttribute("class","glyphicon glyphicon-remove");
+		span.setAttribute("class","glyphicon glyphicon-trash");
 		button.setAttribute("id","eliminarLinea"+nLinea);
 		button.setAttribute("onclick","eliminarLinea("+nLinea+")");
 		button.appendChild(span);
@@ -272,20 +288,28 @@
 	
 	function eliminarLinea(id){
 		$("#"+id).remove();
+		totales(-1);
 	}
+	
 	function guardarLinea(id){
 		celdas = $("#"+id).find("td");
 		celdas.each(function(indice){
 			if(indice<celdas.length-1){
-				valorInput = $(this.children).val();
+				/*valorInput = $(this.children).val();
 				valorId = $(this.children).attr("id");
 				valorname = $(this.children).attr("name");
 				$(this.children).remove();
 				$(this).text(valorInput);
 				$(this).attr("id",valorId);
 				$(this).attr("name",valorname);
-				$(this).attr("form","formFactura"+id);
+				$(this).attr("form","formFactura");
+				if(indice == 5) this.setAttribute("class","desc");
+				if(indice == 6) this.setAttribute("class","iva");
 				if(indice == 7) this.setAttribute("class","totalLinea");
+				if(indice == 8) this.setAttribute("class","sinImpuesto");*/
+				$(this.children).attr("readonly",true);
+				$(this.children).attr("editando","no");
+				$(this.children).attr("style","font-weight: 600;font-style: italic;");
 			}
 			else{
 				$("#guardarLinea"+id).remove();
@@ -298,13 +322,19 @@
 				$("#divLinea"+id).append(button);
 			}
 		});
+		totales(-1);
 	}
 	
 	function editarLinea(id){
 		celdas = $("#"+id).find("td");
 		celdas.each(function(indice){
 			if(indice<celdas.length-1){
-				valorInput = $(this).text();
+				if(indice!=6 && indice!=7 && indice!=8) $(this.children).removeAttr("readonly");
+				else $(this.children).attr("editando","si");
+				//descuento - no aplicar readonly
+				if(indice = 5) $(this.children).attr("editando","si");
+				$(this.children).attr("style","");
+				/*valorInput = $(this).text();
 				valorId = $(this).attr("id");
 				this.removeAttribute("id");
 				this.removeAttribute("form");
@@ -323,8 +353,11 @@
 					var input = document.createElement("INPUT");
 					input.setAttribute("id",valorId);
 					input.value = valorInput;
-					input.setAttribute("style","width: 500px;");
+					input.setAttribute("style","width: 500px;");	
+					input.setAttribute("type","text");
+					input.setAttribute("list","productos");
 					input.setAttribute("onkeyup","totalLinea("+id+")");
+					input.setAttribute("onchange","llenarLinea(this.value,"+nLinea+")");
 					$(this).append(input);
 				}
 				//unidades
@@ -345,7 +378,6 @@
 					option.text = 0;
 					select.appendChild(option);
 					select.setAttribute("id","porciva"+id);
-					//select.setAttribute("form","idFormFactura"+id);
 					select.setAttribute("onchange","totalLinea("+id+")");
 					$(this).append(select);
 				}
@@ -385,6 +417,15 @@
 					input.setAttribute("disabled",true);
 					$(this).append(input);
 				}
+				//precio total linea sin impuestos ni descuentos
+				else if(indice == 8){
+					var input = document.createElement("INPUT");
+					input.setAttribute("id",valorId);
+					input.value = valorInput;
+					input.setAttribute("style","width: 80px;");
+					input.setAttribute("disabled",true);
+					$(this).append(input);
+				}*/
 			}
 			else{
 				$("#editarLinea"+id).remove();
@@ -402,28 +443,76 @@
 	}
 	
 	function totalLinea(id){
-		console.log("total linea "+id);
-		totalSinIva = parseFloat($("#preUni"+id).val())*parseFloat($("#cantidad"+id).val());
-		console.log("total sin inva: "+totalSinIva);
-		descuento = parseFloat($("#desc"+id).val());
-		console.log("descuento: "+descuento);
-		if($("#porciva"+id).val()=="12") iva = 0.12;
-		else iva= 0;
-		totalIva = totalSinIva * iva;
-		console.log("total iva: "+totalIva);
-		total = totalSinIva+totalIva-descuento;
-		document.getElementById("iva"+id).value = totalIva;
-		document.getElementById("pretot"+id).value = total;
+		var cantidad = parseFloat($("#cantidad"+id).val());
+		var producto = $("#descripcion"+id).val();
+		if( cantidad <= maxStock[producto] ){
+			totalSinIva = parseFloat($("#preUni"+id).val())*cantidad;
+			descuento = parseFloat($("#desc"+id).val());
+			if($("#porciva"+id).val()=="12") iva = 0.12;
+			else iva= 0;
+			totalIva = totalSinIva * iva;
+			total = totalSinIva+totalIva-descuento;
+			document.getElementById("iva"+id).value = totalIva;
+			document.getElementById("pretot"+id).value = total;
+			document.getElementById("sinImp"+id).value = totalSinIva;
+		}else if(maxStock[producto] != null){
+			alert("La cantidad ingresada esta fuera del Stock Maximo "+maxStock[producto]+" de este producto");
+			$("#cantidad"+id).val("");
+		}
 	}
 	
-	function totales(flag){
+	function totales(llamadogenerar){
+		var subtotalSinImpuestos = 0;
+		var totalDescuento = 0;
+		var iva = 0;
 		var totalfinal = 0;
+		var indicador = false;
+		
 		$(".totalLinea").each(function(){
-			if(this.textContent !== "") totalfinal = totalfinal+parseFloat(this.textContent);
-			else if (flag == 1) alert("hay lineas de la factura sin confirmar, elimine o confirme las líneas antes de generar el total"); //totalfinal = totalfinal+parseFloat($(this.children).val());
+			if($(this).attr("editando") == "no")
+				totalfinal = totalfinal+parseFloat(this.value);
+			else 
+				indicador = true;
 		});
-		document.getElementById("valorTotal").innerHTML = totalfinal;
+		$(".desc").each(function(){
+			if($(this).attr("editando") == "no") totalDescuento = totalDescuento+parseFloat(this.value);
+		});
+		$(".iva").each(function(){
+			if($(this).attr("editando") == "no") iva = iva+parseFloat(this.value);
+		});
+		$(".sinImpuesto").each(function(){
+			if($(this).attr("editando") == "no") subtotalSinImpuestos = subtotalSinImpuestos+parseFloat(this.value);
+		});
+		if (llamadogenerar == 1 && indicador == true){
+			alert("hay lineas de la factura sin confirmar, elimine o confirme las líneas antes de generar el total"); //totalfinal = totalfinal+parseFloat($(this.children).val());
+			var subtotalSinImpuestos = 0;
+			var totalDescuento = 0;
+			var iva = 0;
+			var totalfinal = 0;
+		}
+		$("#valorTotal").val(totalfinal);
+		$("#subtotalSinImpuestos").val(subtotalSinImpuestos);
+		$("#iva").val(iva);
+		$("#totalDescuento").val(totalDescuento);
 	}
+	
+	function llenarLinea(value, n){
+		var info;
+		info = value.split(":");
+		maxStock[info[0]]=parseFloat(info[1]);
+		document.getElementById("descripcion"+n).value = info[0];
+		document.getElementById("unidades"+n).value = info[2];
+		document.getElementById("preUni"+n).value = info[3];
+		totalLinea(n);
+	}
+	
+	function datosCliente(value){
+		var info;
+		info = value.split(":");
+		document.getElementById("razonSocial").value = info[0]+" "+info[1];
+		document.getElementById("dni").value = info[2];
+	}
+	
 </script>
 
  {% endblock %}        
