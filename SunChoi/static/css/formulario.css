@@ -8,8 +8,8 @@
 	margin-top: 8px;
 }
 
-#formulario p input{
+#formulario p input, select{
 	position: sticky;
-	left: 46%;
+	left: 50%;
 
 }
