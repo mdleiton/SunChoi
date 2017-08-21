@@ -301,7 +301,7 @@ def RegistrarVenta(request):
             numero=request.GET.get('facturaN')
             #print(request.GET.get('cantidad0')) 
             idfactura=Factura.insertfactura(numero,fecha,dnicliente,idusuario)[0][0]
-            Facturalineas.insertfacturalineasUpdateStock(idfactura,8,4,12)  
+            #Facturalineas.insertfacturalineasUpdateStock(idfactura,8,4,12)  
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
             return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
