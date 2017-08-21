@@ -299,9 +299,20 @@ def RegistrarVenta(request):
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
             fecha=str( datetime.datetime.now())
             numero=request.GET.get('facturaN')
-            #print(request.GET.get('cantidad0')) 
+            #print(request.GET.get('cantidad0'))            
             idfactura=Factura.insertfactura(numero,fecha,dnicliente,idusuario)[0][0]
-            #Facturalineas.insertfacturalineasUpdateStock(idfactura,8,4,12)  
+            #nLineas=0cantidad0=1&descripcion0=LAPIZ&unidades0=UND&subtotalSinImpuestos=0.35&totalDescuento=0&iva=0.041999999999999996&valorTotal=0.39199999999999996 
+            cantfl=request.GET.get('nLineas').split(':')
+            print(cantfl)
+
+            for i in cantfl:
+                #modificar a descripciom
+                idproducto=Producto.objects.filter(nombre=request.GET.get('descripcion'+i))[0].id_producto
+                print(idproducto)
+                print(request.GET.get('descripcion'+i))
+                print(request.GET.get('cantidad'+i))
+                print(request.GET.get('valorTotal'))
+                Facturalineas.insertfacturalineasUpdateStock(idfactura,idproducto,request.GET.get('cantidad'+i),request.GET.get('pretot'+i))  
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
             return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
