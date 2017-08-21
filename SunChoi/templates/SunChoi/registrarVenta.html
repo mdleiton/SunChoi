@@ -34,6 +34,7 @@
 			<div id="FacturaNumero"class="col-md-4">
 				<h2>Factura No.</h2>
 				<h3><input  placeholder="026-022-000103973" name="facturaN" form="formFactura" required></h3>
+				<input id="nLineas" name="nLineas" form="formFactura" style="visibility: hidden" readonly >
 			</div>
 		</div>			
 	</div>
@@ -134,6 +135,7 @@
 	function agregarLinea(){
 		//var nLinea = 0;
 		var tr = document.createElement("TR");
+		tr.setAttribute("class","lineasFactura");
 		tr.setAttribute("id",nLinea);
 		
 		var div = document.createElement("DIV");
@@ -470,7 +472,12 @@
 		var iva = 0;
 		var totalfinal = 0;
 		var indicador = false;
+		var nLineasFactura = "";
 		
+		$(".lineasFactura").each(function(){
+			if(nLineasFactura == "") nLineasFactura = this.id; 
+			else nLineasFactura = nLineasFactura+":"+this.id;
+		});
 		$(".totalLinea").each(function(){
 			if($(this).attr("editando") == "no")
 				totalfinal = totalfinal+parseFloat(this.value);
@@ -493,6 +500,7 @@
 		$("#subtotalSinImpuestos").val(subtotalSinImpuestos);
 		$("#iva").val(iva);
 		$("#totalDescuento").val(totalDescuento);
+		$("#nLineas").val(nLineasFactura);
 	}
 	
 	function llenarLinea(value, n){
