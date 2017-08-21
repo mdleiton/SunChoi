@@ -310,6 +310,8 @@
 				$(this.children).attr("readonly",true);
 				$(this.children).attr("editando","no");
 				$(this.children).attr("style","font-weight: 600;font-style: italic;");
+				if(indice == 1) $(this.children).attr("style","font-weight: 600;font-style: italic; width: 500px;");
+				
 			}
 			else{
 				$("#guardarLinea"+id).remove();
@@ -332,7 +334,8 @@
 				if(indice!=6 && indice!=7 && indice!=8) $(this.children).removeAttr("readonly");
 				else $(this.children).attr("editando","si");
 				//descuento - no aplicar readonly
-				if(indice = 5) $(this.children).attr("editando","si");
+				if(indice == 5) $(this.children).attr("editando","si");
+				if(indice == 1) $(this.children).attr("style","width: 500px;");
 				$(this.children).attr("style","");
 				/*valorInput = $(this).text();
 				valorId = $(this).attr("id");
@@ -484,11 +487,7 @@
 			if($(this).attr("editando") == "no") subtotalSinImpuestos = subtotalSinImpuestos+parseFloat(this.value);
 		});
 		if (llamadogenerar == 1 && indicador == true){
-			alert("hay lineas de la factura sin confirmar, elimine o confirme las líneas antes de generar el total"); //totalfinal = totalfinal+parseFloat($(this.children).val());
-			var subtotalSinImpuestos = 0;
-			var totalDescuento = 0;
-			var iva = 0;
-			var totalfinal = 0;
+			alert("hay lineas de la factura sin confirmar, elimine o confirme las líneas antes de generar el total");
 		}
 		$("#valorTotal").val(totalfinal);
 		$("#subtotalSinImpuestos").val(subtotalSinImpuestos);
