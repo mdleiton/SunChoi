@@ -1,8 +1,8 @@
 -- Usuario
 INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13567',1,'mau','leiton','data de villamil' , '234567','mau_leiton@espol.edu.ec');
 -- Roles
-INSERT INTO SunChoi_roles(rol,descripcion) values('Administrador','Maneja la app en su totalidad, tiene acceso a todas las funcionalidades implementadas en la app.');
-INSERT INTO SunChoi_roles(rol,descripcion) values('Empleado','Acceso limitado, ventas, cotizaciones y poco mas.');
+INSERT INTO SunChoi_roles(rol,descripcion) values('administrador','Maneja la app en su totalidad, tiene acceso a todas las funcionalidades implementadas en la app.');
+INSERT INTO SunChoi_roles(rol,descripcion) values('empleado','Acceso limitado, ventas, cotizaciones y poco mas.');
 -- UsuarioRol
 INSERT INTO SunChoi_usuariorol(id_usuario_id,id_rol_id) values('13567',1);
 -- PROVEEDORES

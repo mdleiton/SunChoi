@@ -18,7 +18,16 @@ class Proveedores(models.Model):
 		cur = connection.cursor()  
 		cur.callproc('insertproveedores', [razon_social,direccion,telefono,email])  
 		cur.close()
-		
+	
+	@staticmethod  
+	def getidproveedor(razon_social):  
+		cur = connection.cursor()  
+		cur.callproc('getidproveedor', [razon_social])  
+		results = cur.fetchall() 
+		cur.close()
+		print(results)
+		return results 
+	
 	def setId_proveedor(self,id_proveedor):
 		self.id_proveedor=id_proveedor
 	def setRazon_social(self,razon_social):
@@ -315,7 +324,7 @@ class Usuariorol(models.Model):
 	id_rol=models.ForeignKey('Roles')
 
 	def __str__(self):
-		return self.id_usuario_rol
+		return 'UsuarioRol: {}:{}'.format(self.id_rol.rol, self.id_usuario.usuario)
 
 	#llamada a procedimiento almacenado
 	@staticmethod  
@@ -363,7 +372,7 @@ class Roles(models.Model):
 		return self.id_rol
 
 	def getRol(self):
-		return self.Rol
+		return self.rol
 
 	def getDescripcion(self):
 		return self.descripcion
@@ -377,7 +386,7 @@ class Solicitudesdiferido(models.Model):
 	id_usuario_aprobacion=models.ForeignKey('Usuario')
 	
 	def __str__(self):
-		return self.id_solicitud_diferido
+		return id_solicitud_diferido
 
 	#llamada a procedimiento almacenado
 	@staticmethod  
@@ -535,22 +544,20 @@ class Factura(models.Model):
 
 	#llamada a procedimiento almacenado
 	@staticmethod  
-	def insertfactura(numero,estado,fecha,id_cliente,id_usuario):  
+	def insertfactura(numero,fecha,id_cliente,id_usuario):  
 		cur = connection.cursor()  
 		cur.callproc('insertfactura', [numero,fecha,id_cliente,id_usuario])  
+		results = cur.fetchall() 
 		cur.close()
+		return results
 
 	def __str__(self): 
-		return self.id_factura
-
+		return 'Factura: {}:{}:{}'.format(self.id_factura, self.id_usuario.usuario,self.id_cliente.nombre)
 	def setId_factura(self,idFactura):
 		self.id_factura=idFactura
 
 	def setNumero(self,numero):
 		self.numero=numero
-
-	def setEstado(self,estado):
-		self.estado=estado
 
 	def setFecha(self,fecha):
 		self.fecha=fecha
@@ -566,9 +573,6 @@ class Factura(models.Model):
 
 	def getNumero(self):
 		return self.numero
-
-	def getEstado(self):
-		return self.estado
 
 	def getFecha(self):
 		return self.fecha
@@ -588,13 +592,13 @@ class Facturalineas(models.Model):
 
 	#llamada a procedimiento almacenado
 	@staticmethod  
-	def insertfacturalineas(id_factura,id_producto,cantidad,total_factura_linea):  
+	def insertfacturalineasUpdateStock(id_factura,id_producto,cantidad,total_factura_linea):  
 		cur = connection.cursor()  
-		cur.callproc('insertfacturalineas', [id_factura.id_producto,cantidad,total_factura_linea])  
+		cur.callproc('insertfacturalineasUpdateStock', [id_factura,id_producto,cantidad,total_factura_linea])  
 		cur.close()
 
 	def __str__(self): 
-		return self.id_factura_linea
+		return 'Factura linea: {}:{}:{}'.format(self.id_producto.nombre, self.cantidad,self.total_factura_linea)
 
 	def setId_factura_linea(self,idFacturaLinea):
 		self.id_factura_linea=idFacturaLinea

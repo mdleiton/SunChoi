@@ -1,0 +1,39 @@
+{% extends "SunChoi/base.html" %}
+{% load static %}
+{% block title %} Editar {{tipo_objeto}} {% endblock %} 
+{% block extra-style %}
+<link href="{% static 'css/formulario.css'  %}" rel="stylesheet">
+{% endblock %}
+{% block content %} 
+<div class="container">
+    <form class="form-signin" method="post">
+        <H1 class="text-center"> Actualizar registro de {{tipo_objeto}} </H1>
+        <div class="text-center" >
+            {% if mjs %}
+                {{mjs|capfirst}}
+            {% endif %}
+        </div>	
+        <div id="formulario">
+            {% csrf_token %}
+            {{ form.as_p }}
+            {% for myform in fl %}
+               {% csrf_token %}
+                {{myform.as_p}}
+               
+            {%endfor%}
+        </div>
+        <br/><br/>
+        <div class="row">
+            <div class="col-lg-4 text-center" >
+                <center ><input class="btn btn-primary" type="submit" value="Actualizar datos" /></center>
+            </div>
+            <div class="col-lg-4 text-center" >
+                <a class="btn btn-primary btn-danger" href="/lista{{tipo_objeto}}/">cancelar</a>
+            </div>
+        </div>
+        {% if error %}
+            <h2>{{error }}</h2>
+        {% endif %} 
+    </form>
+</div>
+{% endblock %}

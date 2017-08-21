@@ -7,6 +7,7 @@ from .forms import *
 from django.contrib.auth import login as auth_login,logout as auth_logout,authenticate
 from django.contrib.auth.models import User
 from .models import *
+import datetime
 
 #vistas generales
 def login(request):
@@ -51,7 +52,7 @@ def RegistrarUsuario(request):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         if request.method == 'POST': 
             form = UsuarioForm(request.POST) 
-            if form.is_valid():
+            if form.is_valid() and request.POST['dni'].isdigit() and len(request.POST['dni'])>9 and len(request.POST['contrasena'])>8:
                 tipouser=request.POST['tipouser']
                 if tipouser=="admin":
                     is_superuser=1 #con atributo is_superuser=1 para acceder a admin web 
@@ -59,8 +60,8 @@ def RegistrarUsuario(request):
                     is_superuser=0 #con atributo is_superuser=1 para acceder a admin web
                 user=User.objects.create_user(username=request.POST['username'], is_active=1,is_superuser=is_superuser,email=request.POST['correo'], password=request.POST['contrasena'],is_staff=is_superuser)
                 Usuario.insertusuario(request.POST['dni'],user.id,request.POST['nombre'],request.POST['apellido'],request.POST['direccion'],request.POST['telefono'],request.POST['correo'])
-                idroles=Roles.objects.filter(rol__contains=tipouser)[0].id
-                Usuariorol.insertusuariorol(request.POST['dni'],id_roles)
+                idroles=Roles.objects.filter(rol__contains=tipouser)[0].id_rol
+                Usuariorol.insertusuariorol(request.POST['dni'],idroles)
                 form=UsuarioForm()
                 return render(request,'SunChoi/registrarUsuario.html',{'form': form, 'mjsexitoso':"Se registró correctamente el usuario . Puede ingresar otro usuario"})
             else:
@@ -158,16 +159,19 @@ def RegistrarCliente(request):
     if (request.user.is_authenticated):
         if request.method == 'POST': 
             form = ClienteForm(request.POST) 
-            if form.is_valid():
+            if form.is_valid() :
                 #aun no lo guarda entonces se puede validar
                 nc=form.save(commit=False)
-                try:
-                    Cliente.insertcliente(nc.dni,nc.nombre,nc.apellidos,nc.direccion,nc.telefono)
-                    form=ClienteForm()
-                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
-                except ValueError:
-                    form=ClienteForm()
-                    return render(request, 'SunChoi/registrocliente.html', {'form': form, 'error': "xcdv"})
+                if nc.dni.isdigit() and len(nc.dni)>9: 
+                    try:
+                        Cliente.insertcliente(nc.dni,nc.nombre,nc.apellidos,nc.direccion,nc.telefono)
+                        form=ClienteForm()
+                        return render(request, 'SunChoi/registrocliente.html', {'form': form, 'mjs': "puede ingresar mas clientes"})
+                    except ValueError:
+                        form=ClienteForm()  
+                else:
+                    form= ClienteForm()
+                    return render(request,'SunChoi/registrocliente.html',{'form': form,'error': "contenido del formulario incorrecto"})   
             else:
                 form= ClienteForm()
                 return render(request,'SunChoi/registrocliente.html',{'form': form,'error': "contenido del formulario incorrecto"})   
@@ -214,9 +218,14 @@ def RegistrarProveedor(request):
             if form.is_valid():
                 np=form.save(commit=False)
                 try:
-                    Proveedores.insertproveedores(np.razon_social,np.direccion,np.telefono,np.email)
-                    form=ProveedorForm()
-                    return render(request, 'SunChoi/registrarProveedores.html', {'form': form, 'mjsexitoso': "puede ingresar mas proveedores"})
+                    idduplicado=Proveedores.getidproveedor(np.razon_social)
+                    if not idduplicado and not idduplicado==None:
+                        Proveedores.insertproveedores(np.razon_social,np.direccion,np.telefono,np.email)
+                        form=ProveedorForm()
+                        return render(request, 'SunChoi/registrarProveedores.html', {'form': form, 'mjsexitoso': "puede ingresar mas proveedores"})
+                    else:
+                        form=ProveedorForm()
+                        return render(request, 'SunChoi/registrarProveedores.html', {'form': form, 'mjsexitoso': "nombre de proveedores ya registrado"})
                 except ValueError:
                     form= ProveedorForm()
                     return render(request,'SunChoi/registrarProveedores.html',{'form': form,'error': "ocurrio un problema al intentar registrar"})   
@@ -288,13 +297,11 @@ def RegistrarVenta(request):
             dnicliente=request.GET.get('dnicliente')
             nombrecliente=request.GET.get('nombrecliente')  
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
+            fecha=str( datetime.datetime.now())
             numero=request.GET.get('facturaN')
-            estado=""
-            print(request.GET.get('cantidad0')) 
-            #nose que es estado
-            #fecha no deberia ser enviado por defecto fecha actual
-            #idfactura=Factura.insertfactura(numero,estado,dnicliente,idusuario)
-            #Facturalineas.insertfacturalineas(id_factura,id_producto,cantidad,total_factura_linea)  
+            #print(request.GET.get('cantidad0')) 
+            idfactura=Factura.insertfactura(numero,fecha,dnicliente,idusuario)[0][0]
+            Facturalineas.insertfacturalineasUpdateStock(idfactura,8,4,12)  
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
             return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
@@ -305,6 +312,31 @@ def RegistrarVenta(request):
             return render(request,'SunChoi/registrarVenta.html', {'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
     else:
         return render_to_response('SunChoi/nopermitido.html')
+
+def Factura_lista(request):
+    if request.user.is_authenticated:
+        facturas = Factura.objects.all()
+        facturalineas=Facturalineas.objects.all()
+        return render(request,'SunChoi/venta_lista.html',{'fl':facturalineas,'object_list': facturas,'tipo_objeto':"factura"})
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
+
+def Factura_editar(request, item):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        factura = get_object_or_404(Factura, pk=item)
+        form = FacturaForm(request.POST or None, instance=factura)
+        if form.is_valid():
+            form.save()
+            return redirect('SunChoi:factura_lista')
+        fp=form.save(commit=False)
+        facturalineas=Facturalineas.objects.filter(id_factura=fp.id_factura)
+        formfl=[]
+        for i in facturalineas:
+            formfl.append(FacturalineaForm(request.POST or None, instance=i))
+        return render(request, 'SunChoi/actualizar_form_compuesto.html', {'fl':formfl,'form':form, 'tipo_objeto':"factura"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
 
 def Compras(request):
     if (request.user.is_authenticated):

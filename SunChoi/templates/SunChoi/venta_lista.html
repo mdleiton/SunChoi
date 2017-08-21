@@ -1,0 +1,25 @@
+{% extends "SunChoi/base_lista.html" %}
+{% load static %}
+
+{% block title %} Lista de ventas{% endblock %} 
+
+{% block tipo %}<h3 class="bock-center text-center">Ventas</h3>{% endblock %}
+
+{%block encabezadotablas%}
+  <th>N°          </th>
+  <th>NUMERO     </th>
+  <th>FECHA </th>
+  <th>ID_CLIENTE       </th>
+  <th>ID_USUARIO </th>
+{% endblock %}
+
+{%block elementostablas%}
+  <td>{{ forloop.counter        }}</td>
+  <td>{{ registro.numero        }}</td>
+  <td>{{ registro.fecha   }}</td>
+  <td>{{ registro.id_cliente}} </td>
+  <td>{{registro.id_usuario}}</td>
+{% endblock %}
+{% block hrefeditar %} 
+  href="{% url 'SunChoi:factura_editar'  registro.id_factura %}" 
+{% endblock%}

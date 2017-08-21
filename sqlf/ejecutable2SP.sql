@@ -8,7 +8,7 @@ proc_main: BEGIN
 END proc_main #
 delimiter ;
 
--- Por si acaso un procedimiento que te da el id, segun el nombre(razon_social) ingresado
+-- Por si acaso un procedimiento que te da todo el registro, segun el nombre(razon_social) ingresado
 DROP PROCEDURE IF EXISTS getidproveedor;
 delimiter #
 CREATE PROCEDURE getidproveedor(name nvarchar(200))   
@@ -54,9 +54,9 @@ delimiter ;
 -- Insertar nuevo usuario
 DROP PROCEDURE IF EXISTS insertusuario;
 delimiter #
-CREATE PROCEDURE insertusuario(dni nvarchar(13),usuario nvarchar(200),nombre nvarchar(200),apellido nvarchar(200),direccion nvarchar(200),telefono nvarchar(200),correo nvarchar(254))
+CREATE PROCEDURE insertusuario(dni nvarchar(13),usuario_id int,nombre nvarchar(200),apellido nvarchar(200),direccion nvarchar(200),telefono nvarchar(200),correo nvarchar(200))
 proc_main: BEGIN  
-	INSERT INTO SunChoi_usuario VALUES(dni,usuario,nombre,apellido,direccion,telefono,correo);
+	INSERT INTO SunChoi_usuario (dni,usuario_id,nombre,apellido,direccion,telefono,correo) VALUES(dni,usuario_id,nombre,apellido,direccion,telefono,correo);
 END proc_main #
 delimiter ;
 
@@ -64,9 +64,9 @@ delimiter ;
 -- Insertar nuevo usuariorol
 DROP PROCEDURE IF EXISTS insertusuariorol;
 delimiter #
-CREATE PROCEDURE insertusuariorol(id_usuario int ,id_rol int )  
+CREATE PROCEDURE insertusuariorol(id_usuario nvarchar(13) ,id_rol int )  
 proc_main: BEGIN  
-	INSERT INTO SunChoi_usuarioRol VALUES(id_usuario,id_rol);
+	INSERT INTO SunChoi_usuariorol(id_usuario_id,id_rol_id) VALUES(id_usuario,id_rol);
 END proc_main #
 delimiter ;
 
@@ -103,14 +103,10 @@ delimiter ;
 -- Insertar nueva factura
 DROP PROCEDURE IF EXISTS insertfactura;
 delimiter #
-CREATE PROCEDURE insertfactura(fecha dateTime,id_cliente int,id_usuario int)
+CREATE PROCEDURE insertfactura(numero int,fecha dateTime, id_cliente nvarchar(13),id_usuario nvarchar(13))
 proc_main: BEGIN  
-	declare gnumero int;
-	select max(f.numero) into gnumero
-	from SunChoi_factura f;
-	set gnumero = gnumero+1;
-
-	INSERT INTO SunChoi_factura VALUES(gnumero,fecha,id_cliente,id_usuario);
+	INSERT INTO SunChoi_factura(numero,fecha,id_cliente_id,id_usuario_id) VALUES(numero,fecha,id_cliente,id_usuario);
+	select max(f.id_factura) from SunChoi_factura f;
 END proc_main #
 delimiter ;
 
@@ -118,7 +114,7 @@ delimiter ;
 -- Insertar nueva orden de factura detalle y Actualiza el stock
 DROP PROCEDURE IF EXISTS insertfacturalineasUpdateStock;
 delimiter #
-CREATE PROCEDURE insertfacturalineasUpdateStock(id_producto int ,cantidad int ,total_factura_linea decimal(2,2))
+CREATE PROCEDURE insertfacturalineasUpdateStock(id_factura int,id_productos int ,cantidad int ,total_factura_linea float)
 proc_main: BEGIN
 	declare facturaid int;    	
     declare productostock int;
@@ -131,15 +127,15 @@ proc_main: BEGIN
 	START TRANSACTION;
 	    select p.stock into productostock
 	    from SunChoi_producto p
-	    where p.id_producto=id_producto;
+	    where p.id_producto=id_productos;
 
     	set productostock = productostock - cantidad;
 
 		select max(f.id_factura) into facturaid
 		from SunChoi_factura f;
 
-		INSERT INTO SunChoi_ordenFacturalineas VALUES(facturaid,id_producto,cantidad,total_factura_linea);
-		UPDATE SunChoi_producto set stock = productostock where id_producto = id_producto;
+		INSERT INTO SunChoi_facturalineas(id_factura_id,id_producto_id,cantidad,total_factura_linea) VALUES(id_factura,id_productos,cantidad,total_factura_linea);
+		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
 	COMMIT;
 END proc_main #
 delimiter ;

@@ -20,13 +20,13 @@ urlpatterns = [
     url(r'^eliminarcliente/(?P<item>\d+)$', views.Cliente_eliminar, name='cliente_eliminar'),
 
     #CRUD usuarios
-    url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),  #falta probar
+    url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),  
     url(r'^listausuario/$', views.Usuario_lista, name='usuario_lista'),
     url(r'^editarusuario/(?P<item>\d+)$', views.Usuario_editar, name='usuario_editar'),
     url(r'^eliminarusuario/(?P<item>\d+)$', views.Usuario_eliminar, name='usuario_eliminar'),
 
     # CRUD productos
-    url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),  # falta probar
+    url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),  
     url(r'^listaproducto/$', views.Producto_lista, name='producto_lista'),
     url(r'^editarproducto/(?P<item>\d+)$', views.Producto_editar, name='producto_editar'),
     url(r'^eliminarproducto/(?P<item>\d+)$', views.Producto_eliminar, name='producto_eliminar'),
@@ -44,6 +44,8 @@ urlpatterns = [
     url(r'^bajostock/$', views.ConsultaRapida, name='consulta_rapida'),
 
     url(r'^registrarventa/$', views.RegistrarVenta,name="ventaadd"),
+    url(r'^listafactura/$', views.Factura_lista,name="factura_lista"),
+    url(r'^editarfactura/(?P<item>\d+)$', views.Factura_editar, name='factura_editar'),
     url(r'^cotizaciones/$', views.Cotizaciones,name="cot"),
     url(r'^compras/$', views.Compras,name="compras"),
     
