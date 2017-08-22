@@ -246,9 +246,9 @@ class ProformaLineas(models.Model):
 	total_proforma_linea = models.FloatField()
 
 	@staticmethod  
-	def insertproformalineas(id_proforma,id_producto,cantidad,unidad,total_proforma_linea):  
+	def insertProformaLineas(id_proforma,id_producto,cantidad,unidad,total_proforma_linea):  
 		cur = connection.cursor()  
-		cur.callproc('insertproformalineas', [id_proforma,id_producto,cantidad,unidad,total_proforma_linea])  
+		cur.callproc('insertProformaLineas', [id_proforma,id_producto,cantidad,unidad,total_proforma_linea])  
 		cur.close()
 
 	def __str__(self):
@@ -285,15 +285,19 @@ class Proforma(models.Model):
 	id_usuario = models.ForeignKey('Usuario')
 	fecha_emision = models.DateTimeField(default=timezone.now)
 	fecha_caducidad = models.DateTimeField()
+	total_proforma = models.FloatField()
 	
 	def __str__(self):
 		return self.id_proforma
 
 	@staticmethod  
-	def insertproforma(id_cliente,id_usuario,fecha_emision,fecha_caducidad):  
+	def insertproforma(fecha_emision,fecha_caducidad,id_cliente,id_usuario,total_proforma):  
 		cur = connection.cursor()  
-		cur.callproc('insertproforma', [id_cliente,id_usuario,fecha_emision,fecha_caducidad])  
+		cur.callproc('insertproforma', [fecha_emision,fecha_caducidad,id_cliente,id_usuario,total_proforma])  
+		results = cur.fetchall() 
 		cur.close()
+		return results
+
 
 	def getId_proforma(self):
 		return self.id_proforma
@@ -539,18 +543,20 @@ class Factura(models.Model):
 	fecha=models.DateTimeField(default=timezone.now)
 	id_cliente=models.ForeignKey('Cliente')
 	id_usuario=models.ForeignKey('Usuario')
+	total = models.FloatField()
 
 	#llamada a procedimiento almacenado
 	@staticmethod  
-	def insertfactura(numero,fecha,id_cliente,id_usuario):  
+	def insertfactura(numero, fecha, id_cliente, id_usuario, total):  
 		cur = connection.cursor()  
-		cur.callproc('insertfactura', [numero,fecha,id_cliente,id_usuario])  
+		cur.callproc('insertfacstura', [numero, fecha, id_cliente, id_usuario, total])  
 		results = cur.fetchall() 
 		cur.close()
 		return results
 
 	def __str__(self): 
-		return 'Factura: {}:{}:{}'.format(self.id_factura, self.id_usuario.usuario,self.id_cliente.nombre)
+		return 'Factura: {}:{}:{}'.format(self.id_factura, self.id_usuario.usuario,self.id_cliente.nombre,self.total)
+
 	def setId_factura(self,idFactura):
 		self.id_factura=idFactura
 
@@ -566,6 +572,9 @@ class Factura(models.Model):
 	def setId_usuario(self,idUsuario):
 		self.id_usuario=idUsuario
 
+	def setTotal(self,total):
+		self.total=total
+
 	def getId_factura(self):
 		return self.id_factura
 
@@ -580,6 +589,9 @@ class Factura(models.Model):
 
 	def getId_usuario(self):
 		return self.id_usuario
+
+	def getTotal(self):
+		return self.total
 
 class Facturalineas(models.Model):
 	id_factura_linea = models.AutoField(primary_key=True)

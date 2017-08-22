@@ -7,7 +7,9 @@ from .forms import *
 from django.contrib.auth import login as auth_login,logout as auth_logout,authenticate
 from django.contrib.auth.models import User
 from .models import *
+from django.utils import timezone
 import datetime
+from datetime import timedelta, date
 
 #vistas generales
 def login(request):
@@ -294,11 +296,12 @@ def RegistrarVenta(request):
     if request.user.is_authenticated:
         if request.GET.get('nombrecliente'):
             dnicliente=request.GET.get('dnicliente')
-            nombrecliente=request.GET.get('nombrecliente')  
+            nombrecliente=request.GET.get('nombrecliente')
+            total=request.GET.get('valorTotal')  
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
             fecha=str( datetime.datetime.now())
             numero=request.GET.get('facturaN')           
-            idfactura=Factura.insertfactura(numero,fecha,dnicliente,idusuario)[0][0] 
+            idfactura=Factura.insertfactura(numero,fecha,dnicliente,idusuario,total)[0][0] 
             cantfl=request.GET.get('nLineas').split(':')
             for i in cantfl:
                 idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
@@ -360,8 +363,35 @@ def RegistrarOrdenCompra(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-def Cotizaciones(request):
+def cotizaciones(request):
     if (request.user.is_authenticated):
         return render(request,'SunChoi/cotizaciones.html')
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
+
+def RegistrarCotizacion(request):
+    if request.user.is_authenticated:
+        if request.GET.get('nombrecliente'):
+            dnicliente=request.GET.get('dnicliente')
+            nombrecliente=request.GET.get('nombrecliente')
+            total=request.GET.get('valorTotal') 
+            idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
+            fecha_emision=str( datetime.datetime.now())
+            fecha_caducidad= str( date.today()+timedelta(days=7) )
+            numero=request.GET.get('facturaN')           
+            
+            idProforma=Proforma.insertproforma(fecha_emision,fecha_caducidad,dnicliente,idusuario,total)[0][0] 
+            cantfl=request.GET.get('nLineas').split(':')
+            for i in cantfl:
+                idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
+                ProformaLineas.insertProformaLineas(idProforma,idproducto,request.GET.get('cantidad'+i),request.GET.get('unidad'+i),request.GET.get('pretot'+i))  
+            #aqui actualizar total factura
+            clientes=Cliente.objects.all()
+            productos = Producto.objects.all()            
+            return render(request,'SunChoi/registrarCotizaciones.html',{'mjsexitoso':"se registro con exito la cotizacion. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+        else:
+            clientes=Cliente.objects.all()
+            productos = Producto.objects.all()            
+            return render(request,'SunChoi/registrarCotizaciones.html', {'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
     else:
         return render_to_response('SunChoi/nopermitido.html')

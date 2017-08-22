@@ -74,62 +74,19 @@ delimiter ;
 -- Insertar nueva orden de compra
 DROP PROCEDURE IF EXISTS insertordencompra;
 delimiter #
-CREATE PROCEDURE insertordencompra(numero int,fecha dateTime,id_usuario int,id_proveedor int)
-proc_main: BEGIN  
+CREATE PROCEDURE insertordencompra(numero int, fecha dateTime, id_usuario int, id_proveedor int)
+proc_main: BEGIN
 	INSERT INTO SunChoi_ordencompra(numero,fecha,id_usuario_id,id_proveedor_id)  VALUES(numero,fecha,id_usuario,id_proveedor);
 	select max(o.id_orden_compra) from SunChoi_ordencompra o;
 END proc_main #
 delimiter ;
 
--- -------------------------------------------C--O--M--P--R--A--/--L--I--N--E--A---------------------------
-
--- -----------------------------------------F--A--C--T--U--R--A---------------------------------------------
--- Insertar nueva factura
-DROP PROCEDURE IF EXISTS insertfactura;
-delimiter #
-CREATE PROCEDURE insertfactura(numero int,fecha dateTime, id_cliente nvarchar(13),id_usuario nvarchar(13))
-proc_main: BEGIN  
-	INSERT INTO SunChoi_factura(numero,fecha,id_cliente_id,id_usuario_id) VALUES(numero,fecha,id_cliente,id_usuario);
-	select max(f.id_factura) from SunChoi_factura f;
-END proc_main #
-delimiter ;
-
--- -----------------------------------------F--A--C--T--U--R--A--/--L--I--N--E--A--------------------------
--- Insertar nueva orden de factura detalle y Actualiza el stock
-DROP PROCEDURE IF EXISTS insertfacturalineasUpdateStock;
-delimiter #
-CREATE PROCEDURE insertfacturalineasUpdateStock(id_factura int,id_productos int ,cantidad int ,total_factura_linea float)
-proc_main: BEGIN
-	declare facturaid int;    	
-    declare productostock int;
-
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-	BEGIN
-		ROLLBACK;
-	END;
-	
-	START TRANSACTION;
-	    select p.stock into productostock
-	    from SunChoi_producto p
-	    where p.id_producto=id_productos;
-
-    	set productostock = productostock - cantidad;
-
-		select max(f.id_factura) into facturaid
-		from SunChoi_factura f;
-
-		INSERT INTO SunChoi_facturalineas(id_factura_id,id_producto_id,cantidad,total_factura_linea) VALUES(id_factura,id_productos,cantidad,total_factura_linea);
-		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
-	COMMIT;
-END proc_main #
-delimiter ;
-
+-- -----------------------------------------C--O--M--P--R--A--/--L--I--N--E--A----------------------------
 -- Insertar nueva orden de COMPRA detalle y Actualiza el stock
 DROP PROCEDURE IF EXISTS insertordenlineasUpdateStock;
 delimiter #
 CREATE PROCEDURE insertordenlineasUpdateStock(id_orden int,id_productos int ,cantidad int ,total_orden_compra_linea float)
-proc_main: BEGIN
-	declare ordenid int;    	
+proc_main: BEGIN   	
     declare productostock int;
 
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -144,11 +101,89 @@ proc_main: BEGIN
 
     	set productostock = productostock + cantidad;
 
-		select max(o.id_orden_compra) into ordenid
-		from SunChoi_ordencompra o;
-
 		INSERT INTO SunChoi_ordencompralineas(id_orden_compra_id,id_producto_id,cantidad,total_orden_compra_linea) VALUES(id_orden,id_productos,cantidad,total_orden_compra_linea);
 		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
 	COMMIT;
+END proc_main #
+delimiter ;
+
+-- -----------------------------------------F--A--C--T--U--R--A---------------------------------------------
+-- Insertar nueva factura
+DROP PROCEDURE IF EXISTS insertfactura;
+delimiter #
+CREATE PROCEDURE insertfactura(numero int,fecha dateTime, id_cliente nvarchar(13),id_usuario nvarchar(13), total float)
+proc_main: BEGIN  
+	INSERT INTO SunChoi_factura(numero,fecha,id_cliente_id,id_usuario_id,total) VALUES(numero,fecha,id_cliente,id_usuario,total);
+	select max(f.id_factura) from SunChoi_factura f;
+END proc_main #
+delimiter ;
+
+-- Eliminar Ultima factura
+-- DROP PROCEDURE IF EXISTS deleteLastFactura;
+-- delimiter #
+-- CREATE PROCEDURE deleteLastFactura()
+-- proc_main: BEGIN  
+--	declare idfactura int;
+--	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+--	BEGIN
+--		ROLLBACK;
+--	END;
+--	
+--	START TRANSACTION;
+--		select max(f.id_factura) into idfactura
+--		from SunChoi_factura f;
+--
+--		DELETE SunChoi_factura
+--		where id_factura = idfactura
+--
+--		INSERT INTO SunChoi_factura(numero,fecha,id_cliente_id,id_usuario_id,total) VALUES(numero,fecha,id_cliente,id_usuario,total);
+--	COMMIT;
+-- END proc_main #
+-- delimiter ;
+
+-- -----------------------------------------F--A--C--T--U--R--A--/--L--I--N--E--A--------------------------
+-- Insertar nueva orden de factura detalle y Actualiza el stock
+DROP PROCEDURE IF EXISTS insertfacturalineasUpdateStock;
+delimiter #
+CREATE PROCEDURE insertfacturalineasUpdateStock(id_factura int,id_productos int ,cantidad int ,total_factura_linea float)
+proc_main: BEGIN
+    declare productostock int;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+	END;
+	
+	START TRANSACTION;
+	    select p.stock into productostock
+	    from SunChoi_producto p
+	    where p.id_producto=id_productos;
+
+    	set productostock = productostock - cantidad;
+
+		INSERT INTO SunChoi_facturalineas(id_factura_id,id_producto_id,cantidad,total_factura_linea) VALUES(id_factura,id_productos,cantidad,total_factura_linea);
+		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
+	COMMIT;
+END proc_main #
+delimiter ;
+
+-- ---------------------------------------P--R--O--F--O--R--M--A---------------------------------------------
+-- Insertar nueva porforma
+DROP PROCEDURE IF EXISTS insertproforma;
+delimiter #
+CREATE PROCEDURE insertproforma(fecha_emision dateTime, fecha_caducidad dateTime, id_cliente nvarchar(13),id_usuario nvarchar(13), total_proforma float)
+proc_main: BEGIN  
+	INSERT INTO SunChoi_proforma(fecha_emision,fecha_caducidad,id_cliente_id,id_usuario_id,total_proforma) VALUES(fecha_emision,fecha_caducidad,id_cliente,id_usuario,total_proforma);
+	select max(f.id_proforma) from SunChoi_proforma f;
+END proc_main #
+delimiter ;
+
+-- ---------------------------------------P--R--O--F--O--R--M--A--/--L--I--N--E--A--------------------------
+-- Insertar nueva orden de PROFORMA detalle
+DROP PROCEDURE IF EXISTS insertProformaLineas;
+delimiter #
+CREATE PROCEDURE insertProformaLineas(id_proforma int,id_producto int ,cantidad int , unidad nvarchar(200),total_proforma_linea float)
+proc_main: BEGIN
+	INSERT INTO SunChoi_proformalineas(id_orden_compra_id,id_producto_id,cantidad,unidad,total_proforma_linea) VALUES(id_orden,id_productos,cantidad,unidad,total_proforma_linea);
 END proc_main #
 delimiter ;

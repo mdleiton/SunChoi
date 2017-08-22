@@ -48,6 +48,6 @@ urlpatterns = [
     
     url(r'^registrarordencompras/$', views.RegistrarOrdenCompra,name="ordenadd"),
 
-    url(r'^cotizaciones/$', views.Cotizaciones,name="cot"),
-
+    url(r'^cotizaciones/$', views.cotizaciones,name="cot"),
+    url(r'^registrarcotizacion/$', views.RegistrarCotizacion,name="cotizacionadd"),
 ]
