@@ -6,36 +6,6 @@
 <link href="{% static 'css/formulario.css'  %}" rel="stylesheet">
 {% endblock %}
 {% block content %} 
-<div class="container">
-    <form class="form-signin" method="post">
-        <H1 class="text-center"> Actualizar registro de {{tipo_objeto}} </H1>
-        <div class="text-center" >
-            {% if mjs %}
-                {{mjs|capfirst}}
-            {% endif %}
-        </div>	
-        <div id="formulario">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {% for myform in fl %}
-               {% csrf_token %}
-                {{myform.as_p}}
-               
-            {%endfor%}
-        </div>
-        <br/><br/>
-        <div class="row">
-            <div class="col-lg-12 text-center" >
-            <input class="btn btn-primary" type="submit" value="Actualizar datos" />
-            <a class="btn btn-primary btn-danger" href="/lista{{tipo_objeto}}/">cancelar</a>
-            </div>
-        </div>
-        {% if error %}
-            <h2>{{error }}</h2>
-        {% endif %} 
-    </form>
-
-</div>
 <div class="container" id="factura">
     <div id="cabecera">
         <div class="row" id="contenidoCabecera">
@@ -69,15 +39,16 @@
         </div>
     </div>
     <-->
+
     <div id="datosComprador" class="row">
         <div id = "contenidoDatosComprador">
             <div id="RasonSocial" class="col-md-6">
                 <label>Razon social / Nombre Cliente: </label>
-                    <input id="razonSocial" type="text" onchange="datosCliente(this.value)" list="clientes" name="nombrecliente" form="formFactura">
-            </div>
+                <label>{{factura.id_cliente.nombre}}</label>
             <div id="DNI" class="col-md-6">
                 <label>Ruc / CI: </label>
-                <input  id="dni" onchange="datosCliente(this.value)" list="clientes" placeholder="Ruc/CI" name="dnicliente" form="formFactura">
+                <label>{{factura.id_cliente.dni}}</label>
+            
             </div>
         </div>
     </div>
@@ -99,13 +70,16 @@
               </tr>
             </thead>
             <tbody id="tbodyLineas">
-                {% for linea in lineasFactura %}
+                {% for linea in fllista %}
                     <tr>
-                    {% for dato in linea %}
-                        <td>dato</td>
-                    {% empty %}
-                        <td>Nada que mostrar</td>
-                    {% endfor %}
+                        <td>{{linea.cantidad}}</td>
+                        <td>{{linea.id_producto.descripcion}}</td>
+                        <td>{{linea.id_producto.unidad}}</td>
+                        <td></td>
+                        <td>${{linea.id_producto.precio_unitario}}</td>
+                        <td></td>
+                        <td></td>
+                        <td>{{linea.total_factura_linea}}</td>
                     </tr>
                 {% empty %}
                     <td>Nada que mostrar</td>
@@ -116,8 +90,6 @@
     <div class="row">
         <div class="col-md-8">
             <div id="botonesFacturaLineas" class="col-md-12">
-                <button id="agregar" onclick="agregarLinea()">Agregar linea</button>
-                <button onclick="totales(1)">Generar Totales</button>
             </div>
             <div id="comentarios" class="col-md-12">
                 <div id="contenidoComentariosTexto">
@@ -151,7 +123,7 @@
     </div>
     <div id="botonesFactura" >
         <form id="formFactura" action="{% url 'SunChoi:ventaadd' %}">
-            <button type="submit" >Guardar</button><button>Cancelar</button>
+            <button type="submit" >Guardar</button><button href="/lista{{tipo_objeto}}">Cancelar</button>
         </form>
     </div>
 </div>

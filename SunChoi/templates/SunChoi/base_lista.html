@@ -13,7 +13,11 @@
   </div>
   <div id="search" class="col-md-4 col-sm-4 container-fluid">
     <div class="bock-center text-center">
-      <a type="button" href="/lista{{tipo_objeto}}" class="col-md-4 btn btn-primary block-center">Buscar</a>
+      {% if user.is_superuser %}
+      <a type="button" href="/menuglobal/" class="col-md-4 btn btn-primary block-center">Atras</a>
+      {%else %}
+      <a type="button" href="/menuempleado/" class="col-md-4 btn btn-primary block-center">Atras</a>
+      {%endif%}
       <input class="col-md-8 block-center" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
     </div>
   </div>
@@ -26,7 +30,7 @@
       {% csrf_token %}
       Esta seguro que desea eliminar <strong >"{{ object }} " </strong> ?
       <input type="submit" class="btn btn-primary btn-sm" value="Eliminar" />
-      <a class="btn btn-primary btn-danger btn-sm" href="/lista{{tipo_objeto}}/">cancelar</a>
+      <a class="btn btn-primary btn-danger btn-sm" href="/lista{{tipo_objeto}}">cancelar</a>
     </form>    
   </div>
 {% endif %}
@@ -34,7 +38,7 @@
     <thead class="text-center">
       <tr>
         {% block encabezadotablas %}
-        {% endblock %}
+        {% endblock %}s
         <th>EDITAR</th>
         <th>ELIMINAR</th>
       </tr>

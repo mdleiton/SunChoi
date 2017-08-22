@@ -13,7 +13,11 @@
   </div>
   <div id="search" class="col-md-4 col-sm-4 container-fluid">
     <div class="bock-center text-center">
-      <a type="button" href="/lista{{tipo_objeto}}" class="col-md-4 btn btn-primary block-center">Buscar</a>
+       {% if user.is_superuser %}
+      <a type="button" href="/menuglobal/" class="col-md-4 btn btn-primary block-center">Atras</a>
+      {%else %}
+      <a type="button" href="/menuempleado/" class="col-md-4 btn btn-primary block-center">Atras</a>
+      {%endif%}
       <input class="col-md-8 block-center" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
     </div>
   </div>
@@ -36,8 +40,8 @@
         <th>N°          </th>
         <th>NUMERO     </th>
         <th>FECHA </th>
-        <th>ID_CLIENTE       </th>
-        <th>ID_USUARIO </th>
+        <th>CLIENTE       </th>
+        <th>USUARIO </th>
         <th>TOTAL FACTURA </th>
         <th class="text-center">EDITAR</th>
       </tr>
@@ -51,7 +55,7 @@
           <td>{{ registro.id_cliente}} </td>
           <td>{{registro.id_usuario}}</td>
             <td>TOTAL FACTURA</td>
-        <td><a class="btn btn-primary" href="{% url 'SunChoi:factura_editar'  registro.id_factura %}"
+        <td><a class="btn btn-primary" href="{% url 'SunChoi:factura_ver'  registro.id_factura %}"
           value="Editar" class="btn btn-primary btn-sm text-center"  >Ver detalle Factura</a></td> 
       </tr>
     {% empty %}

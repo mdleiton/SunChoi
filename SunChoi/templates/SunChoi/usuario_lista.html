@@ -27,10 +27,9 @@
   <td>{{registro.correo}}</td>
 {% endblock %}
 
-{% block hrefeditar %} 
-  href="{% url 'SunChoi:usuario_editar'  registro.dni %}" 
+{% block hrefeditar %} href="/editarusuario/{{registro.dni}}" 
 {% endblock%}
 
 {% block hrefeliminar %} 
-  href="{% url 'SunChoi:usuario_eliminar' registro.dni  %}" 
+  href="/eliminarusuario/{{registro.dni}}" 
 {% endblock%}

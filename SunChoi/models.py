@@ -156,15 +156,15 @@ class OrdenCompra(models.Model):
 	fecha = models.DateTimeField(default=timezone.now)
 	id_usuario = models.ForeignKey('Usuario')
 	id_proveedor = models.ForeignKey('Proveedores')
-	estado = models.CharField(max_length=200)
+	#estado = models.CharField(max_length=200)
 
 	def __str__(self):
 		return self.id_orden_compra
 	
 	@staticmethod  
-	def insertordencompra(numero,fecha,id_usuario,id_proveedor,estado):  
+	def insertordencompra(numero,fecha,id_usuario,id_proveedor):  
 		cur = connection.cursor()  
-		cur.callproc('insertordencompra', [numero,fecha,id_usuario,id_proveedor,estado])  
+		cur.callproc('insertordencompra', [numero,fecha,id_usuario,id_proveedor])  
 		cur.close()
 
 	def getId_orden_compra(self):
@@ -187,10 +187,6 @@ class OrdenCompra(models.Model):
 		return self.id_proveedor
 	def setId_proveedor(self,id_proveedor):
 		self.id_proveedor=id_proveedor
-	def getEstado(self):
-		return self.Estado
-	def setEstado(self,estado):
-		self.estado=estado
 
 class Ordencompralineas(models.Model):
 	id_orden_compra_linea = models.AutoField(primary_key=True)

@@ -22,9 +22,8 @@ urlpatterns = [
     #CRUD usuarios
     url(r'^registrarusuario/$', views.RegistrarUsuario,name='useradd'),  
     url(r'^listausuario/$', views.Usuario_lista, name='usuario_lista'),
-    url(r'^editarusuario/(?P<item>\d+)$', views.Usuario_editar, name='usuario_editar'),
+    url(r'^editarusuario/(?P<item>\d+)$', views.Usuario_editar,name='usuario_editar'),
     url(r'^eliminarusuario/(?P<item>\d+)$', views.Usuario_eliminar, name='usuario_eliminar'),
-
     # CRUD productos
     url(r'^registrarproducto/$', views.RegistrarProducto,name='productadd'),  
     url(r'^listaproducto/$', views.Producto_lista, name='producto_lista'),
@@ -42,10 +41,13 @@ urlpatterns = [
 
     #operaciones
     url(r'^bajostock/$', views.ConsultaRapida, name='consulta_rapida'),
-
+    #ventas
     url(r'^registrarventa/$', views.RegistrarVenta,name="ventaadd"),
     url(r'^listafactura/$', views.Factura_lista,name="factura_lista"),
-    url(r'^editarfactura/(?P<item>\d+)$', views.Factura_editar, name='factura_editar'),
+    url(r'^verfactura/(?P<item>\d+)$', views.Factura_ver, name='factura_ver'),
+    
+    url(r'^registrarordencompras/$', views.RegistrarOrdenCompra,name="ordenadd"),
+
     url(r'^cotizaciones/$', views.Cotizaciones,name="cot"),
     url(r'^compras/$', views.Compras,name="compras"),
     

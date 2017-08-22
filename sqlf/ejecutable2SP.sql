@@ -74,14 +74,10 @@ delimiter ;
 -- Insertar nueva orden de compra
 DROP PROCEDURE IF EXISTS insertordencompra;
 delimiter #
-CREATE PROCEDURE insertordencompra(fecha dateTime,id_usuario int,id_proveedor int,estado varchar(200))
+CREATE PROCEDURE insertordencompra(numero int,fecha dateTime,id_usuario int,id_proveedor int)
 proc_main: BEGIN  
-	declare gnumero int;
-	select max(oc.numero) into gnumero
-	from SunChoi_ordenCompra oc;
-	set gnumero = gnumero+1;
-
-	INSERT INTO SunChoi_ordenCompra VALUES(gnumero,fecha,id_usuario,id_proveedor,estado);
+	INSERT INTO SunChoi_ordencompra(numero,fecha,id_usuario_id,id_proveedor_id)  VALUES(numero,fecha,id_usuario,id_proveedor);
+	select max(o.id_orden_compra) from SunChoi_ordencompra o;
 END proc_main #
 delimiter ;
 
@@ -94,7 +90,6 @@ proc_main: BEGIN
 	declare ordenid int;
 	select max(oc.id_orden_compra) into ordenid
 	from SunChoi_ordenCompra oc;
-
 	INSERT INTO SunChoi_ordenCompralineas VALUES(ordenid,id_producto,cantidad,total_orden_compra_linea);
 END proc_main #
 delimiter ;
