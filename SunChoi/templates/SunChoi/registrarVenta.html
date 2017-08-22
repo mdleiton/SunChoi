@@ -7,7 +7,7 @@
 {% block content %}
 <datalist class='col-md-6' id="productos">
   	{% for p in productos %}
-    <option value="{{p.descripcion}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.nombre}}</option>
+    <option value="{{p.descripcion}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.nombre}}:{{p.descripcion}}:{{p.stock}}</option>
     {% empty %}
     <option value="0">No hay productos</option>
 	{% endfor %}
@@ -33,7 +33,7 @@
 			</div>
 			<div id="FacturaNumero"class="col-md-4">
 				<h2>Factura No.</h2>
-				<h3><input  placeholder="026-022-000103973" name="facturaN" form="formFactura" required></h3>
+				<h3><input  placeholder="026022000" name="facturaN" form="formFactura" required></h3>
 				<input id="nLineas" name="nLineas" form="formFactura" style="visibility: hidden" readonly >
 			</div>
 		</div>			

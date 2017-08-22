@@ -298,26 +298,17 @@ def RegistrarVenta(request):
             nombrecliente=request.GET.get('nombrecliente')  
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
             fecha=str( datetime.datetime.now())
-            numero=request.GET.get('facturaN')
-            #print(request.GET.get('cantidad0'))            
-            idfactura=Factura.insertfactura(numero,fecha,dnicliente,idusuario)[0][0]
-            #nLineas=0cantidad0=1&descripcion0=LAPIZ&unidades0=UND&subtotalSinImpuestos=0.35&totalDescuento=0&iva=0.041999999999999996&valorTotal=0.39199999999999996 
+            numero=request.GET.get('facturaN')           
+            idfactura=Factura.insertfactura(numero,fecha,dnicliente,idusuario)[0][0] 
             cantfl=request.GET.get('nLineas').split(':')
-            print(cantfl)
-
             for i in cantfl:
-                #modificar a descripciom
-                idproducto=Producto.objects.filter(nombre=request.GET.get('descripcion'+i))[0].id_producto
-                print(idproducto)
-                print(request.GET.get('descripcion'+i))
-                print(request.GET.get('cantidad'+i))
-                print(request.GET.get('valorTotal'))
+                idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
                 Facturalineas.insertfacturalineasUpdateStock(idfactura,idproducto,request.GET.get('cantidad'+i),request.GET.get('pretot'+i))  
+            #aqui actualizar total factura
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
             return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
         else:
-            #enviarle la informacion de compania
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
             return render(request,'SunChoi/registrarVenta.html', {'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
