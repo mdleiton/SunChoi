@@ -82,17 +82,6 @@ END proc_main #
 delimiter ;
 
 -- -------------------------------------------C--O--M--P--R--A--/--L--I--N--E--A---------------------------
--- Insertar nueva orden de compra detalle
-DROP PROCEDURE IF EXISTS insertordencompralineas;
-delimiter #
-CREATE PROCEDURE insertordencompralineas(id_producto int ,cantidad int ,total_orden_compra_linea decimal(2,2))
-proc_main: BEGIN  
-	declare ordenid int;
-	select max(oc.id_orden_compra) into ordenid
-	from SunChoi_ordenCompra oc;
-	INSERT INTO SunChoi_ordenCompralineas VALUES(ordenid,id_producto,cantidad,total_orden_compra_linea);
-END proc_main #
-delimiter ;
 
 -- -----------------------------------------F--A--C--T--U--R--A---------------------------------------------
 -- Insertar nueva factura
@@ -130,6 +119,35 @@ proc_main: BEGIN
 		from SunChoi_factura f;
 
 		INSERT INTO SunChoi_facturalineas(id_factura_id,id_producto_id,cantidad,total_factura_linea) VALUES(id_factura,id_productos,cantidad,total_factura_linea);
+		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
+	COMMIT;
+END proc_main #
+delimiter ;
+
+-- Insertar nueva orden de COMPRA detalle y Actualiza el stock
+DROP PROCEDURE IF EXISTS insertordenlineasUpdateStock;
+delimiter #
+CREATE PROCEDURE insertordenlineasUpdateStock(id_orden int,id_productos int ,cantidad int ,total_orden_compra_linea float)
+proc_main: BEGIN
+	declare ordenid int;    	
+    declare productostock int;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+	END;
+	
+	START TRANSACTION;
+	    select p.stock into productostock
+	    from SunChoi_producto p
+	    where p.id_producto=id_productos;
+
+    	set productostock = productostock + cantidad;
+
+		select max(o.id_orden_compra) into ordenid
+		from SunChoi_ordencompra o;
+
+		INSERT INTO SunChoi_ordencompralineas(id_orden_compra_id,id_producto_id,cantidad,total_orden_compra_linea) VALUES(id_orden,id_productos,cantidad,total_orden_compra_linea);
 		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
 	COMMIT;
 END proc_main #

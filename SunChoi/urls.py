@@ -49,8 +49,5 @@ urlpatterns = [
     url(r'^registrarordencompras/$', views.RegistrarOrdenCompra,name="ordenadd"),
 
     url(r'^cotizaciones/$', views.Cotizaciones,name="cot"),
-    url(r'^compras/$', views.Compras,name="compras"),
-    
-    
 
 ]

@@ -158,14 +158,16 @@ class OrdenCompra(models.Model):
 	id_proveedor = models.ForeignKey('Proveedores')
 	#estado = models.CharField(max_length=200)
 
-	def __str__(self):
-		return self.id_orden_compra
+	def __str__(self): 
+		return 'Orden Compra: {}:{}:{}'.format(self.id_orden_compra, self.id_usuario.nombre,self.id_proveedor.razon_social)
 	
 	@staticmethod  
 	def insertordencompra(numero,fecha,id_usuario,id_proveedor):  
 		cur = connection.cursor()  
 		cur.callproc('insertordencompra', [numero,fecha,id_usuario,id_proveedor])  
+		results = cur.fetchall() 
 		cur.close()
+		return results
 
 	def getId_orden_compra(self):
 		return self.id_orden_compra
@@ -197,14 +199,14 @@ class Ordencompralineas(models.Model):
 
 	#llamada a procedimiento almacenado
 	@staticmethod  
-	def insertordencompralineas(id_orden_compra,id_producto,cantidad,unidad,total_orden_compra_linea):  
+	def insertordenlineasUpdateStock(id_orden_compra,id_producto,cantidad,total_orden_compra_linea):  
 		cur = connection.cursor()  
-		cur.callproc('insertordencompralineas', [id_orden_compra.id_producto,cantidad,unidad,total_orden_compra_linea])  
+		cur.callproc('insertordenlineasUpdateStock', [id_orden_compra,id_producto,cantidad,total_orden_compra_linea])  
 		cur.close()
 
 	def __str__(self): 
-		return self.id_orden_compra_linea
-
+		return 'Orden Compra linea: {}:{}:{}'.format(self.id_producto.nombre,self.cantidad, self.total_orden_compra_linea)
+	
 	def setId_orden_compra_linea(self,idOrdenCompraLinea):
 		self.id_orden_compra_linea=idOrdenCompraLinea
 

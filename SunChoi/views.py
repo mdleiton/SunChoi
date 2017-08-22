@@ -290,7 +290,6 @@ def ConsultaRapida(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-
 def RegistrarVenta(request):
     if request.user.is_authenticated:
         if request.GET.get('nombrecliente'):
@@ -339,35 +338,25 @@ def Factura_ver(request, item):
 
 def RegistrarOrdenCompra(request):
     if request.user.is_authenticated:
-        if request.GET.get('nombrecliente'):
-            nombreproveedor=request.GET.get('nombreproveedor')  
+        if request.GET.get('nombreproveedor'):
+            nombreproveedor=request.GET.get('nombreproveedor') 
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
-            idproveedor=proveedores.objects.filter(razon_social=nombreproveedor)[0].id_proveedor
+            idproveedor=Proveedores.objects.filter(razon_social=nombreproveedor)[0].id_proveedor
             fecha=str( datetime.datetime.now()) # por el momento registro con la fecha/hora del sistema
             numero=request.GET.get('ordenN')           
             idordencompra=OrdenCompra.insertordencompra(numero,fecha,idusuario,idproveedor)[0][0] 
-            '''cantfl=request.GET.get('nLineas').split(':')
+            cantfl=request.GET.get('nLineas').split(':')
             for i in cantfl:
                 idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
-                Facturalineas.insertfacturalineasUpdateStock(idfactura,idproducto,request.GET.get('cantidad'+i),request.GET.get('pretot'+i))  
-            #aqui actualizar total factura
-            '''
-            proveedores=proveedores.objects.all()
+                Ordencompralineas.insertordenlineasUpdateStock(idordencompra,idproducto,request.GET.get('cantidad'+i),request.GET.get('pretot'+i))  
+            #aqui actualizar total orden
+            proveedores=Proveedores.objects.all()
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarOrdencompra.html',{'mjsexitoso':"se registro con exito la venta. Puede ingresar otra venta",'proveedores':proveedores,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+            return render(request,'SunChoi/registrarOrdencompra.html',{'mjsexitoso':"se registro con exito la orden de compra. Puede ingresar otra orden de compra",'proveedores':proveedores,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
         else:
             proveedores=Proveedores.objects.all()
             productos = Producto.objects.all()            
             return render(request,'SunChoi/registrarOrdencompra.html', {'proveedores':proveedores,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
-
-
-
-def Compras(request):
-    if (request.user.is_authenticated):
-        return render(request,'SunChoi/compras.html')
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
@@ -376,4 +365,3 @@ def Cotizaciones(request):
         return render(request,'SunChoi/cotizaciones.html')
     else:
         return render_to_response('SunChoi/nopermitido.html')
-
