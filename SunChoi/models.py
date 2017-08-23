@@ -252,7 +252,7 @@ class ProformaLineas(models.Model):
 		cur.close()
 
 	def __str__(self):
-		return self.id_proforma_linea
+		return 'Proforma linea: {}:{}:{}'.format(self.id_producto.descripcion, self.cantidad, self.total_proforma_linea)
 
 	def getId_proforma_linea(self):
 		return self.id_proforma_linea
@@ -288,7 +288,7 @@ class Proforma(models.Model):
 	total_proforma = models.FloatField()
 	
 	def __str__(self):
-		return self.id_proforma
+		return 'Proforma: {}:{}:{}'.format(self.id_proforma, self.id_cliente.nombre, self.id_usuario.nombre)
 
 	@staticmethod  
 	def insertproforma(fecha_emision,fecha_caducidad,id_cliente,id_usuario,total_proforma):  
@@ -549,7 +549,7 @@ class Factura(models.Model):
 	@staticmethod  
 	def insertfactura(numero, fecha, id_cliente, id_usuario, total):  
 		cur = connection.cursor()  
-		cur.callproc('insertfacstura', [numero, fecha, id_cliente, id_usuario, total])  
+		cur.callproc('insertfactura', [numero, fecha, id_cliente, id_usuario, total])  
 		results = cur.fetchall() 
 		cur.close()
 		return results
@@ -599,12 +599,13 @@ class Facturalineas(models.Model):
 	id_producto = models.ForeignKey('Producto')
 	cantidad = models.IntegerField()
 	total_factura_linea = models.FloatField()
-
+	iva=models.FloatField()
+	descuento=models.FloatField()
 	#llamada a procedimiento almacenado
 	@staticmethod  
-	def insertfacturalineasUpdateStock(id_factura,id_producto,cantidad,total_factura_linea):  
+	def insertfacturalineasUpdateStock(id_factura,id_producto,cantidad ,iva,descuento,total_factura_linea):  
 		cur = connection.cursor()  
-		cur.callproc('insertfacturalineasUpdateStock', [id_factura,id_producto,cantidad,total_factura_linea])  
+		cur.callproc('insertfacturalineasUpdateStock', [id_factura,id_producto,cantidad,iva,descuento,total_factura_linea])  
 		cur.close()
 
 	def __str__(self): 

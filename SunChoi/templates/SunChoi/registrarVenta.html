@@ -66,7 +66,14 @@
 		</div>
 	</div>
 	{%if mjsexitoso %}
-		<div><h1>{{mjsexitoso}}</h1></div>
+		<div><p class="lead"><blockquote class= "text-center text-primary">{{mjsexitoso}}
+		{% if user.is_superuser %}
+      <a href="/menuglobal/" class="btn btn-primary">Atras</a>
+      {%else %}
+      <a href="/menuempleado/">Atras</a>
+      {%endif%}</blockquote>
+      </p>
+		</div>
 	{% endif %}
 	<div>
 		<table id="detalle" class="table table-bordered">
@@ -125,7 +132,13 @@
 	</div>
 	<div id="botonesFactura" >
 		<form id="formFactura" action="{% url 'SunChoi:ventaadd' %}">
-			<button type="submit" >Guardar</button><button>Cancelar</button>
+			<button type="submit" >Guardar</button>
+			{% if user.is_superuser %}
+      <a href="/menuglobal"><button>Cancelar</button></a>
+      {%else %}
+      <a href="/menuempleado/"><button>Cancelar</button></a>
+      {%endif%}
+			
 		</form>
 	</div>
 </div>
@@ -209,6 +222,7 @@
 		input.setAttribute("type","text");
 		input.setAttribute("form","formFactura");
 		input.setAttribute("id","desc"+nLinea);
+		input.setAttribute("name","desc"+nLinea);
 		input.setAttribute("style","width: 70px;");
 		input.setAttribute("onkeyup","totalLinea("+nLinea+")");
 		input.setAttribute("class","desc");
@@ -223,6 +237,7 @@
 		input.setAttribute("type","text");
 		input.setAttribute("form","formFactura");
 		input.setAttribute("id","iva"+nLinea);
+		input.setAttribute("name","iva"+nLinea);
 		input.setAttribute("style","width: 70px;");
 		input.setAttribute("readonly",true);
 		input.setAttribute("class","iva");
@@ -298,18 +313,6 @@
 		celdas = $("#"+id).find("td");
 		celdas.each(function(indice){
 			if(indice<celdas.length-1){
-				/*valorInput = $(this.children).val();
-				valorId = $(this.children).attr("id");
-				valorname = $(this.children).attr("name");
-				$(this.children).remove();
-				$(this).text(valorInput);
-				$(this).attr("id",valorId);
-				$(this).attr("name",valorname);
-				$(this).attr("form","formFactura");
-				if(indice == 5) this.setAttribute("class","desc");
-				if(indice == 6) this.setAttribute("class","iva");
-				if(indice == 7) this.setAttribute("class","totalLinea");
-				if(indice == 8) this.setAttribute("class","sinImpuesto");*/
 				$(this.children).attr("readonly",true);
 				$(this.children).attr("editando","no");
 				$(this.children).attr("style","font-weight: 600;font-style: italic;");
@@ -340,98 +343,6 @@
 				if(indice == 5) $(this.children).attr("editando","si");
 				if(indice == 1) $(this.children).attr("style","width: 500px;");
 				$(this.children).attr("style","");
-				/*valorInput = $(this).text();
-				valorId = $(this).attr("id");
-				this.removeAttribute("id");
-				this.removeAttribute("form");
-				$(this).text("");
-				//cantidad
-				if(indice == 0){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 62px;");
-					input.setAttribute("onkeyup","totalLinea("+id+")");
-					$(this).append(input);
-				}
-				//descripcion
-				else if(indice == 1){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 500px;");	
-					input.setAttribute("type","text");
-					input.setAttribute("list","productos");
-					input.setAttribute("onkeyup","totalLinea("+id+")");
-					input.setAttribute("onchange","llenarLinea(this.value,"+nLinea+")");
-					$(this).append(input);
-				}
-				//unidades
-				else if(indice == 2){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 70px;");
-					$(this).append(input);
-				}
-				//%iva
-				else if(indice == 3){
-					var select = document.createElement("SELECT");
-					var option = document.createElement("OPTION");
-					option.text = 12;
-					select.appendChild(option);
-					option = document.createElement("OPTION");
-					option.text = 0;
-					select.appendChild(option);
-					select.setAttribute("id","porciva"+id);
-					select.setAttribute("onchange","totalLinea("+id+")");
-					$(this).append(select);
-				}
-				//precio unitario
-				else if(indice == 4){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 70px;");
-					input.setAttribute("onkeyup","totalLinea("+id+")");
-					$(this).append(input);
-				}
-				//descuento
-				else if(indice == 5){					
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 70px;");
-					input.setAttribute("onkeyup","totalLinea("+id+")");
-					$(this).append(input);
-				}
-				//iva
-				else if(indice == 6){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 70px;");
-					input.setAttribute("disabled",true);
-					$(this).append(input);
-				}
-				//precio total linea
-				else if(indice == 7){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 80px;");
-					input.setAttribute("disabled",true);
-					$(this).append(input);
-				}
-				//precio total linea sin impuestos ni descuentos
-				else if(indice == 8){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 80px;");
-					input.setAttribute("disabled",true);
-					$(this).append(input);
-				}*/
 			}
 			else{
 				$("#editarLinea"+id).remove();

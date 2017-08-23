@@ -1,6 +1,6 @@
 {% extends "SunChoi/base.html" %}
 {% load static %}
-{% block title %} Editar {{tipo_objeto}} {% endblock %} 
+{% block title %} Ver {{tipo_objeto}} {% endblock %} 
 {% block extra-style %}
 <link href="{% static 'css/registrarVenta.css'  %}" rel="stylesheet">
 <link href="{% static 'css/formulario.css'  %}" rel="stylesheet">
@@ -19,8 +19,8 @@
                 <label class="col-md-12">R.U.C.: {{ company.ruc }}</label>
             </div>
             <div id="FacturaNumero"class="col-md-4">
-                <h2>Factura No.</h2>
-                <h3>{{ nFactura }}</h3>
+                <h2>{{tipo_objeto}}No.</h2>
+                <h3>{{ Factura.numero }}</h3>
             </div>
         </div>          
     </div>
@@ -52,9 +52,6 @@
             </div>
         </div>
     </div>
-    {%if mjsexitoso %}
-        <div><h1>{{mjsexitoso}}</h1></div>
-    {% endif %}
     <div>
         <table id="detalle" class="table table-bordered">
             <thead>
@@ -74,11 +71,11 @@
                     <tr>
                         <td>{{linea.cantidad}}</td>
                         <td>{{linea.id_producto.descripcion}}</td>
-                        <td>{{linea.id_producto.unidad}}</td>
+                        <td>{{linea.id_producto.medida}}</td>
                         <td></td>
                         <td>${{linea.id_producto.precio_unitario}}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{linea.descuento}}</td>
+                        <td>{{linea.iva}}</td>
                         <td>{{linea.total_factura_linea}}</td>
                     </tr>
                 {% empty %}
@@ -116,15 +113,13 @@
                 </tr>
                 <tr>
                     <th>Valor Total:</th>
-                    <td><input id="valorTotal" name="valorTotal" form="formFactura" type="text" readonly></td>
+                    <td><input id="valorTotal" name="valorTotal" form="formFactura" type="text" readonly placeholder="{{factura.total}}"></td>
                 </tr>   
             </table>
         </div>
     </div>
     <div id="botonesFactura" >
-        <form id="formFactura" action="{% url 'SunChoi:ventaadd' %}">
-            <button type="submit" >Guardar</button><button href="/lista{{tipo_objeto}}">Cancelar</button>
-        </form>
+            <a href="/lista{{tipo_objeto}}" class="btn btn-primary ">Atras</a>
     </div>
 </div>
 {% endblock %}

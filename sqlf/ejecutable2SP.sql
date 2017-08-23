@@ -85,7 +85,7 @@ delimiter ;
 -- Insertar nueva orden de COMPRA detalle y Actualiza el stock
 DROP PROCEDURE IF EXISTS insertordenlineasUpdateStock;
 delimiter #
-CREATE PROCEDURE insertordenlineasUpdateStock(id_orden int,id_productos int ,cantidad int ,total_orden_compra_linea float)
+CREATE PROCEDURE insertordenlineasUpdateStock(id_orden int,id_productos int ,cantidad int ,iva int ,descuento int,total_orden_compra_linea float)
 proc_main: BEGIN   	
     declare productostock int;
 
@@ -101,7 +101,7 @@ proc_main: BEGIN
 
     	set productostock = productostock + cantidad;
 
-		INSERT INTO SunChoi_ordencompralineas(id_orden_compra_id,id_producto_id,cantidad,total_orden_compra_linea) VALUES(id_orden,id_productos,cantidad,total_orden_compra_linea);
+		INSERT INTO SunChoi_ordencompralineas(id_orden_compra_id,id_producto_id,cantidad,iva,descuento,total_orden_compra_linea) VALUES(id_orden,id_productos,cantidad,iva,descuento,total_orden_compra_linea);
 		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
 	COMMIT;
 END proc_main #
@@ -145,7 +145,7 @@ delimiter ;
 -- Insertar nueva orden de factura detalle y Actualiza el stock
 DROP PROCEDURE IF EXISTS insertfacturalineasUpdateStock;
 delimiter #
-CREATE PROCEDURE insertfacturalineasUpdateStock(id_factura int,id_productos int ,cantidad int ,total_factura_linea float)
+CREATE PROCEDURE insertfacturalineasUpdateStock(id_factura int,id_productos int ,cantidad int ,iva float ,descuento float , total_factura_linea float)
 proc_main: BEGIN
     declare productostock int;
 
@@ -161,7 +161,7 @@ proc_main: BEGIN
 
     	set productostock = productostock - cantidad;
 
-		INSERT INTO SunChoi_facturalineas(id_factura_id,id_producto_id,cantidad,total_factura_linea) VALUES(id_factura,id_productos,cantidad,total_factura_linea);
+		INSERT INTO SunChoi_facturalineas(id_factura_id,id_producto_id,cantidad,iva,descuento,total_factura_linea) VALUES(id_factura,id_productos,cantidad,iva,descuento,total_factura_linea);
 		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
 	COMMIT;
 END proc_main #
@@ -184,6 +184,6 @@ DROP PROCEDURE IF EXISTS insertProformaLineas;
 delimiter #
 CREATE PROCEDURE insertProformaLineas(id_proforma int,id_producto int ,cantidad int , unidad nvarchar(200),total_proforma_linea float)
 proc_main: BEGIN
-	INSERT INTO SunChoi_proformalineas(id_orden_compra_id,id_producto_id,cantidad,unidad,total_proforma_linea) VALUES(id_orden,id_productos,cantidad,unidad,total_proforma_linea);
+	INSERT INTO SunChoi_proformalineas(id_proforma_id,id_producto_id,cantidad,unidad,total_proforma_linea) VALUES(id_proforma,id_producto,cantidad,unidad,total_proforma_linea);
 END proc_main #
 delimiter ;

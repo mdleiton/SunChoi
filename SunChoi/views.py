@@ -294,22 +294,17 @@ def ConsultaRapida(request):
 
 def RegistrarVenta(request):
     if request.user.is_authenticated:
-        if request.GET.get('nombrecliente'):
-            dnicliente=request.GET.get('dnicliente')
-            nombrecliente=request.GET.get('nombrecliente')
-            total=request.GET.get('valorTotal')  
+        if request.GET.get('nombrecliente'): 
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
-            fecha=str( datetime.datetime.now())
-            numero=request.GET.get('facturaN')           
-            idfactura=Factura.insertfactura(numero,fecha,dnicliente,idusuario,total)[0][0] 
+            fecha=str( datetime.datetime.now())         
+            idfactura=Factura.insertfactura(request.GET.get('facturaN') ,fecha,request.GET.get('dnicliente'),idusuario,request.GET.get('valorTotal'))[0][0] 
             cantfl=request.GET.get('nLineas').split(':')
             for i in cantfl:
                 idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
-                Facturalineas.insertfacturalineasUpdateStock(idfactura,idproducto,request.GET.get('cantidad'+i),request.GET.get('pretot'+i))  
-            #aqui actualizar total factura
+                Facturalineas.insertfacturalineasUpdateStock(idfactura,idproducto,request.GET.get('cantidad'+i),request.GET.get('iva'+i),request.GET.get('desc'+i),request.GET.get('pretot'+i))  
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+            return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"Se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
         else:
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
@@ -320,13 +315,12 @@ def RegistrarVenta(request):
 def Factura_lista(request):
     if request.user.is_authenticated:
         facturas = Factura.objects.all()
-        facturalineas=Facturalineas.objects.all()
-        return render(request,'SunChoi/venta_lista.html',{'fl':facturalineas,'object_list': facturas,'tipo_objeto':"factura"})
+        return render(request,'SunChoi/venta_lista.html',{'object_list': facturas,'tipo_objeto':"factura"})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
 def Factura_ver(request, item):
-    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+    if request.user.is_authenticated :
         factura = get_object_or_404(Factura, pk=item)
         form = FacturaForm(request.POST or None, instance=factura)
         if form.is_valid():
@@ -334,7 +328,7 @@ def Factura_ver(request, item):
             return redirect('SunChoi:factura_lista')
         fp=form.save(commit=False)
         facturalineas=Facturalineas.objects.filter(id_factura=fp.id_factura)
-        return render(request, 'SunChoi/actualizar_form_compuesto.html', {'factura':factura,'fllista':facturalineas, 'tipo_objeto':"factura",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+        return render(request, 'SunChoi/ver_form_compuesto.html', {'factura':factura,'fllista':facturalineas, 'tipo_objeto':"factura",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -372,19 +366,14 @@ def cotizaciones(request):
 def RegistrarCotizacion(request):
     if request.user.is_authenticated:
         if request.GET.get('nombrecliente'):
-            dnicliente=request.GET.get('dnicliente')
-            nombrecliente=request.GET.get('nombrecliente')
-            total=request.GET.get('valorTotal') 
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
             fecha_emision=str( datetime.datetime.now())
-            fecha_caducidad= str( date.today()+timedelta(days=7) )
-            numero=request.GET.get('facturaN')           
-            
-            idProforma=Proforma.insertproforma(fecha_emision,fecha_caducidad,dnicliente,idusuario,total)[0][0] 
+            fecha_caducidad= str( date.today()+timedelta(days=7))   
+            idProforma=Proforma.insertproforma(fecha_emision,fecha_caducidad,request.GET.get('dnicliente'),idusuario,request.GET.get('valorTotal'))[0][0] 
             cantfl=request.GET.get('nLineas').split(':')
             for i in cantfl:
                 idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
-                ProformaLineas.insertProformaLineas(idProforma,idproducto,request.GET.get('cantidad'+i),request.GET.get('unidad'+i),request.GET.get('pretot'+i))  
+                ProformaLineas.insertProformaLineas(idProforma,idproducto,request.GET.get('cantidad'+i),request.GET.get('unidades'+i),request.GET.get('pretot'+i))  
             #aqui actualizar total factura
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
