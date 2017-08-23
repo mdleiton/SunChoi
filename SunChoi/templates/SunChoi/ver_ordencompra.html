@@ -1,0 +1,125 @@
+{% extends "SunChoi/base.html" %}
+{% load static %}
+{% block title %} Ver {{tipo_objeto}} {% endblock %} 
+{% block extra-style %}
+<link href="{% static 'css/registrarVenta.css'  %}" rel="stylesheet">
+<link href="{% static 'css/formulario.css'  %}" rel="stylesheet">
+{% endblock %}
+{% block content %} 
+<div class="container" id="factura">
+    <div id="cabecera">
+        <div class="row" id="contenidoCabecera">
+            <div id="contenidoCabecera1" class="col-md-4">
+                <img class="img-responsive" src="{% static 'img/logoSunChoi.jpg' %}">
+            </div>
+
+            <div id="contenidoCabecera2" class="col-md-4">
+                <label class="col-md-12">Dir. Matriz: {{ company.dir }}</label>
+                <label class="col-md-12">Dir. Sucursal: {{ company.suc }}</label>
+                <label class="col-md-12">R.U.C.: {{ company.ruc }}</label>
+            </div>
+            <div id="FacturaNumero"class="col-md-4">
+                <h2>{{tipo_objeto}}No.</h2>
+                <h3>{{ ordencompra.numero }}</h3>
+            </div>
+        </div>          
+    </div>
+    <!-- datos para facturacion  electrónica>
+    <div id="datosSecundarios" class="row">
+        <div id="contenidoDatosSecundarios">
+            <div id="datosFactura" class="col-md-6">
+                <p>Ambiente: </p>
+                <p>Emision: </p>
+                <p>Numero de Autorizacion: </p>
+            </div>
+            <div id="datosFactura" class="col-md-6">
+                <p>Fecha de Emisión: </p>
+                <p>Clave de Acceso: </p>
+            </div>
+        </div>
+    </div>
+    <-->
+
+    <div id="datosComprador" class="row">
+        <div id = "contenidoDatosComprador">
+            <div id="RasonSocial" class="col-md-6">
+                <label>Razon social / Nombre Proveedor: </label>
+                <label>{{ordencompra.id_proveedor.razon_social}}</label>
+            <div id="DNI" class="col-md-6">
+                <label>Direccion: </label>
+                <label>{{ordencompra.id_proveedor.direccion}}</label>
+            
+            </div>
+        </div>
+    </div>
+    <div>
+        <table id="detalle" class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Cantidad</th>
+                <th>Descripcion</th>
+                <th>Unidades</th>
+                <th>%IVA</th>
+                <th>Precio unitario</th>
+                <th>Descuento</th>
+                <th>IVA</th>
+                <th>Precio Total</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyLineas">
+                {% for linea in ollista %}
+                    <tr>
+                        <td>{{linea.cantidad}}</td>
+                        <td>{{linea.id_producto.descripcion}}</td>
+                        <td>{{linea.id_producto.medida}}</td>
+                        <td></td>
+                        <td>${{linea.id_producto.precio_unitario}}</td>
+                        <td>{{linea.descuento}}</td>
+                        <td>{{linea.iva}}</td>
+                        <td>{{linea.total_orden_compra_linea}}</td>
+                    </tr>
+                {% empty %}
+                    <td>Nada que mostrar</td>
+                {% endfor %}
+            </tbody>
+          </table>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <div id="botonesFacturaLineas" class="col-md-12">
+            </div>
+            <div id="comentarios" class="col-md-12">
+                <div id="contenidoComentariosTexto">
+                    <textarea id="comentarioInput" rows="6" cols="85" placeholder="escribir comentario"></textarea>
+                </div>
+                <div id="contenidoComentariosLeyenda">                  
+                    Comentarios
+                </div>
+            </div>
+        </div>
+        <div  class="col-md-4" id="totales">
+            <table id="totalesTabla" class="table table-bordered">              
+                <tr>
+                    <th>Subtotal sin Impuestos:</th>
+                    <td><input id="subtotalSinImpuestos" name="subtotalSinImpuestos" form="formFactura" type="text" readonly></td>
+                </tr>   
+                <tr>
+                    <th>Total Descuento:</th>
+                    <td><input id="totalDescuento" name="totalDescuento" form="formFactura" type="text" readonly></td>
+                </tr>
+                <tr>
+                    <th>IVA 12%:</th>
+                    <td><input id="iva" name="iva" form="formFactura" type="text" readonly></td>
+                </tr>
+                <tr>
+                    <th>Valor Total:</th>
+                    <td><input id="valorTotal" name="valorTotal" form="formFactura" type="text" readonly placeholder="{{ordencompra.total}}"></td>
+                </tr>   
+            </table>
+        </div>
+    </div>
+    <div id="botonesFactura" >
+            <a href="/lista{{tipo_objeto}}" class="btn btn-primary ">Atras</a>
+    </div>
+</div>
+{% endblock %}

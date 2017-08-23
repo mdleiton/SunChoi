@@ -364,12 +364,13 @@ def OrdenCompra_lista(request):
         return render_to_response('SunChoi/nopermitido.html')
 
 
-def Ordencompra_ver(request):
-    if request.user.is_authenticated:
-        ordencompras = OrdenCompra.objects.all()
-        return render(request,'SunChoi/orden_lista.html',{'object_list': ordencompras,'tipo_objeto':"ordencompra"})
+def Ordencompra_ver(request,item):
+    if request.user.is_authenticated :
+        ordencompra = get_object_or_404(OrdenCompra,pk=item)
+        ordenlineas=Ordencompralineas.objects.filter(id_orden_compra=item)
+        return render(request, 'SunChoi/ver_ordencompra.html', {'ordencompra':ordencompra,'ollista':ordenlineas, 'tipo_objeto':"ordencompra",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
     else:
-        return render_to_response('SunChoi/nopermitido.html')
+        return render(request,'SunChoi/nopermitido.html')
 
 def cotizaciones(request):
     if (request.user.is_authenticated):
