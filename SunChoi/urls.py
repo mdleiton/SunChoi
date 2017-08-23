@@ -41,12 +41,16 @@ urlpatterns = [
 
     #operaciones
     url(r'^bajostock/$', views.ConsultaRapida, name='consulta_rapida'),
+    
     #ventas
     url(r'^registrarventa/$', views.RegistrarVenta,name="ventaadd"),
     url(r'^listafactura/$', views.Factura_lista,name="factura_lista"),
     url(r'^verfactura/(?P<item>\d+)$', views.Factura_ver, name='factura_ver'),
     
+    #ordendecompras
     url(r'^registrarordencompras/$', views.RegistrarOrdenCompra,name="ordenadd"),
+    url(r'^listaordencompra/$', views.OrdenCompra_lista,name="listaordencompra_lista"),
+    url(r'^verordencompra/(?P<item>\d+)$', views.Ordencompra_ver, name='ordencompra_ver'),
 
     url(r'^cotizaciones/$', views.cotizaciones,name="cot"),
     url(r'^registrarcotizacion/$', views.RegistrarCotizacion,name="cotizacionadd"),

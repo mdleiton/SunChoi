@@ -74,9 +74,9 @@ delimiter ;
 -- Insertar nueva orden de compra
 DROP PROCEDURE IF EXISTS insertordencompra;
 delimiter #
-CREATE PROCEDURE insertordencompra(numero int, fecha dateTime, id_usuario int, id_proveedor int)
+CREATE PROCEDURE insertordencompra(numero int, fecha dateTime, id_usuario int, id_proveedor int, total float)
 proc_main: BEGIN
-	INSERT INTO SunChoi_ordencompra(numero,fecha,id_usuario_id,id_proveedor_id)  VALUES(numero,fecha,id_usuario,id_proveedor);
+	INSERT INTO SunChoi_ordencompra(numero,fecha,id_usuario_id,id_proveedor_id,total)  VALUES(numero,fecha,id_usuario,id_proveedor,total);
 	select max(o.id_orden_compra) from SunChoi_ordencompra o;
 END proc_main #
 delimiter ;
