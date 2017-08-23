@@ -19,7 +19,14 @@
 			{% csrf_token %}
 			{{ form.as_p }}
 		</div>
-        <center><input class="btn btn-primary" type="submit" value="Añadir Cliente" /></center>
+        <br/><br/>
+        <div class="row">
+            <div class="col-lg-12 text-center" >
+                <input class="btn btn-primary" type="submit" value="Añadir Cliente" />
+                <a class="btn btn-primary btn-danger" href="/menuglobal">cancelar/atras</a>
+            </div>
+        </div>
+        
         {% if error %}
             <h2>{{error }}</h2>
         {% endif %} 
