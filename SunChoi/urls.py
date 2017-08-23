@@ -52,4 +52,6 @@ urlpatterns = [
 
     #cotizaciones
     url(r'^registrarcotizacion/$', views.RegistrarCotizacion,name="cotizacionadd"),
+    url(r'^listaproforma/$', views.Proforma_lista,name="proforma_lista"),
+    url(r'^verproforma/(?P<item>\d+)$', views.Proforma_ver, name='proforma_ver'),
 ]

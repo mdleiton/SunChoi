@@ -393,3 +393,19 @@ def RegistrarCotizacion(request):
             return render(request,'SunChoi/registrarCotizaciones.html', {'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
     else:
         return render_to_response('SunChoi/nopermitido.html')
+
+def Proforma_lista(request):
+    if request.user.is_authenticated:
+        proformas = Proforma.objects.all()
+        return render(request,'SunChoi/proforma_lista.html',{'object_list': proformas,'tipo_objeto':"proforma"})
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
+
+
+def Proforma_ver(request,item):
+    if request.user.is_authenticated :
+        proforma = get_object_or_404(Proforma,pk=item)
+        proformalineas=ProformaLineas.objects.filter(id_proforma=item)
+        return render(request, 'SunChoi/ver_proforma.html', {'proforma':proforma,'pllista':proformalineas, 'tipo_objeto':"proforma",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+    else:
+        return render(request,'SunChoi/nopermitido.html')

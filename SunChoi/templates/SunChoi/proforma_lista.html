@@ -1,6 +1,6 @@
 {% extends "SunChoi/base.html" %}
 {% load static %}
-
+{% block title %} Lista de Proformas {% endblock %} 
 {% block extra-style %}
 <link href="{% static 'css/consultaRapida.css'  %}" rel="stylesheet">
 {% endblock %}
@@ -9,11 +9,11 @@
 
 <div class="row">
   <div class="col-md-7 col-sm-7 ">
-    {% block tipo %}tipo objeto(modelos){% endblock %}   
+   <h3 class="bock-center text-center">Proformas</h3>
   </div>
   <div id="search" class="col-md-4 col-sm-4 container-fluid">
     <div class="bock-center text-center">
-      {% if user.is_superuser %}
+       {% if user.is_superuser %}
       <a type="button" href="/menuglobal/" class="col-md-4 btn btn-primary block-center">Atras</a>
       {%else %}
       <a type="button" href="/menuempleado/" class="col-md-4 btn btn-primary block-center">Atras</a>
@@ -30,33 +30,37 @@
       {% csrf_token %}
       Esta seguro que desea eliminar <strong >"{{ object }} " </strong> ?
       <input type="submit" class="btn btn-primary btn-sm" value="Eliminar" />
-      <a class="btn btn-primary btn-danger btn-sm" href="/lista{{tipo_objeto}}">cancelar</a>
+      <a class="btn btn-primary btn-danger btn-sm" href="/lista{{tipo_objeto}}/">cancelar</a>
     </form>    
   </div>
 {% endif %}
   <table id="productos" class="table table-striped table-hover table-responsive">
     <thead class="text-center">
-      <tr>
-        {% block encabezadotablas %}
-        {% endblock %}s
-        <th>EDITAR</th>
-        <th>ELIMINAR</th>
+      <tr class="text-center">
+        <th>N°          </th>
+        <th>CLIENTE       </th>
+        <th>USUARIO </th>
+        <th>FECHA DE EMISION     </th>
+        <th>FECHA DE CADUCIDAD </th>
+        <th>TOTAL PROFORMA </th>
+        <th class="text-center">DETALLE PROFORMA</th>
       </tr>
     </thead>
     <tbody>
     {% for registro in object_list %}
       <tr>
-        {%block elementostablas%}
-        default elementos tablas
-        {% endblock %}
-        <td><a class="btn btn-primary" {% block hrefeditar %} {% endblock%} 
-          value="Editar" class="btn btn-primary btn-sm"  >editar</a></td>
-       <td><a class="btn btn-primary btn-danger" {% block hrefeliminar %} {% endblock%} value="Eliminar" class="btn btn-primary btn-sm"  >Eliminar</a></td>
-      
+         <td>{{ forloop.counter     }}</td>
+          <td>{{ registro.id_cliente}}</td>
+          <td>{{ registro.id_usuario}}</td>
+          <td>{{ registro.fecha_emision   }}</td>
+          <td>{{ registro.fecha_caducidad    }}</td>
+          <td>{{ registro.total_proforma    }}</td>
+        <td><a class="btn btn-primary" href="{% url 'SunChoi:proforma_ver'  registro.id_proforma %}"
+          value="Editar" class="btn btn-primary btn-sm text-center"  >Ver detalle Proforma</a></td> 
       </tr>
     {% empty %}
       <tr>
-        <td>NO existe informacion que presentar..</td>
+        <td>NO existe informacion que presentar.</td>
       </tr>
     {% endfor %}
     </tbody>
