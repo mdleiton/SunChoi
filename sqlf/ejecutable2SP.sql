@@ -1,3 +1,43 @@
+-- --------------------------------------------------------------------------
+-- Inserta un nuevo inserrlog
+DROP PROCEDURE IF EXISTS insertlog;
+delimiter #
+CREATE PROCEDURE insertlog(idroles int ,idusuario int,  fecha dateTime, cantidad int)   
+proc_main: BEGIN  
+    INSERT INTO SunChoi_log(idroles_id,idusuario_id,fecha,cantidad) VALUES(idroles,idusuario,fecha,cantidad);
+END proc_main #
+delimiter ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 -- --------------------------------------P--R--O--V--E--E--D--O--R----------------------------------------
 -- Inserta un nuevo proveedor
 DROP PROCEDURE IF EXISTS insertproveedores;

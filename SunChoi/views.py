@@ -11,6 +11,14 @@ from django.utils import timezone
 import datetime
 from datetime import timedelta, date
 
+def Log_lista(request):
+    if request.user.is_authenticated:
+        logs = log.objects.all()
+        return render(request,'SunChoi/log_lista.html',{'object_list': logs,'tipo_objeto':"log"})
+    else:
+        return render_to_response('SunChoi/nopermitido.html')
+
+
 #vistas generales
 def login(request):
     if request.method == 'POST':
@@ -283,6 +291,20 @@ def ConsultaRapida(request):
         if request.GET.get('minimo'):
             minimo = request.GET['minimo']
             if minimo.isdigit():
+                #adicional
+                '''
+                fecha=str( datetime.datetime.now())
+                usuario=Usuario.objects.filter(usuario=request.user)[0]
+                idrol=Usuariorol.objects.filter(id_usuario=usuario)[0].id_rol
+                registrolog=log(idroles=idrol,idusuario=usuario, fecha=fecha,cantidad=minimo )  
+                registrolog.save()'''
+                fecha=str( datetime.datetime.now())
+                usuario=Usuario.objects.filter(usuario=request.user)[0]
+                idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
+                idrol=Usuariorol.objects.filter(id_usuario=usuario)[0].id_rol.id_rol
+                log.insertlog(idrol,idusuario,fecha,minimo)
+                #registrolog=log(idroles=idrol,idusuario=usuario, fecha=fecha,cantidad=minimo )  
+                #adicional 
                 results = Producto.bajostock(minimo)
                 return render(request,'SunChoi/consultaRapida.html',{'lista':results,"minimo": minimo})
             else:

@@ -3,6 +3,23 @@ from django.contrib.auth.models import User
 from django.db import models,connection
 from django.utils import timezone
 
+class log(models.Model):
+	idlog=models.AutoField(primary_key=True)
+	idroles=models.ForeignKey('Roles')
+	idusuario=models.ForeignKey('Usuario')
+	fecha=models.DateTimeField()
+	cantidad=models.IntegerField()
+
+	def __str__(self): 
+		return 'log: {}:{}:{}'.format(self.idlog, self.idusuario.nombre,self.idroles)
+	
+	@staticmethod  
+	def insertlog(idroles_id,idusuario_id,fecha,cantidad):  
+		cur = connection.cursor()  
+		cur.callproc('insertlog', [idroles_id,idusuario_id,fecha,cantidad])  
+		cur.close()
+	
+
 class Proveedores(models.Model):
 	id_proveedor = models.AutoField(primary_key=True)
 	razon_social = models.CharField(max_length=200)
