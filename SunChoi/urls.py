@@ -38,8 +38,6 @@ urlpatterns = [
     
     #reportes
     url(r'^inventario/$', views.Inventario,name="inventario"),
-
-    #operaciones
     url(r'^bajostock/$', views.ConsultaRapida, name='consulta_rapida'),
     
     #ventas
@@ -52,6 +50,6 @@ urlpatterns = [
     url(r'^listaordencompra/$', views.OrdenCompra_lista,name="listaordencompra_lista"),
     url(r'^verordencompra/(?P<item>\d+)$', views.Ordencompra_ver, name='ordencompra_ver'),
 
-    url(r'^cotizaciones/$', views.cotizaciones,name="cot"),
+    #cotizaciones
     url(r'^registrarcotizacion/$', views.RegistrarCotizacion,name="cotizacionadd"),
 ]

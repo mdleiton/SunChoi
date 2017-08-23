@@ -244,13 +244,14 @@ class ProformaLineas(models.Model):
 	id_proforma = models.ForeignKey('Proforma')
 	id_producto = models.ForeignKey('Producto')
 	cantidad = models.FloatField()
-	unidad = models.CharField(max_length=200)
+	iva=models.FloatField()
+	descuento=models.FloatField()
 	total_proforma_linea = models.FloatField()
 
 	@staticmethod  
-	def insertProformaLineas(id_proforma,id_producto,cantidad,unidad,total_proforma_linea):  
+	def insertProformaLineas(id_proforma,id_producto,cantidad,iva,descuento,total_proforma_linea):  
 		cur = connection.cursor()  
-		cur.callproc('insertProformaLineas', [id_proforma,id_producto,cantidad,unidad,total_proforma_linea])  
+		cur.callproc('insertProformaLineas', [id_proforma,id_producto,cantidad,iva,descuento,total_proforma_linea])  
 		cur.close()
 
 	def __str__(self):

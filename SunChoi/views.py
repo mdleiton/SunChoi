@@ -372,12 +372,7 @@ def Ordencompra_ver(request,item):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
-def cotizaciones(request):
-    if (request.user.is_authenticated):
-        return render(request,'SunChoi/cotizaciones.html')
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
+#cotizaciones
 def RegistrarCotizacion(request):
     if request.user.is_authenticated:
         if request.GET.get('nombrecliente'):
@@ -388,11 +383,10 @@ def RegistrarCotizacion(request):
             cantfl=request.GET.get('nLineas').split(':')
             for i in cantfl:
                 idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
-                ProformaLineas.insertProformaLineas(idProforma,idproducto,request.GET.get('cantidad'+i),request.GET.get('unidades'+i),request.GET.get('pretot'+i))  
-            #aqui actualizar total factura
+                ProformaLineas.insertProformaLineas(idProforma,idproducto,request.GET.get('cantidad'+i),request.GET.get('iva'+i),request.GET.get('desc'+i),request.GET.get('pretot'+i))  
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarCotizaciones.html',{'mjsexitoso':"se registro con exito la cotizacion. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+            return render(request,'SunChoi/registrarCotizaciones.html',{'mjsexitoso':"Se registró con exito la cotización. Puede ingresar otra cotización",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
         else:
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            

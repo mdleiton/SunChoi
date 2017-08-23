@@ -32,7 +32,7 @@
 				<label class="col-md-12">R.U.C.: {{ company.ruc }}</label>
 			</div>
 			<div id="FacturaNumero"class="col-md-4">
-				<h2>Factura No.</h2>
+				<h2>Cotizacion No.</h2>
 				<h3><input  placeholder="026022000" name="facturaN" form="formFactura" required></h3>
 				<input id="nLineas" name="nLineas" form="formFactura" style="visibility: hidden" readonly >
 			</div>
@@ -66,7 +66,14 @@
 		</div>
 	</div>
 	{%if mjsexitoso %}
-		<div><h1>{{mjsexitoso}}</h1></div>
+		<div><p class="lead"><blockquote class= "text-center text-primary">{{mjsexitoso}}
+		{% if user.is_superuser %}
+      		<a href="/menuglobal/" class="btn btn-primary">Atras</a>
+      	{%else %}
+      		<a href="/menuempleado/">Atras</a>
+      	{%endif%}</blockquote>
+      		</p>
+		</div>
 	{% endif %}
 	<div>
 		<table id="detalle" class="table table-bordered">
@@ -125,7 +132,12 @@
 	</div>
 	<div id="botonesFactura" >
 		<form id="formFactura" action="{% url 'SunChoi:cotizacionadd' %}">
-			<button type="submit" >Guardar</button><button>Cancelar</button>
+			<button type="submit" >Guardar</button>
+			{% if user.is_superuser %}
+			  <a href="/menuglobal"><button>Cancelar</button></a>
+			{%else %}
+			  <a href="/menuempleado/"><button>Cancelar</button></a>
+			{%endif%}
 		</form>
 	</div>
 </div>
@@ -198,6 +210,7 @@
 		input.setAttribute("type","text");
 		input.setAttribute("form","formFactura");
 		input.setAttribute("id","preUni"+nLinea);
+		input.setAttribute("name","preUni"+nLinea);
 		input.setAttribute("style","width: 70px;");
 		input.setAttribute("onkeyup","totalLinea("+nLinea+")");
 		input.value = 0;
@@ -209,6 +222,7 @@
 		input.setAttribute("type","text");
 		input.setAttribute("form","formFactura");
 		input.setAttribute("id","desc"+nLinea);
+		input.setAttribute("name","desc"+nLinea);
 		input.setAttribute("style","width: 70px;");
 		input.setAttribute("onkeyup","totalLinea("+nLinea+")");
 		input.setAttribute("class","desc");
@@ -223,6 +237,7 @@
 		input.setAttribute("type","text");
 		input.setAttribute("form","formFactura");
 		input.setAttribute("id","iva"+nLinea);
+		input.setAttribute("name","iva"+nLinea);
 		input.setAttribute("style","width: 70px;");
 		input.setAttribute("readonly",true);
 		input.setAttribute("class","iva");

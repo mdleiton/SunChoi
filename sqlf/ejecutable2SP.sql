@@ -182,8 +182,8 @@ delimiter ;
 -- Insertar nueva orden de PROFORMA detalle
 DROP PROCEDURE IF EXISTS insertProformaLineas;
 delimiter #
-CREATE PROCEDURE insertProformaLineas(id_proforma int,id_producto int ,cantidad int , unidad nvarchar(200),total_proforma_linea float)
+CREATE PROCEDURE insertProformaLineas(id_proforma int,id_producto int ,cantidad int ,iva float,descuento float,total_proforma_linea float)
 proc_main: BEGIN
-	INSERT INTO SunChoi_proformalineas(id_proforma_id,id_producto_id,cantidad,unidad,total_proforma_linea) VALUES(id_proforma,id_producto,cantidad,unidad,total_proforma_linea);
+	INSERT INTO SunChoi_proformalineas(id_proforma_id,id_producto_id,cantidad,iva,descuento,total_proforma_linea) VALUES(id_proforma,id_producto,cantidad,iva,descuento,total_proforma_linea);
 END proc_main #
 delimiter ;
