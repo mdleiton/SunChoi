@@ -14,6 +14,11 @@
         		<H1 class="text-center">Consultar lista de producto con stock menor a : </H1>
         		<H1 class="text-center"> {{error}}</H1>
         		<button id="consultar" href="/bajostock/" class="btn btn-primary btn-block center-block" type="submit">Nuevo Consulta</button>
+        		{% if user.is_superuser %}
+		      		<a type="button" href="/menuglobal/" class="col-md-2 btn btn btn-primary btn-danger block-center">Atras</a>
+		      	{%else %}
+		      		<a type="button" href="/menuempleado/" class="col-md-2 btn btn btn-primary btn-danger block-center">Atras</a>
+		      	{%endif%}
         		<br/><br/>
         	{% else %}
             	<H1 class="text-center">Consultar lista de producto con stock menor a {{ minimo }}: </H1>
@@ -46,9 +51,9 @@
 				<div class="bock-center text-center">
 				<!--<div class="col-md-8"> </div>-->
 					{% if user.is_superuser %}
-			      		<a type="button" href="/menuglobal/" class="col-md-2 btn btn btn-primary btn-danger block-center">Atras</a>
+			      		<a type="button" href="/menuglobal/" class="col-md-2 btn btn-primary btn-danger block-center">Menu</a>
 			      	{%else %}
-			      		<a type="button" href="/menuempleado/" class="col-md-2 btn btn btn-primary btn-danger block-center">Atras</a>
+			      		<a type="button" href="/menuempleado/" class="col-md-2 btn btn btn-primary btn-danger block-center">Menu</a>
 			      	{%endif%}
 					<a type="button" href="/bajostock" class="col-md-4 btn btn-primary">Nueva Consulta</a>
 					<br>

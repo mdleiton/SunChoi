@@ -1,7 +1,7 @@
 -- Usuario
-INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13567',1,'mau','leiton','data de villamil' , '234567','mau_leiton@espol.edu.ec');
-INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('12345',2,'sun','Aguirre','data de guayaquil' , '223424','lu_la@espol.edu.ec');
-INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13537',3,'byr','povea','data de villamil' , '234567','bpovea@espol.edu.ec');
+-- INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13567',1,'mau','leiton','data de villamil' , '234567','mau_leiton@espol.edu.ec');
+-- INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('12345',2,'sun','Aguirre','data de guayaquil' , '223424','lu_la@espol.edu.ec');
+-- INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13537',3,'byr','povea','data de villamil' , '234567','bpovea@espol.edu.ec');
 -- Roles
 INSERT INTO SunChoi_roles(rol,descripcion) values('administrador','Maneja la app en su totalidad, tiene acceso a todas las funcionalidades implementadas en la app.');
 INSERT INTO SunChoi_roles(rol,descripcion) values('empleado','Acceso limitado, ventas, cotizaciones y poco mas.');
@@ -92,4 +92,5 @@ INSERT INTO SunChoi_producto(nombre,descripcion,precio_unitario,medida,stock,pro
 INSERT INTO SunChoi_producto(nombre,descripcion,precio_unitario,medida,stock,proveedor_id) VALUES('CUADERNO','CUADERNO UNIVERSITARIO 100 HOJAS CUADROS',1.5,'UND',18,1);
 INSERT INTO SunChoi_producto(nombre,descripcion,precio_unitario,medida,stock,proveedor_id) VALUES('CUADERNO','CUADERNO UNIVERSITARIO 100 HOJAS 2 LINEAS',1.5,'UND',13,1);
 INSERT INTO SunChoi_producto(nombre,descripcion,precio_unitario,medida,stock,proveedor_id) VALUES('CUADERNO','CUADERNO UNIVERSITARIO 100 HOJAS 1 LINEA',1.5,'UND',1,1);
+
 

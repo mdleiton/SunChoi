@@ -97,8 +97,8 @@
 	<div class="row">
 		<div class="col-md-8">
 			<div id="botonesFacturaLineas" class="col-md-12">
-				<button id="agregar" onclick="agregarLinea()">Agregar linea</button>
-				<button onclick="totales(1)">Generar Totales</button>
+				<button id="agregar" onclick="agregarLinea()" class="btn btn-primary btn block-center">Agregar linea</button>
+				<button onclick="totales(1)" class="btn btn-primary btn block-center">Generar Totales</button>
 			</div>
 			<div id="comentarios" class="col-md-12">
 				<div id="contenidoComentariosTexto">
@@ -132,9 +132,9 @@
 	</div>
 	<div id="botonesFactura" >
 		<form id="formFactura" action="{% url 'SunChoi:ventaadd' %}">
-			<button type="submit" >Guardar</button>
+			<button type="submit" class="btn btn-primary btn block-center">Guardar</button>
 		</form>
-  		<a href="/facturas"><button>Cancelar</button></a>
+  		<a href="/facturas"><button class="btn btn-primary btn-danger block-centerr">Cancelar</button></a>
 	</div>
 </div>
 <script>
