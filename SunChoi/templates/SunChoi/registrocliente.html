@@ -20,11 +20,14 @@
 			{{ form.as_p }}
 		</div>
         <br/><br/>
-        <div class="row">
-            <div class="col-lg-12 text-center" >
-                <input class="btn btn-primary" type="submit" value="Añadir Cliente" />
-                <a class="btn btn-primary btn-danger" href="/menuglobal">cancelar/atras</a>
-            </div>
+        <div class="bock-center text-center">
+            <center><input class="btn btn-primary" type="submit" value="Añadir Cliente" />
+            {% if user.is_superuser %}
+            <a type="button" href="/clientes/" class="btn btn-primary btn-danger">Cancelar</a>
+            {%else %}
+            <a type="button" href="/menuempleado/" class="btn btn-primary btn-danger">Cancelar</a>
+            {%endif%}
+            </center>
         </div>
         
         {% if error %}

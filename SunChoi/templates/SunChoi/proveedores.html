@@ -1,0 +1,35 @@
+{% extends "SunChoi/base_lista.html" %}
+{% load static %}
+
+{% block title %} Lista de Cambios en Proveedores{% endblock %} 
+
+{% block tipo %}<h3 class="bock-center text-center" style="font-weight: bold;">Proveedores</h3>{% endblock %}
+
+{% block registrar %}
+<a type="button" href="/registrarproveedor/" class="col-md-4 btn btn-primary btn block-center">Registrar Nuevo</a>
+{% endblock %}
+
+
+{%block encabezadotablas%}
+  <th>N°          </th>
+  <th>RAZON SOCIAL     </th>
+  <th>DIRECCION </th>
+  <th>TELEFONO       </th>
+  <th>EMAIL </th>
+{% endblock %}
+
+{%block elementostablas%}
+  <td>{{ forloop.counter        }}</td>
+  <td>{{ registro.razon_social        }}</td>
+  <td>{{ registro.direccion   }}</td>
+  <td>{{ registro.telefono}} </td>
+  <td>{{registro.email}}</td>
+{% endblock %}
+
+{% block hrefeditar %} 
+  href="{% url 'SunChoi:proveedor_editar'  registro.id_proveedor %}" 
+{% endblock%}
+
+{% block hrefeliminar %} 
+  href="{% url 'SunChoi:proveedor_eliminar' registro.id_proveedor  %}" 
+{% endblock%}

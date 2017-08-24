@@ -38,11 +38,24 @@
     </div> 
 {% else %}
     <br/>
-		<div id="search" class="row">
-			<div class="col-md-8"> </div>
-			<a type="button" href="/bajostock" class="col-md-2 btn btn-primary">Nueva Consulta</a>
-			<input class="col-md-2"type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
-		</div>
+		<div  class="row">
+			<div class="col-md-7 col-sm-7 " style="color: #404046;">
+    			<h3 class="bock-center text-center" >Consulta Rapida con un Stock Minimo</h3>
+  			</div>
+			<div id="search" class="col-md-4 col-sm-4 container-fluid">
+				<div class="bock-center text-center">
+				<!--<div class="col-md-8"> </div>-->
+					{% if user.is_superuser %}
+			      		<a type="button" href="/menuglobal/" class="col-md-2 btn btn btn-primary btn-danger block-center">Atras</a>
+			      	{%else %}
+			      		<a type="button" href="/menuempleado/" class="col-md-2 btn btn btn-primary btn-danger block-center">Atras</a>
+			      	{%endif%}
+					<a type="button" href="/bajostock" class="col-md-4 btn btn-primary">Nueva Consulta</a>
+					<br>
+					<br>
+					<input class="col-md-6"type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
+				</div>
+			</div>
         <div class="container">
         
 			<table id="productos" class="table table-striped">

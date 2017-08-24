@@ -29,8 +29,6 @@ admin.site.register(Cliente,ClienteAdmin)
 admin.site.register(Proforma)
 admin.site.register(ProformaLineas)
 admin.site.register(OrdenCompra)
-admin.site.register(log)
-
 
 
 

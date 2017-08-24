@@ -1,6 +1,6 @@
 {% extends "SunChoi/base.html" %}
 {% load static %}
-
+{% block title %} Lista de Proformas {% endblock %} 
 {% block extra-style %}
 <link href="{% static 'css/consultaRapida.css'  %}" rel="stylesheet">
 {% endblock %}
@@ -8,16 +8,17 @@
 {% block content %}
 
 <div class="row">
-  <div class="col-md-7 col-sm-7 ">
-   <h3 class="bock-center text-center">LOGS</h3>
+  <div class="col-md-7 col-sm-7 " style="color: #404046;">
+   <h3 class="bock-center text-center" style="font-weight: bold;" >Proformas</h3>
   </div>
   <div id="search" class="col-md-4 col-sm-4 container-fluid">
     <div class="bock-center text-center">
-       {% if user.is_superuser %}
-      <a type="button" href="/menuglobal/" class="col-md-4 btn btn-primary block-center">Atras</a>
+      {% if user.is_superuser %}
+      <a type="button" href="/menuglobal/" class="col-md-4 btn btn btn-primary btn-danger block-center">Atras</a>
       {%else %}
-      <a type="button" href="/menuempleado/" class="col-md-4 btn btn-primary block-center">Atras</a>
+      <a type="button" href="/menuempleado/" class="col-md-4 btn btn btn-primary btn-danger block-center">Atras</a>
       {%endif%}
+      <a type="button" href="/registrarcotizacion/" class="col-md-4 btn btn-primary btn block-center">Registrar Nuevo</a>
       <input class="col-md-8 block-center" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
     </div>
   </div>
@@ -38,24 +39,29 @@
     <thead class="text-center">
       <tr class="text-center">
         <th>N°          </th>
-        <th>ROL     </th>
+        <th>CLIENTE       </th>
         <th>USUARIO </th>
-        <th>FECHA       </th>
-        <th>CANTIDAD CONSULTADA </th>
+        <th>FECHA DE EMISION     </th>
+        <th>FECHA DE CADUCIDAD </th>
+        <th>TOTAL PROFORMA </th>
+        <th class="text-center">DETALLE PROFORMA</th>
       </tr>
     </thead>
     <tbody>
     {% for registro in object_list %}
       <tr>
          <td>{{ forloop.counter     }}</td>
-          <td>{{ registro.idroles   }}</td>
-          <td>{{ registro.idusuario    }}</td>
-          <td>{{ registro.fecha}}</td>
-          <td>{{ registro.cantidad}}</td>
+          <td>{{ registro.id_cliente}}</td>
+          <td>{{ registro.id_usuario}}</td>
+          <td>{{ registro.fecha_emision   }}</td>
+          <td>{{ registro.fecha_caducidad    }}</td>
+          <td>{{ registro.total_proforma    }}</td>
+        <td><a class="btn btn-primary" href="{% url 'SunChoi:proforma_ver'  registro.id_proforma %}"
+          value="Editar" class="btn btn-primary btn-sm text-center"  >Ver detalle Proforma</a></td> 
       </tr>
     {% empty %}
       <tr>
-        <td>NO existe informacion que presentar..</td>
+        <td>NO existe informacion que presentar.</td>
       </tr>
     {% endfor %}
     </tbody>

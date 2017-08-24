@@ -1,0 +1,96 @@
+{% extends "SunChoi/base.html" %}
+{% load static %}
+
+{% block title %} Consulta rapida{% endblock %} 
+{% block extra-style %}
+<link href="{% static 'css/consultaRapida.css'  %}" rel="stylesheet">
+{% endblock %}
+{% block content %} 
+
+{% if not lista %}
+    <div class="container">
+        <form  class="form-signin" method="GET" >
+        	{% if error %} 
+        		<H1 class="text-center">Consultar las ventas en un periodo : </H1>
+        		<H1 class="text-center"> {{error}}</H1>
+        		<button id="consultar" href="/bajostock/" class="btn btn-primary btn-block center-block" type="submit">Nuevo Consulta</button>
+        		<br/><br/>
+        	{% else %}
+            	<H1 class="text-center">Consultar las ventas en un periodo : </H1>
+            	{% csrf_token %}
+	        
+	            <input type="date" name="ventasXmesIni"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha inicio" >
+	            <input type="date" name="ventasXmesFin"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha fin" >
+	            <br/>
+				<button id="consultar" class="btn btn-primary btn-block center-block" type="submit">Consultar</button>
+				<!--div id="botonesConsulta" class="row">
+					<a id="atras" type="button" href="/menuglobal" class="col-md-6 btn btn-primary center-block" >Menu Global</a>
+					<div class="col-md-1"></div>
+					<button id="consultar" class="btn btn-primary btn-block col-md-6 center-block" type="submit">Consultar</button>
+				</div-->
+	            <br/>
+	            <br/>
+	    </form>
+        {% endif %}
+            
+    </div>
+    <div class="row">
+      <img class=" img-responsive img-center center-block" src="{% static 'img/REPORTE.png'  %}" alt="" width="500" height="300">              
+    </div> 
+{% else %}
+    <br/>
+		<div id="search" class="row">
+			<div class="col-md-8"> </div>
+			<a type="button" href="/bajostock" class="col-md-2 btn btn-primary">Nueva Consulta</a>
+			<input class="col-md-2"type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
+		</div>
+        <div class="container">
+        
+			<table id="productos" class="table table-striped">
+				<thead>
+				  <tr>
+					<th>ITEM</th>
+					<th>STOCK</th>
+					<th>P. UNITARIO</th>
+				  </tr>
+				</thead>
+				<tbody>
+				{% for producto in lista %}
+				
+				  <tr>
+					<td>{{producto.descripcion}}</td>
+					<td>{{producto.stock}} {{producto.medida}}</td>
+					<td>${{producto.precio_unitario}}</td>
+				  </tr>
+				{% empty %}
+				  <tr>
+					<td>todo los articulos tienen mas de esas cantidad.</td>
+				  </tr>
+				{% endfor %}
+				</tbody>
+			</table>
+    </div>
+	<script>
+		function myFunction(){
+			var input, filter, table, tr, td1,td2,td3, i;
+			input = document.getElementById("myInput");
+			filter = input.value.toUpperCase();
+			table = document.getElementById("productos");
+			tr = table.getElementsByTagName("tr");
+			
+			for (i=0;i<tr.length;i++){
+				td1 = tr[i].getElementsByTagName("td")[0];
+				td2 = tr[i].getElementsByTagName("td")[1];
+				td3 = tr[i].getElementsByTagName("td")[2];
+				if(td1 || td2 || td3){
+					if(td1.innerHTML.toUpperCase().indexOf(filter)>-1 || td2.innerHTML.toUpperCase().indexOf(filter)>-1 ||td3.innerHTML.toUpperCase().indexOf(filter)>-1){
+						tr[i].style.display = "";
+					} else {
+						tr[i].style.display = "none";
+					}
+				}
+			}
+		}
+	</script>
+{% endif %}
+{% endblock %}

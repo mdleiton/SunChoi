@@ -1,0 +1,35 @@
+{% extends "SunChoi/base_lista.html" %}
+{% load static %}
+
+{% block title %} Lista de clientes{% endblock %} 
+
+{% block tipo %}<h3 class="bock-center text-center" style="font-weight: bold;">Clientes</h3>{% endblock %}
+
+{% block registrar %}
+<a type="button" href="/registrarcliente/" class="col-md-4 btn btn-primary btn block-center">Registrar Nuevo</a>
+{% endblock %}
+
+{%block encabezadotablas%}
+        <th>N°</th>
+        <th>DNI </th>
+        <th>NOMBRE</th>
+        <th>APELLIDOS</th>
+        <th>DIRECCION</th>
+        <th>TELEFONO</th>
+{% endblock %}
+{%block elementostablas%}
+        <td>{{ forloop.counter   }}</td>
+        <td>{{ registro.dni      }}</td>
+        <td>{{ registro.nombre   }}</td>
+        <td>{{ registro.apellidos}}</td>
+        <td>{{ registro.direccion}}</td >
+        <td>{{ registro.telefono }}</td>
+{% endblock %}
+
+{% block hrefeditar %} 
+  href="{% url 'SunChoi:cliente_editar'  registro.dni %}" 
+{% endblock%}
+
+{% block hrefeliminar %} 
+  href="{% url 'SunChoi:cliente_eliminar' registro.dni  %}" 
+{% endblock%}

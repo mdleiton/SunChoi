@@ -1,0 +1,35 @@
+{% extends "SunChoi/base_lista.html" %}
+{% load static %}
+
+{% block title %} Lista de productos{% endblock %} 
+
+{% block tipo %}<h3 class="bock-center text-center" style="font-weight: bold;" >Productos</h3>{% endblock %}
+
+{% block registrar %}
+<a type="button" href="/registrarproducto/" class="col-md-4 btn btn-primary btn block-center">Registrar Nuevo</a>
+{% endblock %}
+
+
+{%block encabezadotablas%}
+  <th>N°          </th>
+  <th>NOMBRE      </th>
+  <th>DESCRIPCION </th>
+  <th>STOCK       </th>
+  <th>P. UNITARIO </th>
+{% endblock %}
+
+{%block elementostablas%}
+  <td>{{ forloop.counter        }}</td>
+  <td>{{ registro.nombre        }}</td>
+  <td>{{ registro.descripcion   }}</td>
+  <td>{{ registro.stock}} {{producto.medida}}</td>
+  <td>${{registro.precio_unitario}}</td>
+{% endblock %}
+
+{% block hrefeditar %} 
+  href="{% url 'SunChoi:producto_editar'  registro.id_producto %}" 
+{% endblock%}
+
+{% block hrefeliminar %} 
+  href="{% url 'SunChoi:producto_eliminar' registro.id_producto  %}" 
+{% endblock%}

@@ -3,23 +3,6 @@ from django.contrib.auth.models import User
 from django.db import models,connection
 from django.utils import timezone
 
-class log(models.Model):
-	idlog=models.AutoField(primary_key=True)
-	idroles=models.ForeignKey('Roles')
-	idusuario=models.ForeignKey('Usuario')
-	fecha=models.DateTimeField()
-	cantidad=models.IntegerField()
-
-	def __str__(self): 
-		return 'log: {}:{}:{}'.format(self.idlog, self.idusuario.nombre,self.idroles)
-	
-	@staticmethod  
-	def insertlog(idroles_id,idusuario_id,fecha,cantidad):  
-		cur = connection.cursor()  
-		cur.callproc('insertlog', [idroles_id,idusuario_id,fecha,cantidad])  
-		cur.close()
-	
-
 class Proveedores(models.Model):
 	id_proveedor = models.AutoField(primary_key=True)
 	razon_social = models.CharField(max_length=200)
@@ -91,6 +74,12 @@ class Producto(models.Model):
 	def insertproducto(nombre,descripcion,precio_unitario,medida,stock,proveedor):  
 		cur = connection.cursor()  
 		cur.callproc('insertproducto', [nombre,descripcion,precio_unitario,medida,stock,proveedor])  
+		cur.close()
+
+	@staticmethod
+	def ventasXmes(ini,fin):
+		cur = connection.cursor()
+		cur.callproc('ventasXmes', [ini,fin])  
 		cur.close()
 
 	def setId_producto(self,idProducto):
@@ -170,6 +159,7 @@ class Cliente(models.Model):
 class OrdenCompra(models.Model):
 	id_orden_compra = models.AutoField(primary_key=True)
 	numero = models.IntegerField()
+	#fecha = models.DateTimeField(default=timezone.now)
 	fecha = models.DateTimeField(default=timezone.now)
 	id_usuario = models.ForeignKey('Usuario')
 	id_proveedor = models.ForeignKey('Proveedores')

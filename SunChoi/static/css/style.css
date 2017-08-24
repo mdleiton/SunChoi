@@ -3,8 +3,6 @@
 /*Global Settings*/
 body{
 	font-family: 'Lora', serif;
-	background-image: url(../img/fondo.jpg);
-    background-repeat: no-repeat;
 }
 
 h1{
@@ -23,16 +21,17 @@ h1{
 }
 
 .form-signin {
+  background: url(../img/index_login_bg.jpg);
+  background-repeat: no-repeat;
   max-width: 330px;
   padding: 15px;
   margin: 5% auto 0% auto;
-  background-color: rgba(234, 250, 241, 1);
   border-radius: 3%;
-  border: 6px solid rgba(52, 152, 219, 1);
+  border: 6px solid rgb(57, 127, 175);
 }
 
 .form-signin h1{
-	color: black;
+	color: rgb(57, 127, 175);
 	font-weight: bold;
 }
 .form-signin .form-signin-heading,

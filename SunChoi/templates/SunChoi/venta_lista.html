@@ -14,9 +14,9 @@
   <div id="search" class="col-md-4 col-sm-4 container-fluid">
     <div class="bock-center text-center">
        {% if user.is_superuser %}
-      <a type="button" href="/menuglobal/" class="col-md-4 btn btn-primary block-center">Atras</a>
+      <a type="button" href="/menuglobal/" class="col-md-4 btn btn-primary btn-sm block-center">Atras</a>
       {%else %}
-      <a type="button" href="/menuempleado/" class="col-md-4 btn btn-primary block-center">Atras</a>
+      <a type="button" href="/menuempleado/" class="col-md-4 btn btn-primary btn-sm block-center">Atras</a>
       {%endif%}
       <input class="col-md-8 block-center" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
     </div>
