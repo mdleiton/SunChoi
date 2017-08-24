@@ -133,13 +133,8 @@
 	<div id="botonesFactura" >
 		<form id="formFactura" action="{% url 'SunChoi:ventaadd' %}">
 			<button type="submit" >Guardar</button>
-			{% if user.is_superuser %}
-      		<a href="/menuglobal"><button>Cancelar</button></a>
-      		{%else %}
-      		<a href="/menuempleado/"><button>Cancelar</button></a>
-      		{%endif%}
-			
 		</form>
+  		<a href="/facturas"><button>Cancelar</button></a>
 	</div>
 </div>
 <script>

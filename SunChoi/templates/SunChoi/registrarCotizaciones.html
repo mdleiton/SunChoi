@@ -80,6 +80,7 @@
 			<thead>
 			  <tr>
 				<th>Cantidad</th>
+				<th>Stock</th>
 				<th>Descripcion</th>
 				<th>Unidades</th>
 				<th>%IVA</th>
@@ -133,12 +134,8 @@
 	<div id="botonesFactura" >
 		<form id="formFactura" action="{% url 'SunChoi:cotizacionadd' %}">
 			<button type="submit" >Guardar</button>
-			{% if user.is_superuser %}
-			  <a href="/menuglobal"><button>Cancelar</button></a>
-			{%else %}
-			  <a href="/menuempleado/"><button>Cancelar</button></a>
-			{%endif%}
 		</form>
+		<a href="/proformas"><button>Cancelar</button></a>
 	</div>
 </div>
 <script>
@@ -165,6 +162,15 @@
 		input.setAttribute("form","formFactura");
 		input.setAttribute("style","width: 62px;");
 		input.setAttribute("onkeyup","totalLinea("+nLinea+")");
+		td.appendChild(input);
+		tr.appendChild(td);
+		//stock
+		var td = document.createElement("TD");
+		var input = document.createElement("INPUT");
+		input.setAttribute("id","stock"+nLinea);
+		input.setAttribute("type","text");
+		input.setAttribute("readonly",true);
+		input.setAttribute("style","width: 62px;");
 		td.appendChild(input);
 		tr.appendChild(td);
 		//descripcion
@@ -301,7 +307,6 @@
 		document.getElementById("tbodyLineas").appendChild(tr);
 		
 		nLinea += 1;
-		
 	}
 	
 	function eliminarLinea(id){
@@ -328,7 +333,7 @@
 				$(this.children).attr("readonly",true);
 				$(this.children).attr("editando","no");
 				$(this.children).attr("style","font-weight: 600;font-style: italic;");
-				if(indice == 1) $(this.children).attr("style","font-weight: 600;font-style: italic; width: 500px;");
+				if(indice == 2) $(this.children).attr("style","font-weight: 600;font-style: italic; width: 500px;");
 				
 			}
 			else{
@@ -349,104 +354,12 @@
 		celdas = $("#"+id).find("td");
 		celdas.each(function(indice){
 			if(indice<celdas.length-1){
-				if(indice!=6 && indice!=7 && indice!=8) $(this.children).removeAttr("readonly");
+				if(indice!=1 && indice!=7 && indice!=8 && indice!=9) $(this.children).removeAttr("readonly");
 				else $(this.children).attr("editando","si");
 				//descuento - no aplicar readonly
-				if(indice == 5) $(this.children).attr("editando","si");
-				if(indice == 1) $(this.children).attr("style","width: 500px;");
+				if(indice == 6) $(this.children).attr("editando","si");
+				if(indice == 2) $(this.children).attr("style","width: 500px;");
 				$(this.children).attr("style","");
-				/*valorInput = $(this).text();
-				valorId = $(this).attr("id");
-				this.removeAttribute("id");
-				this.removeAttribute("form");
-				$(this).text("");
-				//cantidad
-				if(indice == 0){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 62px;");
-					input.setAttribute("onkeyup","totalLinea("+id+")");
-					$(this).append(input);
-				}
-				//descripcion
-				else if(indice == 1){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 500px;");	
-					input.setAttribute("type","text");
-					input.setAttribute("list","productos");
-					input.setAttribute("onkeyup","totalLinea("+id+")");
-					input.setAttribute("onchange","llenarLinea(this.value,"+nLinea+")");
-					$(this).append(input);
-				}
-				//unidades
-				else if(indice == 2){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 70px;");
-					$(this).append(input);
-				}
-				//%iva
-				else if(indice == 3){
-					var select = document.createElement("SELECT");
-					var option = document.createElement("OPTION");
-					option.text = 12;
-					select.appendChild(option);
-					option = document.createElement("OPTION");
-					option.text = 0;
-					select.appendChild(option);
-					select.setAttribute("id","porciva"+id);
-					select.setAttribute("onchange","totalLinea("+id+")");
-					$(this).append(select);
-				}
-				//precio unitario
-				else if(indice == 4){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 70px;");
-					input.setAttribute("onkeyup","totalLinea("+id+")");
-					$(this).append(input);
-				}
-				//descuento
-				else if(indice == 5){					
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 70px;");
-					input.setAttribute("onkeyup","totalLinea("+id+")");
-					$(this).append(input);
-				}
-				//iva
-				else if(indice == 6){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 70px;");
-					input.setAttribute("disabled",true);
-					$(this).append(input);
-				}
-				//precio total linea
-				else if(indice == 7){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 80px;");
-					input.setAttribute("disabled",true);
-					$(this).append(input);
-				}
-				//precio total linea sin impuestos ni descuentos
-				else if(indice == 8){
-					var input = document.createElement("INPUT");
-					input.setAttribute("id",valorId);
-					input.value = valorInput;
-					input.setAttribute("style","width: 80px;");
-					input.setAttribute("disabled",true);
-					$(this).append(input);
-				}*/
 			}
 			else{
 				$("#editarLinea"+id).remove();
@@ -466,20 +379,15 @@
 	function totalLinea(id){
 		var cantidad = parseFloat($("#cantidad"+id).val());
 		var producto = $("#descripcion"+id).val();
-		if( cantidad <= maxStock[producto] ){
-			totalSinIva = parseFloat($("#preUni"+id).val())*cantidad;
-			descuento = parseFloat($("#desc"+id).val());
-			if($("#porciva"+id).val()=="12") iva = 0.12;
-			else iva= 0;
-			totalIva = totalSinIva * iva;
-			total = totalSinIva+totalIva-descuento;
-			document.getElementById("iva"+id).value = totalIva;
-			document.getElementById("pretot"+id).value = total;
-			document.getElementById("sinImp"+id).value = totalSinIva;
-		}else if(maxStock[producto] != null){
-			alert("La cantidad ingresada esta fuera del Stock Maximo "+maxStock[producto]+" de este producto");
-			$("#cantidad"+id).val("");
-		}
+		totalSinIva = parseFloat($("#preUni"+id).val())*cantidad;
+		descuento = parseFloat($("#desc"+id).val());
+		if($("#porciva"+id).val()=="12") iva = 0.12;
+		else iva= 0;
+		totalIva = totalSinIva * iva;
+		total = totalSinIva+totalIva-descuento;
+		document.getElementById("iva"+id).value = totalIva;
+		document.getElementById("pretot"+id).value = total;
+		document.getElementById("sinImp"+id).value = totalSinIva;
 	}
 	
 	function totales(llamadogenerar){
@@ -523,6 +431,7 @@
 		var info;
 		info = value.split(":");
 		maxStock[info[0]]=parseFloat(info[1]);
+		document.getElementById("stock"+n).value = info[1];
 		document.getElementById("descripcion"+n).value = info[0];
 		document.getElementById("unidades"+n).value = info[2];
 		document.getElementById("preUni"+n).value = info[3];

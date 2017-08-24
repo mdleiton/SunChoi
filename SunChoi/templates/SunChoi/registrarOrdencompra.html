@@ -133,12 +133,8 @@
 	<div id="botonesFactura" >
 		<form id="formFactura" action="{% url 'SunChoi:ordenadd' %}">
 			<button type="submit" >Guardar</button>
-		{% if user.is_superuser %}
-      		<a href="/menuglobal/"><button>Cancelar</button></a>
-     	{%else %}
-      		<a href="/menuempleado/"><button>Cancelar</button></a>
-      	{%endif%}
 		</form>
+      		<a href="/compras"><button>Cancelar</button></a>
 	</div>
 </div>
 <script>
@@ -374,20 +370,15 @@
 	function totalLinea(id){
 		var cantidad = parseFloat($("#cantidad"+id).val());
 		var producto = $("#descripcion"+id).val();
-		if( cantidad <= maxStock[producto] ){
-			totalSinIva = parseFloat($("#preUni"+id).val())*cantidad;
-			descuento = parseFloat($("#desc"+id).val());
-			if($("#porciva"+id).val()=="12") iva = 0.12;
-			else iva= 0;
-			totalIva = totalSinIva * iva;
-			total = totalSinIva+totalIva-descuento;
-			document.getElementById("iva"+id).value = totalIva;
-			document.getElementById("pretot"+id).value = total;
-			document.getElementById("sinImp"+id).value = totalSinIva;
-		}else if(maxStock[producto] != null){
-			alert("La cantidad ingresada esta fuera del Stock Maximo "+maxStock[producto]+" de este producto");
-			$("#cantidad"+id).val("");
-		}
+		totalSinIva = parseFloat($("#preUni"+id).val())*cantidad;
+		descuento = parseFloat($("#desc"+id).val());
+		if($("#porciva"+id).val()=="12") iva = 0.12;
+		else iva= 0;
+		totalIva = totalSinIva * iva;
+		total = totalSinIva+totalIva-descuento;
+		document.getElementById("iva"+id).value = totalIva;
+		document.getElementById("pretot"+id).value = total;
+		document.getElementById("sinImp"+id).value = totalSinIva;
 	}
 	
 	function totales(llamadogenerar){
