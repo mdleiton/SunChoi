@@ -7,7 +7,7 @@
 {% endblock %}
 {% block content %} 
 
-{% if not lista %}
+{% if not lista1 %}
     <div class="container">
         <form  class="form-signin" method="GET" >
         	{% if error %} 
@@ -19,8 +19,8 @@
             	<H1 class="text-center">Consultar las ventas en un periodo : </H1>
             	{% csrf_token %}
 	        
-	            <input type="date" name="ventasXmesIni"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha inicio" >
-	            <input type="date" name="ventasXmesFin"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha fin" >
+	            <input type="date" name="ventasXmesIni"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha inicio: DD-MM-AA" >
+	            <input type="date" name="ventasXmesFin"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha fin: DD-MM-AA" >
 	            <br/>
 				<button id="consultar" class="btn btn-primary btn-block center-block" type="submit">Consultar</button>
 				<!--div id="botonesConsulta" class="row">
@@ -49,22 +49,30 @@
 			<table id="productos" class="table table-striped">
 				<thead>
 				  <tr>
-					<th>ITEM</th>
-					<th>STOCK</th>
-					<th>P. UNITARIO</th>
+					<th>N </th>
+					<th>NUMERO</th>
+					<th>FECHA</th>
+					<th>CLIENTE</th>
+					<th>USUARIO</th>
+					<th>TOTAL</th>
+					<th>VER DETALLE</th>
 				  </tr>
 				</thead>
 				<tbody>
 				{% for producto in lista %}
 				
 				  <tr>
-					<td>{{producto.descripcion}}</td>
-					<td>{{producto.stock}} {{producto.medida}}</td>
-					<td>${{producto.precio_unitario}}</td>
+				  	<td>{{forloop.counter  }}</td>
+					<td>{{producto.numero}}</td>
+					<td>{{producto.fecha}} </td>
+					<td>{{producto.id_cliente}}</td>
+					<td>{{producto.id_usuario}}</td>
+					<td>{{producto.total}}</td>
+
 				  </tr>
 				{% empty %}
 				  <tr>
-					<td>todo los articulos tienen mas de esas cantidad.</td>
+					<td>No existen  ventas en ese rango de fechas</td>
 				  </tr>
 				{% endfor %}
 				</tbody>

@@ -396,15 +396,12 @@ def Proforma_ver(request,item):
 
 #operaciones
 def VentasXmes(request):
-    return render(request,'SunChoi/ventasXmes.html')
     if request.user.is_authenticated:
-        if request.GET.get('minimo'):
-            minimo = request.GET['minimo']
-            if minimo.isdigit():
-                results = Producto.bajostock(minimo)
-                return render(request,'SunChoi/consultaRapida.html',{'lista':results,"minimo": minimo})
-            else:
-                return render(request,'SunChoi/consultaRapida.html',{"minimo": minimo,"error": "debe ingresar un número válido por favor. Intente de nuevo"})
+        if request.GET.get('ventasXmesIni') and request.GET.get('ventasXmesFin'):
+            inicio = request.GET['ventasXmesIni']
+            fin=request.GET['ventasXmesFin']
+            results =Factura.objects.filter(fecha__gte=datetime.datetime.strptime(inicio,"%d/%m/%Y"),fecha__lte=datetime.datetime.strptime(fin,"%d/%m/%Y"))
+            return render(request,'SunChoi/ventasXmes.html',{'lista':results,'lista1':True})
         else:
             return render(request,'SunChoi/ventasXmes.html')
     else:
