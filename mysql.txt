@@ -1,3 +1,4 @@
+pip install Django==1.11.3
 sudo apt-get install mysql-server
 //contrasena 'detodo'
 sudo apt-get install python-dev
@@ -13,8 +14,6 @@ mysql -u root -p
  show databases;
 
 
-
-
 //en otra terminal en la carpeta del proyecto
 python manage.py migrate
 python manage.py makemigrations SunChoi
@@ -26,5 +25,11 @@ python manage.py migrate
 python manage.py createsuperuser
 
 ejecutar script en mysql 
-mysql -u root -p  SunChoi < sqlf/ejecutable1.sql
+mysql -u root -p  SunChoi < sqlf/ejecutable2SP.sql
 //contrasena 				detodo
+
+//crear la copia de seguridad de la bd
+ mysqldump --user=root  --password=detodo SunChoi > copia_seguridad.sql
+
+//restaurar 
+mysql --user=root --password=detodo < copia_seguridad.sql
