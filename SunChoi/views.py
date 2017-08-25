@@ -398,10 +398,16 @@ def Proforma_ver(request,item):
 def VentasXmes(request):
     if request.user.is_authenticated:
         if request.GET.get('ventasXmesIni') and request.GET.get('ventasXmesFin'):
-            inicio = request.GET['ventasXmesIni']
-            fin=request.GET['ventasXmesFin']
-            results =Factura.objects.filter(fecha__gte=datetime.datetime.strptime(inicio,"%d/%m/%Y"),fecha__lte=datetime.datetime.strptime(fin,"%d/%m/%Y"))
-            return render(request,'SunChoi/ventasXmes.html',{'lista':results,'lista1':True})
+            try:
+                inicio = datetime.datetime.strptime(request.GET['ventasXmesIni'],"%Y-%m-%d")
+                fin=datetime.datetime.strptime(request.GET['ventasXmesFin'],"%Y-%m-%d")
+                if inicio <= fin:
+                    results =Factura.objects.filter(fecha__gte=inicio,fecha__lte=fin)
+                    return render(request,'SunChoi/ventasXmes.html',{'lista':results,'lista1':True})
+                else:
+                    return render(request,'SunChoi/ventasXmes.html',{'error': 'error al ingresar el rango de valores'})
+            except ValueError:
+                return render(request,'SunChoi/ventasXmes.html',{'error': 'Por favor ingrese las fechas en el formato establecido'})
         else:
             return render(request,'SunChoi/ventasXmes.html')
     else:

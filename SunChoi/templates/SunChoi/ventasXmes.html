@@ -19,15 +19,10 @@
             	<H1 class="text-center">Consultar las ventas en un periodo : </H1>
             	{% csrf_token %}
 	        
-	            <input type="date" name="ventasXmesIni"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha inicio: DD-MM-AA" >
-	            <input type="date" name="ventasXmesFin"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha fin: DD-MM-AA" >
+	            <input type="date" name="ventasXmesIni"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha inicio: AA-MM-DD" >
+	            <input type="date" name="ventasXmesFin"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha fin: AA-MM-DD" >
 	            <br/>
 				<button id="consultar" class="btn btn-primary btn-block center-block" type="submit">Consultar</button>
-				<!--div id="botonesConsulta" class="row">
-					<a id="atras" type="button" href="/menuglobal" class="col-md-6 btn btn-primary center-block" >Menu Global</a>
-					<div class="col-md-1"></div>
-					<button id="consultar" class="btn btn-primary btn-block col-md-6 center-block" type="submit">Consultar</button>
-				</div-->
 	            <br/>
 	            <br/>
 	    </form>
@@ -41,7 +36,7 @@
     <br/>
 		<div id="search" class="row">
 			<div class="col-md-8"> </div>
-			<a type="button" href="/bajostock" class="col-md-2 btn btn-primary">Nueva Consulta</a>
+			<a type="button" href="/ventasXmes" class="col-md-2 btn btn-primary">Nueva Consulta</a>
 			<input class="col-md-2"type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
 		</div>
         <div class="container">
