@@ -298,14 +298,14 @@ def RegistrarVenta(request):
         return render_to_response('SunChoi/nopermitido.html')
 
 def Facturas(request):
-    if request.user.is_authenticated:
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         facturas = Factura.objects.all()
         return render(request,'SunChoi/facturas.html',{'object_list': facturas,'tipo_objeto':"facturas"})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
 def Factura_ver(request, item):
-    if request.user.is_authenticated :
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         factura = get_object_or_404(Factura, pk=item)
         form = FacturaForm(request.POST or None, instance=factura)
         if form.is_valid():
@@ -343,14 +343,14 @@ def RegistrarOrdenCompra(request):
         return render_to_response('SunChoi/nopermitido.html')
 
 def Compras(request):
-    if request.user.is_authenticated:
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         ordencompras = OrdenCompra.objects.all()
         return render(request,'SunChoi/compras.html',{'object_list': ordencompras,'tipo_objeto':"compras"})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
 def Ordencompra_ver(request,item):
-    if request.user.is_authenticated :
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         ordencompra = get_object_or_404(OrdenCompra,pk=item)
         ordenlineas=Ordencompralineas.objects.filter(id_orden_compra=item)
         return render(request, 'SunChoi/ver_ordencompra.html', {'ordencompra':ordencompra,'ollista':ordenlineas, 'tipo_objeto':"compras",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
@@ -380,14 +380,14 @@ def RegistrarCotizacion(request):
         return render_to_response('SunChoi/nopermitido.html')
 
 def Proformas(request):
-    if request.user.is_authenticated:
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         proformas = Proforma.objects.all()
         return render(request,'SunChoi/proformas.html',{'object_list': proformas,'tipo_objeto':"proformas"})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
 def Proforma_ver(request,item):
-    if request.user.is_authenticated :
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         proforma = get_object_or_404(Proforma,pk=item)
         proformalineas=ProformaLineas.objects.filter(id_proforma=item)
         return render(request, 'SunChoi/ver_proforma.html', {'proforma':proforma,'pllista':proformalineas, 'tipo_objeto':"proformas",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})

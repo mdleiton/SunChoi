@@ -70,7 +70,7 @@
 		{% if user.is_superuser %}
       		<a href="/proformas/" class="btn btn-primary">Atras</a>
       	{%else %}
-      		<a href="/menuempleado/">Atras</a>
+      		<a href="/menuempleado/" class="btn btn-primary">Atras</a>
       	{%endif%}</blockquote>
       		</p>
 		</div>
@@ -135,8 +135,12 @@
 		<form id="formFactura" action="{% url 'SunChoi:cotizacionadd' %}">
 			<button type="submit" class="btn btn-primary btn block-center" >Guardar</button>
 		</form>
-		<a href="/proformas"><button class="btn btn-primary btn-danger block-center">Cancelar</button></a>
-	</div>
+		{% if user.is_superuser %}
+    <a href="/proformas"><button class="btn btn-primary btn-danger block-centerr">Cancelar</button></a>
+      {%else %}
+     <a href="/menuempleado"><button class="btn btn-primary btn-danger block-centerr">Cancelar</button></a>
+      {%endif%}
+    </div>
 </div>
 <script>
 	var nLinea = 0;
