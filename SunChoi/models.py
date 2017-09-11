@@ -57,6 +57,7 @@ class Producto(models.Model):
 	medida = models.CharField(max_length=200)
 	stock = models.IntegerField()
 	proveedor=models.ForeignKey('Proveedores')
+	precio_ventas = models.FloatField()
 	
 	def __str__(self):
 		return self.nombre
@@ -71,9 +72,9 @@ class Producto(models.Model):
 		return [Producto (*row) for row in results]  
 	#llamada a procedimiento almacenado
 	@staticmethod  
-	def insertproducto(nombre,descripcion,precio_unitario,medida,stock,proveedor):  
+	def insertproducto(nombre,descripcion,precio_unitario,medida,stock,proveedor,precio_ventas):  
 		cur = connection.cursor()  
-		cur.callproc('insertproducto', [nombre,descripcion,precio_unitario,medida,stock,proveedor])  
+		cur.callproc('insertproducto', [nombre,descripcion,precio_unitario,medida,stock,proveedor,precio_ventas])  
 		cur.close()
 
 	@staticmethod

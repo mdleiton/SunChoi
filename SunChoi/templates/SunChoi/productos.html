@@ -16,6 +16,7 @@
   <th>DESCRIPCION </th>
   <th>STOCK       </th>
   <th>P. UNITARIO </th>
+  <th>P. VENTAS </th>
 {% endblock %}
 
 {%block elementostablas%}
@@ -24,6 +25,7 @@
   <td>{{ registro.descripcion   }}</td>
   <td>{{ registro.stock}} {{producto.medida}}</td>
   <td>${{registro.precio_unitario}}</td>
+  <td>${{registro.precio_ventas}}</td>
 {% endblock %}
 
 {% block hrefeditar %} 

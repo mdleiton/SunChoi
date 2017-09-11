@@ -29,7 +29,7 @@
         <th>NOMBRE      </th>
         <th>DESCRIPCION </th>
         <th>STOCK       </th>
-        <th>P. UNITARIO </th>
+        <th>P. VENTAS </th>
       </tr>
     </thead>
     <tbody>
@@ -39,7 +39,7 @@
         <td>{{ registro.nombre        }}</td>
         <td>{{ registro.descripcion   }}</td>
         <td>{{ registro.stock}} {{producto.medida}}</td>
-        <td>${{registro.precio_unitario}}</td>
+        <td>${{registro.precio_ventas}}</td>
       </tr>
     {% empty %}
       <tr>

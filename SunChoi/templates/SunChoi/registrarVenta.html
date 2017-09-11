@@ -7,7 +7,7 @@
 {% block content %}
 <datalist class='col-md-6' id="productos">
   	{% for p in productos %}
-    <option value="{{p.descripcion}}:{{p.stock}}:{{p.medida}}:{{p.precio_unitario}}">{{p.nombre}}:{{p.descripcion}}:{{p.stock}}</option>
+    <option value="{{p.descripcion}}:{{p.stock}}:{{p.medida}}:{{p.precio_ventas}}">{{p.nombre}}:{{p.descripcion}}:{{p.stock}}</option>
     {% empty %}
     <option value="0">No hay productos</option>
 	{% endfor %}

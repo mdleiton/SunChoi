@@ -112,7 +112,7 @@ def RegistrarProducto(request):
             if form.is_valid():
                 np=form.save(commit=False)
                 try:
-                    Producto.insertproducto(np.nombre,np.descripcion,np.precio_unitario,np.medida,np.stock,np.proveedor.id_proveedor)
+                    Producto.insertproducto(np.nombre,np.descripcion,np.precio_unitario,np.medida,np.stock,np.proveedor.id_proveedor,np.precio_ventas)
                     form=ProductoForm()
                     return render(request, 'SunChoi/producto_registrar.html', {'form': form, 'mjs': "puede ingresar mas productos"})
                 except ValueError:
