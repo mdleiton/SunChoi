@@ -31,7 +31,7 @@
       {% csrf_token %}
       Esta seguro que desea eliminar <strong >"{{ object }} " </strong> ?
       <input type="submit" class="btn btn-primary btn-sm" value="Eliminar" />
-      <a class="btn btn-primary btn-danger btn-sm" href="/lista{{tipo_objeto}}">cancelar</a>
+      <a class="btn btn-primary btn-danger btn-sm" href="/{{tipo_objeto}}">cancelar</a>
     </form>    
   </div>
 {% endif %}
@@ -39,7 +39,7 @@
     <thead class="text-center">
       <tr>
         {% block encabezadotablas %}
-        {% endblock %}s
+        {% endblock %}
         <th>EDITAR</th>
         <th>ELIMINAR</th>
       </tr>

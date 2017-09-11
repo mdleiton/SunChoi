@@ -1,5 +1,5 @@
 -- Usuario
--- INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13567',1,'mau','leiton','data de villamil' , '234567','mau_leiton@espol.edu.ec');
+INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13567',1,'mau','leiton','data de villamil' , '234567','mau_leiton@espol.edu.ec');
 -- INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('12345',2,'sun','Aguirre','data de guayaquil' , '223424','lu_la@espol.edu.ec');
 -- INSERT INTO SunChoi_usuario(dni,usuario_id,nombre,apellido,direccion,telefono,correo) values('13537',3,'byr','povea','data de villamil' , '234567','bpovea@espol.edu.ec');
 -- Roles
@@ -7,8 +7,8 @@ INSERT INTO SunChoi_roles(rol,descripcion) values('administrador','Maneja la app
 INSERT INTO SunChoi_roles(rol,descripcion) values('empleado','Acceso limitado, ventas, cotizaciones y poco mas.');
 -- UsuarioRol
 INSERT INTO SunChoi_usuariorol(id_usuario_id,id_rol_id) values('13567',1);
-INSERT INTO SunChoi_usuariorol(id_usuario_id,id_rol_id) values('12345',2);
-INSERT INTO SunChoi_usuariorol(id_usuario_id,id_rol_id) values('13537',1);
+-- INSERT INTO SunChoi_usuariorol(id_usuario_id,id_rol_id) values('12345',2);
+-- INSERT INTO SunChoi_usuariorol(id_usuario_id,id_rol_id) values('13537',1);
 -- PROVEEDORES
 INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('COMSUCRE S.A.','JUAN PIO MONTUFAR 109 Y AGUIRRE','2516315','ventas@comsucre.com');
 INSERT INTO SunChoi_proveedores(razon_social,direccion,telefono,email) VALUES('Dilipa CIA LTDA','Av. 10 de Agosto N52-15 y Cap. Ramon Borja','2418640','información@dilipa.com.ec');

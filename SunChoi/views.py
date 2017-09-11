@@ -37,15 +37,15 @@ def logout(request):
 def nopermitido(request):
     return render_to_response('SunChoi/nopermitido.html')
 
-def MenuGlobal(request):
+def MenuAdmin(request):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
-        return render(request,'SunChoi/menuGlobal.html')
+        return render(request,'SunChoi/menuAdmin.html')
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-def MenuEmpleado(request):
+def MenuEmployee(request):
     if (request.user.is_authenticated and (not request.user.is_superuser or  not request.user.is_staff)):
-        return render(request,'SunChoi/menuempleado.html')
+        return render(request,'SunChoi/menuEmployee.html')
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
@@ -75,10 +75,10 @@ def RegistrarUsuario(request):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
-def Usuario_lista(request):
+def Usuarios(request):
     if request.user.is_authenticated:
         usuarios = Usuario.objects.all()
-        return render(request,'SunChoi/usuario_lista.html',{'object_list': usuarios,'tipo_objeto':"usuario"})
+        return render(request,'SunChoi/usuarios.html',{'object_list': usuarios,'tipo_objeto':"usuario"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -88,8 +88,8 @@ def Usuario_editar(request, item):
         form = UsuariosListForm(request.POST or None, instance=usuario)
         if form.is_valid():
             form.save()
-            return redirect('SunChoi:usuario_lista')
-        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"usuario"})
+            return redirect('SunChoi:usuarios')
+        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"usuarios"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -99,8 +99,8 @@ def Usuario_eliminar(request, item):
         usuarios = Usuario.objects.all()
         if request.method=='POST':
             usuario.delete()
-            return redirect('SunChoi:usuario_lista')
-        return render(request,'SunChoi/usuario_lista.html',{'object_list': usuarios,'object':usuario, 'eliminar': 'True','tipo_objeto':"usuario"})
+            return redirect('SunChoi:usuarios')
+        return render(request,'SunChoi/usuarios.html',{'object_list': usuarios,'object':usuario, 'eliminar': 'True','tipo_objeto':"usuarios"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -127,10 +127,10 @@ def RegistrarProducto(request):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
-def Producto_lista(request):
+def Productos(request):
     if request.user.is_authenticated:
         productos = Producto.objects.all()
-        return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'tipo_objeto':"producto"})
+        return render(request,'SunChoi/productos.html',{'object_list': productos,'tipo_objeto':"productos"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -140,8 +140,8 @@ def Producto_editar(request, item):
         form = ProductoForm(request.POST or None, instance=producto)
         if form.is_valid():
             form.save()
-            return redirect('SunChoi:producto_lista')
-        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"producto"})
+            return redirect('SunChoi:productos')
+        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"productos"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -151,8 +151,8 @@ def Producto_eliminar(request, item):
         productos = Producto.objects.all()
         if request.method=='POST':
             producto.delete()
-            return redirect('SunChoi:producto_lista')
-        return render(request,'SunChoi/producto_lista.html',{'object_list': productos,'object':producto, 'eliminar': 'True','tipo_objeto':"producto"})
+            return redirect('SunChoi:productos')
+        return render(request,'SunChoi/productos.html',{'object_list': productos,'object':producto, 'eliminar': 'True','tipo_objeto':"productos"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -183,10 +183,10 @@ def RegistrarCliente(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-def Cliente_lista(request):
-    if request.user.is_authenticated :
-        clientes = Cliente.objects.all()
-        return render(request,'SunChoi/cliente_lista.html',{'object_list': clientes,'tipo_objeto':"cliente"})
+def Clientes(request):
+    if request.user.is_authenticated:
+        cliente = Cliente.objects.all()
+        return render(request,'SunChoi/clientes.html',{'object_list': cliente,'tipo_objeto':"clientes"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -196,8 +196,8 @@ def Cliente_editar(request, item):
         form = ClienteForm(request.POST or None, instance=cliente)
         if form.is_valid():
             form.save()
-            return redirect('SunChoi:cliente_lista')
-        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"cliente"})
+            return redirect('SunChoi:clientes')
+        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"clientes"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -207,8 +207,8 @@ def Cliente_eliminar(request, item):
         clientes = Cliente.objects.all()
         if request.method=='POST':
             cliente.delete()
-            return redirect('SunChoi:cliente_lista')
-        return render(request,'SunChoi/cliente_lista.html',{'object_list': clientes,'object':cliente, 'eliminar': 'True','tipo_objeto':"cliente"})
+            return redirect('SunChoi:clientes')
+        return render(request,'SunChoi/clientes.html',{'object_list': clientes,'object':cliente, 'eliminar': 'True','tipo_objeto':"clientes"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -248,8 +248,8 @@ def Proveedor_eliminar(request, item):
         proveedores = Proveedores.objects.all()
         if request.method=='POST':
             proveedor.delete()
-            return redirect('SunChoi:proveedor_lista')
-        return render(request,'SunChoi/proveedor_lista.html',{'object_list': proveedores,'object':proveedor, 'eliminar': 'True','tipo_objeto':"proveedores"})
+            return redirect('SunChoi:proveedores')
+        return render(request,'SunChoi/proveedores.html',{'object_list': proveedores,'object':proveedor, 'eliminar': 'True','tipo_objeto':"proveedores"})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -297,10 +297,10 @@ def RegistrarVenta(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-def Factura_lista(request):
+def Facturas(request):
     if request.user.is_authenticated:
         facturas = Factura.objects.all()
-        return render(request,'SunChoi/venta_lista.html',{'object_list': facturas,'tipo_objeto':"factura"})
+        return render(request,'SunChoi/facturas.html',{'object_list': facturas,'tipo_objeto':"facturas"})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
@@ -310,10 +310,10 @@ def Factura_ver(request, item):
         form = FacturaForm(request.POST or None, instance=factura)
         if form.is_valid():
             form.save()
-            return redirect('SunChoi:factura_lista')
+            return redirect('SunChoi:facturas')
         fp=form.save(commit=False)
         facturalineas=Facturalineas.objects.filter(id_factura=fp.id_factura)
-        return render(request, 'SunChoi/ver_form_compuesto.html', {'factura':factura,'fllista':facturalineas, 'tipo_objeto':"factura",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+        return render(request, 'SunChoi/ver_form_compuesto.html', {'factura':factura,'fllista':facturalineas, 'tipo_objeto':"facturas",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -322,7 +322,9 @@ def RegistrarOrdenCompra(request):
     if request.user.is_authenticated:
         if request.GET.get('nombreproveedor'):
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
+            print(idusuario)
             idproveedor=Proveedores.objects.filter(razon_social=request.GET.get('nombreproveedor'))[0].id_proveedor
+            print(idproveedor)
             fecha=str( datetime.datetime.now()) # por el momento registro con la fecha/hora del sistema       
             idordencompra=OrdenCompra.insertordencompra(request.GET.get('ordenN'),fecha,idusuario,idproveedor,request.GET.get('valorTotal'))[0][0] 
             cantfl=request.GET.get('nLineas').split(':')
@@ -340,19 +342,18 @@ def RegistrarOrdenCompra(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-def OrdenCompra_lista(request):
+def Compras(request):
     if request.user.is_authenticated:
         ordencompras = OrdenCompra.objects.all()
-        return render(request,'SunChoi/orden_lista.html',{'object_list': ordencompras,'tipo_objeto':"ordencompra"})
+        return render(request,'SunChoi/compras.html',{'object_list': ordencompras,'tipo_objeto':"compras"})
     else:
         return render_to_response('SunChoi/nopermitido.html')
-
 
 def Ordencompra_ver(request,item):
     if request.user.is_authenticated :
         ordencompra = get_object_or_404(OrdenCompra,pk=item)
         ordenlineas=Ordencompralineas.objects.filter(id_orden_compra=item)
-        return render(request, 'SunChoi/ver_ordencompra.html', {'ordencompra':ordencompra,'ollista':ordenlineas, 'tipo_objeto':"ordencompra",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+        return render(request, 'SunChoi/ver_ordencompra.html', {'ordencompra':ordencompra,'ollista':ordenlineas, 'tipo_objeto':"compras",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -378,19 +379,18 @@ def RegistrarCotizacion(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-def Proforma_lista(request):
+def Proformas(request):
     if request.user.is_authenticated:
         proformas = Proforma.objects.all()
-        return render(request,'SunChoi/proforma_lista.html',{'object_list': proformas,'tipo_objeto':"proforma"})
+        return render(request,'SunChoi/proformas.html',{'object_list': proformas,'tipo_objeto':"proformas"})
     else:
         return render_to_response('SunChoi/nopermitido.html')
-
 
 def Proforma_ver(request,item):
     if request.user.is_authenticated :
         proforma = get_object_or_404(Proforma,pk=item)
         proformalineas=ProformaLineas.objects.filter(id_proforma=item)
-        return render(request, 'SunChoi/ver_proforma.html', {'proforma':proforma,'pllista':proformalineas, 'tipo_objeto':"proforma",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+        return render(request, 'SunChoi/ver_proforma.html', {'proforma':proforma,'pllista':proformalineas, 'tipo_objeto':"proformas",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -413,31 +413,6 @@ def VentasXmes(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
-def Proveedor_lista(request):
-    if request.user.is_authenticated:
-        proveedores = Proveedores.objects.all()
-        return render(request,'SunChoi/proveedor_lista.html',{'object_list': proveedores,'tipo_objeto':"proveedores"})
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
-def Proveedor_editar(request, item):
-    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
-        proveedor = get_object_or_404(Proveedores, pk=item)
-        form = ProveedorForm(request.POST or None, instance=proveedor)
-        if form.is_valid():
-            form.save()
-            return redirect('SunChoi:proveedor_lista')
-        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"proveedores"})
-    else:
-        return render(request,'SunChoi/nopermitido.html')
-        
-def Productos(request):
-    if request.user.is_authenticated:
-        productos = Producto.objects.all()
-        return render(request,'SunChoi/productos.html',{'object_list': productos,'tipo_objeto':"producto"})
-    else:
-        return render(request,'SunChoi/nopermitido.html')
-
 def Proveedor(request):
     if request.user.is_authenticated:
         proveedores = Proveedores.objects.all()
@@ -445,49 +420,14 @@ def Proveedor(request):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
-def Clientes(request):
-    if request.user.is_authenticated:
-        cliente = Cliente.objects.all()
-        return render(request,'SunChoi/clientes.html',{'object_list': cliente,'tipo_objeto':"cliente"})
-    else:
-        return render(request,'SunChoi/nopermitido.html')
-
-def Usuarios(request):
-    if request.user.is_authenticated:
-        usuarios = Usuario.objects.all()
-        return render(request,'SunChoi/usuarios.html',{'object_list': usuarios,'tipo_objeto':"usuario"})
-    else:
-        return render(request,'SunChoi/nopermitido.html')
-
-def MenuAdmin(request):
+def Proveedor_editar(request, item):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
-        return render(request,'SunChoi/menuAdmin.html')
+        proveedor = get_object_or_404(Proveedores, pk=item)
+        form = ProveedorForm(request.POST or None, instance=proveedor)
+        if form.is_valid():
+            form.save()
+            return redirect('SunChoi:proveedores')
+        return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"proveedores"})
     else:
-        return render_to_response('SunChoi/nopermitido.html')
-
-def Proformas(request):
-    if request.user.is_authenticated:
-        proformas = Proforma.objects.all()
-        return render(request,'SunChoi/proformas.html',{'object_list': proformas,'tipo_objeto':"proforma"})
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
-def Facturas(request):
-    if request.user.is_authenticated:
-        facturas = Factura.objects.all()
-        return render(request,'SunChoi/facturas.html',{'object_list': facturas,'tipo_objeto':"factura"})
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
-def Compras(request):
-    if request.user.is_authenticated:
-        ordencompras = OrdenCompra.objects.all()
-        return render(request,'SunChoi/compras.html',{'object_list': ordencompras,'tipo_objeto':"ordencompra"})
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
-
-def MenuEmployee(request):
-    if (request.user.is_authenticated and (not request.user.is_superuser or  not request.user.is_staff)):
-        return render(request,'SunChoi/menuEmployee.html')
-    else:
-        return render_to_response('SunChoi/nopermitido.html')
+        return render(request,'SunChoi/nopermitido.html')
+        
