@@ -10,6 +10,7 @@ from .models import *
 from django.utils import timezone
 import datetime
 from datetime import timedelta, date
+from django.db.models import Avg, Max, Min, Count,Sum
 
 #vistas generales
 def login(request):
@@ -403,7 +404,8 @@ def VentasXmes(request):
                 fin=datetime.datetime.strptime(request.GET['ventasXmesFin'],"%Y-%m-%d")
                 if inicio <= fin:
                     results =Factura.objects.filter(fecha__gte=inicio,fecha__lte=fin)
-                    return render(request,'SunChoi/ventasXmes.html',{'lista':results,'lista1':True})
+                    total=Factura.objects.filter(fecha__gte=inicio,fecha__lte=fin).aggregate(Sum('total'))
+                    return render(request,'SunChoi/ventasXmes.html',{'lista':results,'lista1':True,'total': total['total__sum']})
                 else:
                     return render(request,'SunChoi/ventasXmes.html',{'error': 'error al ingresar el rango de valores'})
             except ValueError:

@@ -1,6 +1,5 @@
 {% extends "SunChoi/base.html" %}
 {% load static %}
-
 {% block title %} Consulta rapida{% endblock %} 
 {% block extra-style %}
 <link href="{% static 'css/consultaRapida.css'  %}" rel="stylesheet">
@@ -18,29 +17,46 @@
         	{% else %}
             	<H1 class="text-center">Consultar las ventas en un periodo : </H1>
             	{% csrf_token %}
-	        
-	            <input type="date" name="ventasXmesIni"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha inicio: AA-MM-DD" >
-	            <input type="date" name="ventasXmesFin"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha fin: AA-MM-DD" >
+	            <input type="date" name="ventasXmesIni"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha inicio: AA-MM-DD" required>
+	            <input type="date" name="ventasXmesFin"   id="inputEmail" class="form-control text-center center-block" placeholder="fecha fin: AA-MM-DD" required>
 	            <br/>
-				<button id="consultar" class="btn btn-primary btn-block center-block" type="submit">Consultar</button>
+	            <div class="btn-group btn-block block-center col-md-4 col-md-offset-4 col-xs-12 ">
+				<button id="consultar" class="btn btn-primary " type="submit">Consultar</button>
+				{% if user.is_superuser %}
+			      	<a type="button" href="/menuglobal/" class="col-md-2  btn btn-primary btn-danger ">Menu</a>
+			    {%else %}
+			      	<a type="button" href="/menuempleado/" class="col-md-2  btn btn-primary btn-danger ">Menu</a>
+			      	{%endif%}
+			  </div>
 	            <br/>
 	            <br/>
 	    </form>
         {% endif %}
-            
     </div>
     <div class="row">
       <img class=" img-responsive img-center center-block" src="{% static 'img/REPORTE.png'  %}" alt="" width="500" height="300">              
     </div> 
 {% else %}
     <br/>
-		<div id="search" class="row">
-			<div class="col-md-8"> </div>
-			<a type="button" href="/ventasXmes" class="col-md-2 btn btn-primary">Nueva Consulta</a>
-			<input class="col-md-2"type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
-		</div>
+		<div  class="row">
+			<div class="col-md-7 col-sm-7 " style="color: #404046;">
+    			<h3 class="bock-center text-center" >Consultar las ventas en un periodo :</h3>
+  			</div>
+			<div id="search" class="col-md-4 col-sm-4 container-fluid">
+				<div class="bock-center text-center">
+				<!--<div class="col-md-8"> </div>-->
+				{% if user.is_superuser %}
+			      		<a type="button" href="/menuglobal/" class="col-md-2 btn btn-primary btn-danger block-center">Menu</a>
+			      	{%else %}
+			      		<a type="button" href="/menuempleado/" class="col-md-2 btn btn btn-primary btn-danger block-center">Menu</a>
+			      	{%endif%}
+					<a type="button" href="/ventasXmes" class="col-md-4 btn btn-primary">Nueva Consulta</a>
+					<br>
+					<br>
+					<input class="col-md-6"type="text" id="myInput" onkeyup="myFunction()" placeholder="Search...">
+				</div>
+			</div>
         <div class="container">
-        
 			<table id="productos" class="table table-striped">
 				<thead>
 				  <tr>
@@ -55,15 +71,13 @@
 				</thead>
 				<tbody>
 				{% for producto in lista %}
-				
 				  <tr>
 				  	<td>{{forloop.counter  }}</td>
 					<td>{{producto.numero}}</td>
 					<td>{{producto.fecha}} </td>
 					<td>{{producto.id_cliente}}</td>
 					<td>{{producto.id_usuario}}</td>
-					<td>{{producto.total}}</td>
-
+					<td align="right">${{producto.total|stringformat:"2.3f"}}</td>
 				  </tr>
 				{% empty %}
 				  <tr>
@@ -71,6 +85,18 @@
 				  </tr>
 				{% endfor %}
 				</tbody>
+				<br>
+				<tfoot class="text-center">
+					<br>
+    				<tr>
+				    	<td><strong>T</strong></td>
+						<td><strong>O</strong></td>
+						<td> <strong>T</strong></td>
+						<td><strong>A</strong></td>
+						<td><strong>L</strong></td>
+						<td align="right">${{total|stringformat:"2.3f"}}</td>
+					</tr>
+				</tfoot>
 			</table>
     </div>
 	<script>

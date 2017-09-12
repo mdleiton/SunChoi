@@ -24,9 +24,17 @@
             	<H1 class="text-center">Consultar lista de producto con stock menor a {{ minimo }}: </H1>
             	{% csrf_token %}
 	        	<label for="text" class=" text-center sr-only">Ingrese maximo de stock</label>
-	            <input type="text" name="minimo"   id="inputEmail" class="form-control text-center center-block" placeholder="minimo stock" >
+	            <input type="text" name="minimo"   id="inputEmail" class="form-control text-center center-block" placeholder="minimo stock" required>
 	            <br/>
+				<div class="btn-group btn-block block-center col-md-4 col-md-offset-4 col-xs-12 ">
 				<button id="consultar" class="btn btn-primary btn-block center-block" type="submit">Consultar</button>
+				
+				{% if user.is_superuser %}
+			      	<a type="button" href="/menuglobal/" class="col-md-2  btn btn-primary btn-danger ">Menu</a>
+			    {%else %}
+			      	<a type="button" href="/menuempleado/" class="col-md-2  btn btn-primary btn-danger ">Menu</a>
+			      	{%endif%}
+			  </div>
 				<!--div id="botonesConsulta" class="row">
 					<a id="atras" type="button" href="/menuglobal" class="col-md-6 btn btn-primary center-block" >Menu Global</a>
 					<div class="col-md-1"></div>
