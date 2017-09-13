@@ -75,8 +75,8 @@
                         <td></td>
                         <td>${{linea.id_producto.precio_unitario}}</td>
                         <td>{{linea.descuento}}</td>
-                        <td>{{linea.iva}}</td>
-                        <td>{{linea.total_orden_compra_linea}}</td>
+                        <td>{{linea.iva|stringformat:"2.3f"}}</td>
+                        <td>{{linea.total_orden_compra_linea|stringformat:"2.3f"}}</td>
                     </tr>
                 {% empty %}
                     <td>Nada que mostrar</td>
@@ -113,7 +113,7 @@
                 </tr>
                 <tr>
                     <th>Valor Total:</th>
-                    <td><input id="valorTotal" name="valorTotal" form="formFactura" type="text" readonly placeholder="{{ordencompra.total}}"></td>
+                    <td><input id="valorTotal" name="valorTotal" form="formFactura" type="text" readonly placeholder="{{ordencompra.total|stringformat:"2.3f"}}"></td>
                 </tr>   
             </table>
         </div>

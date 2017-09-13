@@ -55,7 +55,7 @@
           <td>{{ registro.fecha     }}</td>
           <td>{{ registro.id_proveedor}}</td>
           <td>{{ registro.id_usuario}}</td>
-          <td>{{ registro.total     }}</td>
+          <td align="right">{{ registro.total|stringformat:"2.3f"     }}</td>
         <td><a class="btn btn-primary" href="{% url 'SunChoi:ordencompra_ver'  registro.id_orden_compra %}"
           value="Editar" class="btn btn-primary btn-sm text-center"  >Ver detalle Orden Compra</a></td> 
       </tr>

@@ -31,7 +31,7 @@
       {% csrf_token %}
       Esta seguro que desea eliminar <strong >"{{ object }} " </strong> ?
       <input type="submit" class="btn btn-primary btn-sm" value="Eliminar" />
-      <a class="btn btn-primary btn-danger btn-sm" href="/lista{{tipo_objeto}}/">cancelar</a>
+      <a class="btn btn-primary btn-danger btn-sm" href="/{{tipo_objeto}}/">cancelar</a>
     </form>    
   </div>
 {% endif %}
@@ -44,20 +44,23 @@
         <th>CLIENTE       </th>
         <th>USUARIO </th>
         <th>TOTAL FACTURA </th>
-        <th class="text-center">EDITAR</th>
+        <th class="text-center">VER</th>
+         <th class="text-center">ELIMINAR</th>
       </tr>
     </thead>
     <tbody>
     {% for registro in object_list %}
-      <tr>
+      <tr class="text-center">
          <td>{{ forloop.counter     }}</td>
           <td>{{ registro.numero    }}</td>
           <td>{{ registro.fecha     }}</td>
           <td>{{ registro.id_cliente}}</td>
           <td>{{ registro.id_usuario}}</td>
-          <td>{{ registro.total     }}</td>
+          <td align="right">{{ registro.total|stringformat:"2.3f"}}</td>
         <td><a class="btn btn-primary" href="{% url 'SunChoi:factura_ver'  registro.id_factura %}"
           value="Editar" class="btn btn-primary btn-sm text-center"  >Ver detalle Factura</a></td> 
+           <td><a class="btn btn-primary btn-danger" href="{% url 'SunChoi:factura_eliminar'  registro.id_factura %}"
+          value="Editar" class="btn btn-primary btn-sm text-center"  >Eliminar Factura</a></td> 
       </tr>
     {% empty %}
       <tr>

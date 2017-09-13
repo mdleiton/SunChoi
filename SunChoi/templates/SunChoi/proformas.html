@@ -43,7 +43,7 @@
         <th>USUARIO </th>
         <th>FECHA DE EMISION     </th>
         <th>FECHA DE CADUCIDAD </th>
-        <th>TOTAL PROFORMA </th>
+        <th align="right">TOTAL PROFORMA </th>
         <th class="text-center">DETALLE PROFORMA</th>
       </tr>
     </thead>
@@ -55,7 +55,7 @@
           <td>{{ registro.id_usuario}}</td>
           <td>{{ registro.fecha_emision   }}</td>
           <td>{{ registro.fecha_caducidad    }}</td>
-          <td>{{ registro.total_proforma    }}</td>
+          <td align="right">{{ registro.total_proforma|stringformat:"2.3f"    }}</td>
         <td><a class="btn btn-primary" href="{% url 'SunChoi:proforma_ver'  registro.id_proforma %}"
           value="Editar" class="btn btn-primary btn-sm text-center"  >Ver detalle Proforma</a></td> 
       </tr>

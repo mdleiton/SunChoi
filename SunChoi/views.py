@@ -318,6 +318,21 @@ def Factura_ver(request, item):
     else:
         return render(request,'SunChoi/nopermitido.html')
 
+def Factura_eliminar(request, item):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        factura = get_object_or_404(Factura, pk=item)    
+        facturas = Factura.objects.all()
+        if request.method=='POST':
+            lineasfactura=Facturalineas.objects.filter(id_factura=item).count()
+            print(lineasfactura)
+            for i in range(lineasfactura):
+                Facturalineas.deleteFacturalineaUpdateStock(item)
+            Factura.deleteFactura(item)          
+            return redirect('SunChoi:facturas')
+        return render(request,'SunChoi/facturas.html',{'object_list': facturas,'object':factura, 'eliminar': 'True','tipo_objeto':"facturas"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
 #ordenes de compra
 def RegistrarOrdenCompra(request):
     if request.user.is_authenticated:

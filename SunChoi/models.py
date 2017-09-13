@@ -565,6 +565,12 @@ class Factura(models.Model):
 		cur.close()
 		return results
 
+	@staticmethod  
+	def deleteFactura(idfactura):  
+		cur = connection.cursor()  
+		cur.callproc('deleteFactura', [idfactura])  
+		cur.close()
+
 	def __str__(self): 
 		return 'Factura: {}:{}:{}'.format(self.id_factura, self.id_usuario.usuario,self.id_cliente.nombre,self.total)
 
@@ -617,6 +623,12 @@ class Facturalineas(models.Model):
 	def insertfacturalineasUpdateStock(id_factura,id_producto,cantidad ,iva,descuento,total_factura_linea):  
 		cur = connection.cursor()  
 		cur.callproc('insertfacturalineasUpdateStock', [id_factura,id_producto,cantidad,iva,descuento,total_factura_linea])  
+		cur.close()
+
+	@staticmethod  
+	def deleteFacturalineaUpdateStock(idfactura):  
+		cur = connection.cursor()  
+		cur.callproc('deleteFacturalineaUpdateStock', [idfactura])  
 		cur.close()
 
 	def __str__(self): 

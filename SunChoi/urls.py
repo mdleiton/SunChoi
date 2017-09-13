@@ -48,6 +48,7 @@ urlpatterns = [
     #ventas
     url(r'^registrarventa/$', views.RegistrarVenta,name="ventaadd"),
     url(r'^verfactura/(?P<item>\d+)$', views.Factura_ver, name='factura_ver'),
+    url(r'^eliminarfactura/(?P<item>\d+)$', views.Factura_eliminar, name='factura_eliminar'),
     url(r'^facturas/$', views.Facturas,name="facturas"),
 
     #ordendecompras

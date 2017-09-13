@@ -141,6 +141,68 @@ delimiter ;
 -- END proc_main #
 -- delimiter ;
 
+-- Eliminar factura
+DROP PROCEDURE IF EXISTS deleteFactura;
+delimiter #
+CREATE PROCEDURE deleteFactura(idfactura int)
+proc_main: BEGIN  
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+	END;
+	
+	START TRANSACTION;
+
+		DELETE FROM SunChoi_factura
+		where id_factura = idfactura;
+	COMMIT;
+END proc_main #
+delimiter ;
+
+-- Eliminar facturalinea
+DROP PROCEDURE IF EXISTS deleteFacturalineaUpdateStock;
+delimiter #
+CREATE PROCEDURE deleteFacturalineaUpdateStock(idfactura int)
+proc_main: BEGIN  
+	declare cant int;
+	declare stockantiguo int;
+	declare producto int;
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+	END;
+	
+	START TRANSACTION;
+
+		select fl.cantidad into cant
+	    from SunChoi_facturalineas fl
+	    where fl.id_factura_id=idfactura
+	    order by fl.id_factura_linea
+	    limit 1;
+
+	    select fl.id_producto_id into producto
+	    from SunChoi_facturalineas fl
+	    where fl.id_factura_id=idfactura
+	    order by fl.id_factura_linea
+	    limit 1;
+	    
+	    select p.stock into stockantiguo
+	    from SunChoi_producto p
+	    where p.id_producto=producto;
+
+    	set stockantiguo = stockantiguo + cant;
+
+		DELETE from SunChoi_facturalineas
+		where id_factura_id = idfactura
+		order by id_factura_linea
+	    limit 1;
+
+	    UPDATE SunChoi_producto set stock = stockantiguo where id_producto = producto;
+	COMMIT;
+END proc_main #
+delimiter ;
+
 -- -----------------------------------------F--A--C--T--U--R--A--/--L--I--N--E--A--------------------------
 -- Insertar nueva orden de factura detalle y Actualiza el stock
 DROP PROCEDURE IF EXISTS insertfacturalineasUpdateStock;
