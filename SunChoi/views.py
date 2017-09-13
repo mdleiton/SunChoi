@@ -10,8 +10,10 @@ from .models import *
 from django.utils import timezone
 import datetime
 from datetime import timedelta, date
-from django.db.models import Avg, Max, Min, Count,Sum
+from django.db.models import Count,Sum
 
+datoscompany={'dir':"Guayaquil",'suc':'ceibos','ruc':'09876535435'}
+dias_vencimiento_proforma=7
 #vistas generales
 def login(request):
     if request.method == 'POST':
@@ -290,11 +292,11 @@ def RegistrarVenta(request):
                 Facturalineas.insertfacturalineasUpdateStock(idfactura,idproducto,request.GET.get('cantidad'+i),request.GET.get('iva'+i),request.GET.get('desc'+i),request.GET.get('pretot'+i))  
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"Se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+            return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"Se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':datoscompany})
         else:
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarVenta.html', {'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+            return render(request,'SunChoi/registrarVenta.html', {'clientes':clientes,'productos':productos,'company':datoscompany})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
@@ -314,7 +316,7 @@ def Factura_ver(request, item):
             return redirect('SunChoi:facturas')
         fp=form.save(commit=False)
         facturalineas=Facturalineas.objects.filter(id_factura=fp.id_factura)
-        return render(request, 'SunChoi/ver_form_compuesto.html', {'factura':factura,'fllista':facturalineas, 'tipo_objeto':"facturas",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+        return render(request, 'SunChoi/ver_form_compuesto.html', {'factura':factura,'fllista':facturalineas, 'tipo_objeto':"facturas",'company':datoscompany})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
@@ -350,11 +352,11 @@ def RegistrarOrdenCompra(request):
             #aqui actualizar total orden
             proveedores=Proveedores.objects.all()
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarOrdencompra.html',{'mjsexitoso':"Se registro con exito la orden de compra. Puede ingresar otra orden de compra",'proveedores':proveedores,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+            return render(request,'SunChoi/registrarOrdencompra.html',{'mjsexitoso':"Se registro con exito la compra. Puede ingresar otra compra",'proveedores':proveedores,'productos':productos,'company':datoscompany})
         else:
             proveedores=Proveedores.objects.all()
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarOrdencompra.html', {'proveedores':proveedores,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+            return render(request,'SunChoi/registrarOrdencompra.html', {'proveedores':proveedores,'productos':productos,'company':datoscompany})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
@@ -369,17 +371,18 @@ def Ordencompra_ver(request,item):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         ordencompra = get_object_or_404(OrdenCompra,pk=item)
         ordenlineas=Ordencompralineas.objects.filter(id_orden_compra=item)
-        return render(request, 'SunChoi/ver_ordencompra.html', {'ordencompra':ordencompra,'ollista':ordenlineas, 'tipo_objeto':"compras",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+        return render(request, 'SunChoi/ver_ordencompra.html', {'ordencompra':ordencompra,'ollista':ordenlineas, 'tipo_objeto':"compras",'company':datoscompany})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
 #cotizaciones
 def RegistrarCotizacion(request):
     if request.user.is_authenticated:
+        print(dias_vencimiento_proforma)
         if request.GET.get('nombrecliente'):
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
             fecha_emision=str( datetime.datetime.now())
-            fecha_caducidad= str( date.today()+timedelta(days=7))   
+            fecha_caducidad= str( date.today()+timedelta(days=int(dias_vencimiento_proforma)))   
             idProforma=Proforma.insertproforma(fecha_emision,fecha_caducidad,request.GET.get('dnicliente'),idusuario,request.GET.get('valorTotal'))[0][0] 
             cantfl=request.GET.get('nLineas').split(':')
             for i in cantfl:
@@ -387,16 +390,28 @@ def RegistrarCotizacion(request):
                 ProformaLineas.insertProformaLineas(idProforma,idproducto,request.GET.get('cantidad'+i),request.GET.get('iva'+i),request.GET.get('desc'+i),request.GET.get('pretot'+i))  
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarCotizaciones.html',{'mjsexitoso':"Se registró con exito la cotización. Puede ingresar otra cotización",'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+            return render(request,'SunChoi/registrarCotizaciones.html',{'mjsexitoso':"Se registró con exito la cotización. Puede ingresar otra cotización",'clientes':clientes,'productos':productos,'company':datoscompany})
         else:
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarCotizaciones.html', {'clientes':clientes,'productos':productos,'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+            return render(request,'SunChoi/registrarCotizaciones.html', {'clientes':clientes,'productos':productos,'company':datoscompany})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
 def Proformas(request):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        if request.method == 'POST': 
+            global dias_vencimiento_proforma
+            dias_vencimiento_proforma=int(request.POST['dias'])
+            print(dias_vencimiento_proforma)
+            proformas = Proforma.objects.all()
+            return render(request,'SunChoi/proformas.html',{'object_list': proformas,'tipo_objeto':"proformas",'mjsexitoso':"Se actualizó con exito los dias de validez de una proforma."})
+        elif request.GET.get('eliminar'):
+            fecha_actual=str( datetime.datetime.now())
+            p=Proforma.objects.filter(fecha_caducidad__lte=fecha_actual)
+            p.delete()
+            proformas = Proforma.objects.all()
+            return render(request,'SunChoi/proformas.html',{'object_list': proformas,'tipo_objeto':"proformas",'mjsexitoso':"Se actualizó con exito las proformas validas."})
         proformas = Proforma.objects.all()
         return render(request,'SunChoi/proformas.html',{'object_list': proformas,'tipo_objeto':"proformas"})
     else:
@@ -406,7 +421,7 @@ def Proforma_ver(request,item):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         proforma = get_object_or_404(Proforma,pk=item)
         proformalineas=ProformaLineas.objects.filter(id_proforma=item)
-        return render(request, 'SunChoi/ver_proforma.html', {'proforma':proforma,'pllista':proformalineas, 'tipo_objeto':"proformas",'company':{'dir':"Guayaquil",'suc':'ceibos','ruc':'098765'}})
+        return render(request, 'SunChoi/ver_proforma.html', {'proforma':proforma,'pllista':proformalineas, 'tipo_objeto':"proformas",'company':datoscompany})
     else:
         return render(request,'SunChoi/nopermitido.html')
 
