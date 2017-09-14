@@ -384,23 +384,23 @@ def Ordencompra_ver(request,item):
 #cotizaciones
 def RegistrarCotizacion(request):
     if request.user.is_authenticated:
-        print(dias_vencimiento_proforma)
+        clientes=Cliente.objects.all()
+        fecha=str( datetime.datetime.now())
         if request.GET.get('nombrecliente'):
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
-            fecha_emision=str( datetime.datetime.now())
             fecha_caducidad= str( date.today()+timedelta(days=int(dias_vencimiento_proforma)))   
-            idProforma=Proforma.insertproforma(fecha_emision,fecha_caducidad,request.GET.get('dnicliente'),idusuario,request.GET.get('valorTotal'))[0][0] 
+            idProforma=Proforma.insertproforma(request.GET.get('cotF'),fecha_caducidad,request.GET.get('dnicliente'),idusuario,request.GET.get('valorTotal'))[0][0] 
             cantfl=request.GET.get('nLineas').split(':')
             for i in cantfl:
                 idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
                 ProformaLineas.insertProformaLineas(idProforma,idproducto,request.GET.get('cantidad'+i),request.GET.get('iva'+i),request.GET.get('desc'+i),request.GET.get('pretot'+i))  
-            clientes=Cliente.objects.all()
+            maxNorden=Proforma.objects.all().aggregate(Max('id_proforma'))['id_proforma__max']
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarCotizaciones.html',{'mjsexitoso':"Se registró con exito la cotización. Puede ingresar otra cotización",'clientes':clientes,'productos':productos,'company':datoscompany})
+            return render(request,'SunChoi/registrarCotizaciones.html',{'mjsexitoso':"Se registró con exito la cotización. Puede ingresar otra cotización",'clientes':clientes,'productos':productos,'company':datoscompany,'fecha':fecha,'Ncot':int(maxNorden+1)})
         else:
-            clientes=Cliente.objects.all()
+            maxNorden=Proforma.objects.all().aggregate(Max('id_proforma'))['id_proforma__max']
             productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarCotizaciones.html', {'clientes':clientes,'productos':productos,'company':datoscompany})
+            return render(request,'SunChoi/registrarCotizaciones.html', {'clientes':clientes,'productos':productos,'company':datoscompany,'fecha':fecha,'Ncot':int(maxNorden+1)})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 

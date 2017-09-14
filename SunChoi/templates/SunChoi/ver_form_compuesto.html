@@ -19,8 +19,7 @@
                 <label class="col-md-12">R.U.C.: {{ company.ruc }}</label>
             </div>
             <div id="FacturaNumero"class="col-md-4">
-                <h2>{{tipo_objeto}}No.</h2>
-                <h3>{{ factura.numero }}</h3>
+                <h2>{{tipo_objeto}}No. {{ factura.numero }}</h2>
                 <h3> {{factura.fecha|date:"Y-m-d"}}</h3>
             </div>
         </div>          
