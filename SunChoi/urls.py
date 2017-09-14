@@ -61,4 +61,7 @@ urlpatterns = [
     url(r'^verproforma/(?P<item>\d+)$', views.Proforma_ver, name='proforma_ver'),
     url(r'^proformas/$', views.Proformas, name='proformas'),
 
+    #analisis
+     url(r'^topcliente/$', views.Topclientes, name='topclientes'),
+
 ]

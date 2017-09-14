@@ -21,6 +21,7 @@
             <div id="FacturaNumero"class="col-md-4">
                 <h2>{{tipo_objeto}}No.</h2>
                 <h3>{{ ordencompra.numero }}</h3>
+                <h3> {{ordencompra.fecha|date:"Y-m-d"}}</h3>
             </div>
         </div>          
     </div>
@@ -42,13 +43,11 @@
 
     <div id="datosComprador" class="row">
         <div id = "contenidoDatosComprador">
-            <div id="RasonSocial" class="col-md-6">
+            <div id="RasonSocial" class="col-md-12">
                 <label>Razon social / Nombre Proveedor: </label>
                 <label>{{ordencompra.id_proveedor.razon_social}}</label>
             <div id="DNI" class="col-md-6">
-                <label>Direccion: </label>
-                <label>{{ordencompra.id_proveedor.direccion}}</label>
-            
+                <label>Direccion: {{ordencompra.id_proveedor.direccion}}</label>
             </div>
         </div>
     </div>
@@ -74,9 +73,9 @@
                         <td>{{linea.id_producto.medida}}</td>
                         <td></td>
                         <td>${{linea.id_producto.precio_unitario}}</td>
-                        <td>{{linea.descuento}}</td>
-                        <td>{{linea.iva|stringformat:"2.3f"}}</td>
-                        <td>{{linea.total_orden_compra_linea|stringformat:"2.3f"}}</td>
+                        <td>${{linea.descuento}}</td>
+                        <td>${{linea.iva|stringformat:"2.3f"}}</td>
+                        <td>${{linea.total_orden_compra_linea|stringformat:"2.3f"}}</td>
                     </tr>
                 {% empty %}
                     <td>Nada que mostrar</td>
@@ -113,7 +112,7 @@
                 </tr>
                 <tr>
                     <th>Valor Total:</th>
-                    <td><input id="valorTotal" name="valorTotal" form="formFactura" type="text" readonly placeholder="{{ordencompra.total|stringformat:"2.3f"}}"></td>
+                    <td><input id="valorTotal" name="valorTotal" form="formFactura" type="text" readonly placeholder="${{ordencompra.total|stringformat:"2.3f"}}"></td>
                 </tr>   
             </table>
         </div>

@@ -10,10 +10,12 @@ from .models import *
 from django.utils import timezone
 import datetime
 from datetime import timedelta, date
-from django.db.models import Count,Sum
+from django.db.models import Count,Sum,Max
 
 datoscompany={'dir':"Guayaquil",'suc':'ceibos','ruc':'09876535435'}
 dias_vencimiento_proforma=7
+facturaNusuario=False
+
 #vistas generales
 def login(request):
     if request.method == 'POST':
@@ -282,21 +284,25 @@ def ConsultaRapida(request):
 #ventas
 def RegistrarVenta(request):
     if request.user.is_authenticated:
+        clientes=Cliente.objects.all()
+        productos = Producto.objects.all()    
         if request.GET.get('nombrecliente'): 
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
-            fecha=str( datetime.datetime.now())         
-            idfactura=Factura.insertfactura(request.GET.get('facturaN') ,fecha,request.GET.get('dnicliente'),idusuario,request.GET.get('valorTotal'))[0][0] 
+            idfactura=Factura.insertfactura(request.GET.get('facturaN') ,request.GET.get('fechaF')  ,request.GET.get('dnicliente'),idusuario,request.GET.get('valorTotal'))[0][0] 
             cantfl=request.GET.get('nLineas').split(':')
             for i in cantfl:
                 idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
                 Facturalineas.insertfacturalineasUpdateStock(idfactura,idproducto,request.GET.get('cantidad'+i),request.GET.get('iva'+i),request.GET.get('desc'+i),request.GET.get('pretot'+i))  
             clientes=Cliente.objects.all()
-            productos = Producto.objects.all()            
+            productos = Producto.objects.all()  
             return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"Se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':datoscompany})
         else:
-            clientes=Cliente.objects.all()
-            productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarVenta.html', {'clientes':clientes,'productos':productos,'company':datoscompany})
+            fecha=str( datetime.datetime.now())  
+            global facturaNusuario
+            if facturaNusuario:
+                return render(request,'SunChoi/registrarVenta.html', {'clientes':clientes,'productos':productos,'company':datoscompany,'fecha':fecha})
+            maxNfactura=Factura.objects.all().aggregate(Max('id_factura'))['id_factura__max']
+            return render(request,'SunChoi/registrarVenta.html', {'clientes':clientes,'productos':productos,'company':datoscompany,'Nfactura':int(maxNfactura+1),'fecha':fecha})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
@@ -326,7 +332,6 @@ def Factura_eliminar(request, item):
         facturas = Factura.objects.all()
         if request.method=='POST':
             lineasfactura=Facturalineas.objects.filter(id_factura=item).count()
-            print(lineasfactura)
             for i in range(lineasfactura):
                 Facturalineas.deleteFacturalineaUpdateStock(item)
             Factura.deleteFactura(item)          
@@ -338,25 +343,24 @@ def Factura_eliminar(request, item):
 #ordenes de compra
 def RegistrarOrdenCompra(request):
     if request.user.is_authenticated:
+        proveedores=Proveedores.objects.all()
+        productos = Producto.objects.all() 
         if request.GET.get('nombreproveedor'):
             idusuario=Usuario.objects.filter(usuario=request.user)[0].dni
-            print(idusuario)
             idproveedor=Proveedores.objects.filter(razon_social=request.GET.get('nombreproveedor'))[0].id_proveedor
-            print(idproveedor)
             fecha=str( datetime.datetime.now()) # por el momento registro con la fecha/hora del sistema       
-            idordencompra=OrdenCompra.insertordencompra(request.GET.get('ordenN'),fecha,idusuario,idproveedor,request.GET.get('valorTotal'))[0][0] 
+            idordencompra=OrdenCompra.insertordencompra(request.GET.get('ordenN'),request.GET.get('fechaC'),idusuario,idproveedor,request.GET.get('valorTotal'))[0][0] 
             cantfl=request.GET.get('nLineas').split(':')
             for i in cantfl:
                 idproducto=Producto.objects.filter(descripcion=request.GET.get('descripcion'+i))[0].id_producto
                 Ordencompralineas.insertordenlineasUpdateStock(idordencompra,idproducto,request.GET.get('cantidad'+i),request.GET.get('iva'+i),request.GET.get('desc'+i),request.GET.get('pretot'+i))  
             #aqui actualizar total orden
-            proveedores=Proveedores.objects.all()
             productos = Producto.objects.all()            
             return render(request,'SunChoi/registrarOrdencompra.html',{'mjsexitoso':"Se registro con exito la compra. Puede ingresar otra compra",'proveedores':proveedores,'productos':productos,'company':datoscompany})
         else:
-            proveedores=Proveedores.objects.all()
-            productos = Producto.objects.all()            
-            return render(request,'SunChoi/registrarOrdencompra.html', {'proveedores':proveedores,'productos':productos,'company':datoscompany})
+            fecha=str( datetime.datetime.now()) 
+            maxNfactura=OrdenCompra.objects.all().aggregate(Max('id_orden_compra'))['id_orden_compra__max']
+            return render(request,'SunChoi/registrarOrdencompra.html', {'proveedores':proveedores,'productos':productos,'company':datoscompany,'fecha':fecha,'Ncompra':int(maxNfactura+1)})
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
@@ -460,6 +464,15 @@ def Proveedor_editar(request, item):
             form.save()
             return redirect('SunChoi:proveedores')
         return render(request, 'SunChoi/actualizar_form.html', {'form':form, 'tipo_objeto':"proveedores"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+        
+
+#analisis
+def Topclientes(request):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        # Factura.objects.filter()
+        return render(request, 'SunChoi/actualizar_form.html', { 'tipo_objeto':"clientes"})
     else:
         return render(request,'SunChoi/nopermitido.html')
         

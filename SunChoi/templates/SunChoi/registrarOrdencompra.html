@@ -33,7 +33,8 @@
 			</div>
 			<div id="FacturaNumero"class="col-md-4">
 				<h2>Orden de Compra No.</h2>
-				<h3><input  placeholder="026022000" name="ordenN" form="formFactura" required></h3>
+				<h3><input value="{{Ncompra}}" name="ordenN" form="formFactura" required></h3>
+				<input type="date" name="fechaC"  form="formFactura" value="{{fecha}}" class="form-control text-center center-block" placeholder="fecha: AA-MM-DD" required>
 				<input id="nLineas" name="nLineas" form="formFactura" style="visibility: hidden" readonly >
 			</div>
 		</div>			

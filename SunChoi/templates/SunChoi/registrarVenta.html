@@ -33,9 +33,14 @@
 			</div>
 			<div id="FacturaNumero"class="col-md-4">
 				<h2>Factura No.</h2>
-				<h3><input  placeholder="026022000" name="facturaN" form="formFactura" required></h3>
 				<input id="nLineas" name="nLineas" form="formFactura" style="visibility: hidden" readonly >
-			</div>
+				{% if Nfactura %}
+      			<h3><input value="{{Nfactura}}" name="facturaN" form="formFactura" required></h3>
+				{%else %}
+      			<h3><input  placeholder="Ingrese Numero" name="facturaN" form="formFactura" required></h3>
+				{%endif%}
+				<input type="date" name="fechaF"  form="formFactura" value="{{fecha}}" class="form-control text-center center-block" placeholder="fecha: AA-MM-DD" required>
+				</div>
 		</div>			
 	</div>
 	<!-- datos para facturacion  electrónica>
@@ -67,7 +72,7 @@
 	</div>
 	{%if mjsexitoso %}
 		<div><p class="lead"><blockquote class= "text-center text-primary">{{mjsexitoso}}
-		{% if user.is_superuser %}
+	  {% if user.is_superuser %}
       <a href="/facturas/" class="btn btn-primary">Atras</a>
       {%else %}
       <a href="/menuempleado/" class="btn btn-primary">Atras</a>

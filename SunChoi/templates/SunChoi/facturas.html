@@ -56,7 +56,7 @@
           <td>{{ registro.fecha     }}</td>
           <td>{{ registro.id_cliente}}</td>
           <td>{{ registro.id_usuario}}</td>
-          <td align="right">{{ registro.total|stringformat:"2.3f"}}</td>
+          <td align="right">${{ registro.total|stringformat:"2.3f"}}</td>
         <td><a class="btn btn-primary" href="{% url 'SunChoi:factura_ver'  registro.id_factura %}"
           value="Editar" class="btn btn-primary btn-sm text-center"  >Ver detalle Factura</a></td> 
            <td><a class="btn btn-primary btn-danger" href="{% url 'SunChoi:factura_eliminar'  registro.id_factura %}"
