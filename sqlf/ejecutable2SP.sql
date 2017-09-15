@@ -81,6 +81,25 @@ proc_main: BEGIN
 END proc_main #
 delimiter ;
 
+-- Eliminar orden de compra
+DROP PROCEDURE IF EXISTS deleteOrdenCompra;
+delimiter #
+CREATE PROCEDURE deleteOrdenCompra(idordencompra int)
+proc_main: BEGIN
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+	END;
+	
+	START TRANSACTION;
+
+		DELETE FROM SunChoi_ordencompra
+		where id_orden_compra = idordencompra;
+	COMMIT;
+END proc_main #
+delimiter ;
+
 -- -----------------------------------------C--O--M--P--R--A--/--L--I--N--E--A----------------------------
 -- Insertar nueva orden de COMPRA detalle y Actualiza el stock
 DROP PROCEDURE IF EXISTS insertordenlineasUpdateStock;
@@ -103,6 +122,49 @@ proc_main: BEGIN
 
 		INSERT INTO SunChoi_ordencompralineas(id_orden_compra_id,id_producto_id,cantidad,iva,descuento,total_orden_compra_linea) VALUES(id_orden,id_productos,cantidad,iva,descuento,total_orden_compra_linea);
 		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
+	COMMIT;
+END proc_main #
+delimiter ;
+
+-- Eliminar ordendecompralinea
+DROP PROCEDURE IF EXISTS deleteOrdenCompralineaUpdateStock;
+delimiter #
+CREATE PROCEDURE deleteOrdenCompralineaUpdateStock(idordencompra int)
+proc_main: BEGIN  
+	declare cant int;
+	declare stockantiguo int;
+	declare producto int;
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+	END;
+	
+	START TRANSACTION;
+
+		select ol.cantidad into cant
+	    from SunChoi_ordencompralineas ol
+	    where ol.id_orden_compra_id=idordencompra
+	    order by ol.id_orden_compra_linea
+	    limit 1;
+
+	    select ol.id_producto_id into producto
+	    from SunChoi_ordencompralineas ol
+	    where ol.id_orden_compra_id=idordencompra
+	    order by ol.id_orden_compra_linea
+	    limit 1;
+	    
+	    select p.stock into stockantiguo
+	    from SunChoi_producto p
+	    where p.id_producto=producto;
+
+    	set stockantiguo = stockantiguo - cant;
+
+		DELETE from SunChoi_ordencompralineas
+		where id_orden_compra_id = idordencompra
+		order by id_orden_compra_linea
+	    limit 1;
+
+	    UPDATE SunChoi_producto set stock = stockantiguo where id_producto = producto;
 	COMMIT;
 END proc_main #
 delimiter ;
@@ -160,6 +222,32 @@ proc_main: BEGIN
 END proc_main #
 delimiter ;
 
+-- -----------------------------------------F--A--C--T--U--R--A--/--L--I--N--E--A--------------------------
+-- Insertar nueva orden de factura detalle y Actualiza el stock
+DROP PROCEDURE IF EXISTS insertfacturalineasUpdateStock;
+delimiter #
+CREATE PROCEDURE insertfacturalineasUpdateStock(id_factura int,id_productos int ,cantidad int ,iva float ,descuento float , total_factura_linea float)
+proc_main: BEGIN
+    declare productostock int;
+
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+	END;
+	
+	START TRANSACTION;
+	    select p.stock into productostock
+	    from SunChoi_producto p
+	    where p.id_producto=id_productos;
+
+    	set productostock = productostock - cantidad;
+
+		INSERT INTO SunChoi_facturalineas(id_factura_id,id_producto_id,cantidad,iva,descuento,total_factura_linea) VALUES(id_factura,id_productos,cantidad,iva,descuento,total_factura_linea);
+		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
+	COMMIT;
+END proc_main #
+delimiter ;
+
 -- Eliminar facturalinea
 DROP PROCEDURE IF EXISTS deleteFacturalineaUpdateStock;
 delimiter #
@@ -199,32 +287,6 @@ proc_main: BEGIN
 	    limit 1;
 
 	    UPDATE SunChoi_producto set stock = stockantiguo where id_producto = producto;
-	COMMIT;
-END proc_main #
-delimiter ;
-
--- -----------------------------------------F--A--C--T--U--R--A--/--L--I--N--E--A--------------------------
--- Insertar nueva orden de factura detalle y Actualiza el stock
-DROP PROCEDURE IF EXISTS insertfacturalineasUpdateStock;
-delimiter #
-CREATE PROCEDURE insertfacturalineasUpdateStock(id_factura int,id_productos int ,cantidad int ,iva float ,descuento float , total_factura_linea float)
-proc_main: BEGIN
-    declare productostock int;
-
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-	BEGIN
-		ROLLBACK;
-	END;
-	
-	START TRANSACTION;
-	    select p.stock into productostock
-	    from SunChoi_producto p
-	    where p.id_producto=id_productos;
-
-    	set productostock = productostock - cantidad;
-
-		INSERT INTO SunChoi_facturalineas(id_factura_id,id_producto_id,cantidad,iva,descuento,total_factura_linea) VALUES(id_factura,id_productos,cantidad,iva,descuento,total_factura_linea);
-		UPDATE SunChoi_producto set stock = productostock where id_producto = id_productos;
 	COMMIT;
 END proc_main #
 delimiter ;

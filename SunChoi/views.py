@@ -404,6 +404,21 @@ def RegistrarCotizacion(request):
     else:
         return render_to_response('SunChoi/nopermitido.html')
 
+
+def Ordencompra_eliminar(request, item):
+    if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
+        ordencompra = get_object_or_404(OrdenCompra, pk=item) 
+        compras = OrdenCompra.objects.all()
+        if request.method=='POST':
+            lineasordencompra=OrdenCompra.objects.filter(id_orden_compra=item).count()
+            for i in range(lineasordencompra):
+               Ordencompralineas.deleteOrdenCompralineaUpdateStock(item)
+            OrdenCompra.deleteOrdenCompra(item)          
+            return redirect('SunChoi:compras')
+        return render(request,'SunChoi/compras.html',{'object_list': compras,'object':ordencompra, 'eliminar': 'True','tipo_objeto':"compras"})
+    else:
+        return render(request,'SunChoi/nopermitido.html')
+
 def Proformas(request):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):
         if request.method == 'POST': 

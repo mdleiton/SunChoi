@@ -54,6 +54,7 @@ urlpatterns = [
     #ordendecompras
     url(r'^registrarordencompras/$', views.RegistrarOrdenCompra,name="ordenadd"),
     url(r'^verordencompra/(?P<item>\d+)$', views.Ordencompra_ver, name='ordencompra_ver'),
+    url(r'^eliminarcompra/(?P<item>\d+)$', views.Ordencompra_eliminar, name='ordencompra_eliminar'),
     url(r'^compras/$', views.Compras,name="compras"),
 
     #cotizaciones

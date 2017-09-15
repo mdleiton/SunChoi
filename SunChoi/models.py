@@ -178,6 +178,12 @@ class OrdenCompra(models.Model):
 		cur.close()
 		return results
 
+	@staticmethod  
+	def deleteOrdenCompra(idordencompra):  
+		cur = connection.cursor()  
+		cur.callproc('deleteOrdenCompra', [idordencompra])  
+		cur.close()
+
 	def getId_orden_compra(self):
 		return self.id_orden_compra
 	def setId_orden_compra(self,id_orden_compra):
@@ -212,6 +218,12 @@ class Ordencompralineas(models.Model):
 	def insertordenlineasUpdateStock(id_orden_compra,id_producto,cantidad,iva,descuento,total_orden_compra_linea):  
 		cur = connection.cursor()  
 		cur.callproc('insertordenlineasUpdateStock', [id_orden_compra,id_producto,cantidad,iva,descuento,total_orden_compra_linea])  
+		cur.close()
+
+	@staticmethod  
+	def deleteOrdenCompralineaUpdateStock(idordencompra):  
+		cur = connection.cursor()  
+		cur.callproc('deleteOrdenCompralineaUpdateStock', [idordencompra])  
 		cur.close()
 
 	def __str__(self): 

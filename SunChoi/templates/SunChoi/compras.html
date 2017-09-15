@@ -31,7 +31,7 @@
       {% csrf_token %}
       Esta seguro que desea eliminar <strong >"{{ object }} " </strong> ?
       <input type="submit" class="btn btn-primary btn-sm" value="Eliminar" />
-      <a class="btn btn-primary btn-danger btn-sm" href="/lista{{tipo_objeto}}/">cancelar</a>
+      <a class="btn btn-primary btn-danger btn-sm" href="/{{tipo_objeto}}/">cancelar</a>
     </form>    
   </div>
 {% endif %}
@@ -45,6 +45,7 @@
         <th>USUARIO </th>
         <th>TOTAL COMPRA </th>
         <th class="text-center">EDITAR</th>
+        <th class="text-center">ELIMINAR</th>
       </tr>
     </thead>
     <tbody>
@@ -58,6 +59,8 @@
           <td align="right">${{ registro.total|stringformat:"2.3f"     }}</td>
         <td><a class="btn btn-primary" href="{% url 'SunChoi:ordencompra_ver'  registro.id_orden_compra %}"
           value="Editar" class="btn btn-primary btn-sm text-center"  >Ver detalle Orden Compra</a></td> 
+           <td><a class="btn btn-primary btn-danger" href="{% url 'SunChoi:ordencompra_eliminar'  registro.id_orden_compra %}"
+          value="Editar" class="btn btn-primary btn-sm text-center"  >Eliminar Orden compra</a></td> 
       </tr>
     {% empty %}
       <tr>
