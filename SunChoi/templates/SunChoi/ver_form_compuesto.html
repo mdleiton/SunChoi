@@ -9,8 +9,8 @@
 <div class="container" id="factura">
     <div id="cabecera">
         <div class="row" id="contenidoCabecera">
-            <div id="contenidoCabecera1" class="col-md-4">
-                <img class="img-responsive" src="{% static 'img/Productos.jpg' %}">
+            <div class="noprint col-md-4">
+                <img  class="noprint img-responsive" src="{% static 'img/Productos.jpg' %}">
             </div>
 
             <div id="contenidoCabecera2" class="col-md-4">
@@ -18,9 +18,11 @@
                 <label class="col-md-12">Dir. Sucursal: {{ company.suc }}</label>
                 <label class="col-md-12">R.U.C.: {{ company.ruc }}</label>
             </div>
-            <div id="FacturaNumero"class="col-md-4">
-                <h2>{{tipo_objeto}}No. {{ factura.numero }}</h2>
-                <h3> {{factura.fecha|date:"Y-m-d"}}</h3>
+            <div id="FacturaNumero" class="col-md-4">
+                <label class="col-md-12"><h4>{{tipo_objeto}}No. {{ factura.numero }}</h4></label>
+                <label class="col-md-12"> {{factura.fecha|date:"Y-m-d"}}</label>
+                <button class="noprint" onclick="imprime()">imprimir</button>
+            </div>
             </div>
         </div>          
     </div>
@@ -42,13 +44,9 @@
 
     <div id="datosComprador" class="row">
         <div id = "contenidoDatosComprador">
-            <div id="RasonSocial" class="col-md-6">
-                <label>Razon social / Nombre Cliente: </label>
-                <label>{{factura.id_cliente.nombre}}</label>
-            <div id="DNI" class="col-md-6">
-                <label>Ruc / CI: </label>
-                <label>{{factura.id_cliente.dni}}</label>
-            
+            <div id="RasonSocial" class="col-md-12">
+                <label class="col-md-6">Razon social / Nombre Cliente: {{factura.id_cliente.nombre}}</label>
+                 <label class="col-md-6">Ruc / CI:{{factura.id_cliente.dni}} </label>
             </div>
         </div>
     </div>
@@ -119,7 +117,32 @@
         </div>
     </div>
     <div id="botonesFactura" >
-            <a href="/{{tipo_objeto}}" class="btn btn-primary ">Atras</a>
+            <a href="/{{tipo_objeto}}" class="noprint btn btn-primary ">Atras</a>
     </div>
 </div>
+<script >
+    function imprime(){
+        $(".noprint").each(function(index,elemento){
+            $(elemento).attr('style','display: none');
+        });
+        window.print();
+        $(".noprint").each(function(index,elemento){
+            $(elemento).attr('style','display: inline');
+        });
+        /*document.all.item("noprint").style.visibility='hidden';
+        console.log('aqui');
+        window.print();
+        document.all.item("noprint").style.visibility='visible';*/
+    }
+    /*function window.onbeforeprint(){
+    noprint.style.visibility = 'hidden';
+    noprint.style.position = 'absolute';
+    }
+    function window.onafterprint(){
+    noprint.style.visibility = 'visible';
+    noprint.style.position = 'relative';
+    }*/
+
+</script>
+
 {% endblock %}

@@ -298,7 +298,7 @@ def RegistrarVenta(request):
             clientes=Cliente.objects.all()
             productos = Producto.objects.all()  
             maxNfactura=Factura.objects.all().aggregate(Max('id_factura'))['id_factura__max']
-            return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"Se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':datoscompany,'Nfactura':int(maxNfactura+1),'fecha':fecha})
+            return render(request,'SunChoi/registrarVenta.html',{'mjsexitoso':"Se registro con exito la venta. Puede ingresar otra venta",'clientes':clientes,'productos':productos,'company':datoscompany,'Nfactura':int(maxNfactura+1),'fecha':fecha,'item':idfactura})
         else:
             global facturaNusuario
             if facturaNusuario:
@@ -326,6 +326,14 @@ def Factura_ver(request, item):
         return render(request, 'SunChoi/ver_form_compuesto.html', {'factura':factura,'fllista':facturalineas, 'tipo_objeto':"facturas",'company':datoscompany})
     else:
         return render(request,'SunChoi/nopermitido.html')
+
+def Facturas_imprimir(request):
+    if request.user.is_authenticated and  request.method=='POST':
+        factura = get_object_or_404(Factura, pk=int(request.POST['item']))
+        facturalineas=Facturalineas.objects.filter(id_factura=factura.id_factura)
+        return render(request, 'SunChoi/ver_form_compuesto.html', {'factura':factura,'fllista':facturalineas, 'tipo_objeto':"facturas",'company':datoscompany})
+    else:
+        return render(request,'SunChoi/nopermitido.html')        
 
 def Factura_eliminar(request, item):
     if (request.user.is_authenticated and request.user.is_superuser and request.user.is_staff):

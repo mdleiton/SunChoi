@@ -31,9 +31,9 @@
 				<label class="col-md-12">Dir. Sucursal: {{ company.suc }}</label>
 				<label class="col-md-12">R.U.C.: {{ company.ruc }}</label>
 			</div>
-			<div id="FacturaNumero"class="col-md-4">
+			<div id="FacturaNumero" class="col-md-4">
 				<h2>Factura No.</h2>
-				<input id="nLineas" name="nLineas" form="formFactura" style="visibility: hidden" readonly >
+				<input id="nLineas" name="nLineas" form="formFactura" style="display : none;" readonly >
 				{% if Nfactura %}
       			<h3><input value="{{Nfactura}}" name="facturaN" form="formFactura" required></h3>
 				{%else %}
@@ -72,14 +72,20 @@
 	</div>
 	{%if mjsexitoso %}
 		<div><p class="lead"><blockquote class= "text-center text-primary">{{mjsexitoso}}
-	  {% if user.is_superuser %}
-      <a href="/facturas/" class="btn btn-primary">Atras</a>
-      {%else %}
-      <a href="/menuempleado/" class="btn btn-primary">Atras</a>
-      {%endif%}</blockquote>
-      </p>
-		</div>
+		{% if user.is_superuser %}
+    		<a href="/facturas/" class="btn btn-primary">o Atras</a>
+      	{%else %}
+      		<a href="/menuempleado/" class="btn btn-primary"> o Atras</a>
+      	{%endif%}
+      <form id="formimprimir" method="post"  action="/imprimirfacturas/">
+		{% csrf_token %}
+		<input form="formimprimir" type="submit" class="btn btn-primary center-block" value="Imprimir" />
+		<input form="formimprimir" name="item" value="{{item}}" style="display : none;" readonly >
+	</form>
+</blockquote></p>
+      	</div>
 	{% endif %}
+    
 	<div>
 		<table id="detalle" class="table table-bordered">
 			<thead>
@@ -438,5 +444,4 @@
 	}
 	
 </script>
-
  {% endblock %}        
